@@ -6,6 +6,7 @@ import 'custom_widget.dart';
 Widget leftSideView() {
   return Drawer(
     width: 400,
+    elevation: 0,
     child: Container(
       height: double.infinity,
       color: secondaryBackground,
@@ -24,7 +25,7 @@ Widget leftSideView() {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   iconTextBtn('assets/dine-in.png', 'DINE IN', primaryColor,
-                      secondaryBackground,
+                      white,
                       onPressed: () {}),
                   iconTextBtn('assets/takeway.png', 'DINE IN',
                       primaryBackground, primaryText,
@@ -178,15 +179,15 @@ Widget leftSideView() {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               topBarIconBtn('assets/remove.png',
-                                  secondaryBackground, primaryText, 0, 2, 12,
+                                  primaryBackground, primaryText, 0, 2, 14,
                                   onPressed: () {}),
-                              SizedBox(width: 5),
+                              SizedBox(width: 6),
                               Text('12',
                                   style: TextStyle(
                                       color: primaryText, fontSize: 12)),
-                              SizedBox(width: 5),
+                              SizedBox(width: 6),
                               topBarIconBtn('assets/add.png',
-                                  secondaryBackground, primaryText, 0, 2, 12,
+                                  primaryBackground, primaryText, 0, 2, 14,
                                   onPressed: () {}),
                             ],
                           ),
@@ -342,11 +343,11 @@ Widget leftSideView() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide("assets/check.png", 'ORDER',
+                    iconTextBtnWide("assets/check.png", 'ORDER', primaryColor, white,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/credit-card.png", 'Pay',
+                    iconTextBtnWide("assets/credit-card.png", 'Pay', alternate, primaryText,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/print.png", 'Print',
+                    iconTextBtnWide("assets/print.png", 'Print', alternate,primaryText,
                         onPressed: () {}),
                   ],
                 ),
@@ -358,11 +359,11 @@ Widget leftSideView() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide("assets/percentage.png", 'Discout',
+                    iconTextBtnWide("assets/percentage.png", 'Discout', alternate,primaryText,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/add.png", 'Add Misc',
+                    iconTextBtnWide("assets/add.png", 'Add Misc', alternate,primaryText,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/delete.png", 'Delete',
+                    iconTextBtnWide("assets/delete.png", 'Delete', alternate,primaryText,
                         onPressed: () {}),
                   ],
                 ),

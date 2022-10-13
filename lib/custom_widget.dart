@@ -14,31 +14,33 @@ Widget sideBarIconBtn(String imagePath, Color color, {Function()? onPressed}) {
 
 Widget bottomIconTextBtn(String imagePath, String text, Color background,
     {Function()? onPressed}) {
-  return MaterialButton(
-    elevation: 0,
-    onPressed: onPressed,
-    color: background,
-    minWidth: 190,
-    height: 40,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(6.0),
-    ),
-    child: Row(
-      children: [
-        Image.asset(
-          imagePath,
-          color: white,
-          height: 15,
-          width: 15,
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          text,
-          style: TextStyle(color: white),
-        )
-      ],
+  return Expanded(
+    child: MaterialButton(
+      elevation: 0,
+      onPressed: onPressed,
+      color: background,
+      height: 40,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            imagePath,
+            color: white,
+            height: 15,
+            width: 15,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            text,
+            style: TextStyle(color: white),
+          )
+        ],
+      ),
     ),
   );
 }
@@ -89,12 +91,12 @@ Widget iconTextBtn(
   );
 }
 
-Widget iconTextBtnWide(String imagePath, String text, {Function()? onPressed}) {
+Widget iconTextBtnWide(String imagePath, String text, Color backColor, Color contentColor, {Function()? onPressed}) {
   return Container(
     width: 80,
     height: 50,
     decoration: BoxDecoration(
-        color: primaryColor, borderRadius: BorderRadius.circular(10)),
+        color: backColor, borderRadius: BorderRadius.circular(10)),
     child: MaterialButton(
       elevation: 0,
       onPressed: () {},
@@ -103,10 +105,10 @@ Widget iconTextBtnWide(String imagePath, String text, {Function()? onPressed}) {
         children: [
           Image.asset(
             imagePath,
-            color: white,
+            color: contentColor,
           ),
           Text(text,
-              style: TextStyle(color: Colors.white, fontSize: 10)),
+              style: TextStyle(color: contentColor, fontSize: 10)),
         ],
       ),
     ),

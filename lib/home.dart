@@ -47,9 +47,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              color: secondaryBackground,
-            ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -112,10 +109,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   flex: 75,
                   child: Container(
                     height: double.infinity,
-                    decoration: BoxDecoration(
-                      color: primaryBackground,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -124,7 +117,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               EdgeInsetsDirectional.fromSTEB(15, 20, 20, 20),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               IconButton(
                                   onPressed: () {
@@ -139,7 +132,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Welcome, Amirul',
+                                      'Amirul',
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -152,13 +145,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ),
                               ),
                               Expanded(
-                                flex: 3,
+                                flex: 6,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                        width: 300,
+                                        width: 240,
                                         height: 40,
                                         child: TextFormField(
                                             onChanged: (text) async {},
@@ -192,7 +185,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                         BorderSide.none),
                                                 contentPadding:
                                                     EdgeInsets.zero))),
-                                    SizedBox(width: 15),
+                                    SizedBox(width: 12),
                                     topBarIconBtn(
                                         'assets/notification.png',
                                         secondaryBackground,
@@ -201,7 +194,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         15,
                                         40,
                                         onPressed: () {}),
-                                    SizedBox(width: 15),
+                                    SizedBox(width: 12),
                                     topBarIconBtn(
                                         'assets/moon.png',
                                         secondaryBackground,
@@ -215,7 +208,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       applyThem(darkMode);
                                       setState(() {});
                                     }),
-                                    SizedBox(width: 15),
+                                    SizedBox(width: 12),
                                     topBarIconBtn(
                                         'assets/filter-alt.png',
                                         secondaryBackground,
@@ -228,7 +221,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           : gridImage = true;
                                       setState(() {});
                                     }),
-                                    SizedBox(width: 15),
+                                    SizedBox(width: 12),
                                     topBarIconBtn(
                                         'assets/logout.png',
                                         primaryColor,
@@ -296,7 +289,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               padding: EdgeInsets.zero,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
+                                    crossAxisCount: size.width > size.height? 3:2,
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
                                 childAspectRatio: 2.5,
@@ -396,16 +389,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   ),
                                                   gridImage
                                                       ? SizedBox()
-                                                      : Text(
-                                                          '£15',
-                                                          style: TextStyle(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  primaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
+                                                      : Padding(
+                                                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                        child: Text(
+                                                            '£15',
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                color:
+                                                                    primaryColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                      ),
                                                 ],
                                               ),
                                               SizedBox(
@@ -527,12 +523,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     bottomIconTextBtn('assets/delivery.png',
                                         'Order Detail', primaryColor,
                                         onPressed: () {}),
+                                    SizedBox(width: 8),
                                     bottomIconTextBtn('assets/circle-error.png',
                                         'Cancel Order', primaryColor,
                                         onPressed: () {}),
+                                    SizedBox(width: 8),
                                     bottomIconTextBtn('assets/edit-alt.png',
                                         'Edit Order', primaryColor,
                                         onPressed: () {}),
+                                    SizedBox(width: 8),
                                     bottomIconTextBtn('assets/delivery.png',
                                         'Kitchen Status', primaryColor,
                                         onPressed: () {}),
