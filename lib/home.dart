@@ -130,7 +130,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   onPressed: () {
                                     scaffoldKey.currentState!.openDrawer();
                                   },
-                                  icon: Image.asset('assets/menu.png', color: primaryText)),
+                                  icon: Image.asset('assets/menu.png',
+                                      color: primaryText)),
                               Expanded(
                                 flex: 1,
                                 child: Column(
@@ -141,10 +142,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       'Welcome, Amirul',
                                       style: TextStyle(
                                           fontSize: 20,
-                                          fontWeight: FontWeight.bold, color: primaryText),
+                                          fontWeight: FontWeight.bold,
+                                          color: primaryText),
                                     ),
                                     Text('12:14 AM | 22 july',
-                                        style: TextStyle(fontSize: 10, color: primaryText)),
+                                        style: TextStyle(
+                                            fontSize: 10, color: primaryText)),
                                   ],
                                 ),
                               ),
@@ -178,8 +181,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   onPressed: () {},
                                                 ),
                                                 hintText: 'Search item',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 12, color: primaryText),
+                                                hintStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    color: primaryText),
                                                 border: OutlineInputBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -204,14 +208,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         primaryColor,
                                         8,
                                         15,
-                                        40,
-                                        onPressed: () {
-                                          darkMode
-                                              ? darkMode = false
-                                              : darkMode = true;
-                                          applyThem(darkMode);
-                                          setState(() {});
-                                        }),
+                                        40, onPressed: () {
+                                      darkMode
+                                          ? darkMode = false
+                                          : darkMode = true;
+                                      applyThem(darkMode);
+                                      setState(() {});
+                                    }),
                                     SizedBox(width: 15),
                                     topBarIconBtn(
                                         'assets/filter-alt.png',
@@ -220,10 +223,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         8,
                                         15,
                                         40, onPressed: () {
-                                        gridImage
-                                            ? gridImage = false
-                                            : gridImage = true;
-                                        setState(() {});
+                                      gridImage
+                                          ? gridImage = false
+                                          : gridImage = true;
+                                      setState(() {});
                                     }),
                                     SizedBox(width: 15),
                                     topBarIconBtn(
@@ -256,10 +259,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 20, 0),
+                                      0, 0, 15, 0),
                                   child: MaterialButton(
                                       elevation: 0,
-                                      color: selectedCategory==index?primaryColor:secondaryBackground,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 25),
+                                      color: selectedCategory == index
+                                          ? primaryColor
+                                          : secondaryBackground,
                                       onPressed: () {
                                         setState(() {
                                           selectedCategory = index;
@@ -271,7 +278,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                       child: Text(
                                         "Ice Cream",
-                                        style: TextStyle(color: selectedCategory==index?white :primaryText),
+                                        style: TextStyle(
+                                            color: selectedCategory == index
+                                                ? white
+                                                : primaryText),
                                       )),
                                 );
                               },
@@ -289,7 +299,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 crossAxisCount: 3,
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
-                                childAspectRatio: 2.3,
+                                childAspectRatio: 2.5,
                               ),
                               scrollDirection: Axis.vertical,
                               itemCount: 20,
@@ -299,13 +309,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   // height: 50,
                                   decoration: BoxDecoration(
                                     color: secondaryBackground,
-                                    borderRadius: BorderRadius.circular(22),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        6, 6, 6, 6),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 6),
                                     child: Row(
-                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
                                         gridImage
                                             ? Expanded(
@@ -315,7 +325,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                       BorderRadius.circular(10),
                                                   child: Image.asset(
                                                     'assets/imm.png',
-                                                    height: double.infinity,
                                                   ),
                                                 ),
                                               )
@@ -326,24 +335,24 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         Expanded(
                                           flex: 5,
                                           child: Column(
-                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
                                               Row(
-                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisSize: MainAxisSize.min,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
                                                     width: 3,
                                                     height: 50,
                                                     decoration: BoxDecoration(
-                                                      color: alternate,
+                                                      color: primaryColor,
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -368,7 +377,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                             'Chicken Roasts and fried',
                                                             style: TextStyle(
                                                                 fontSize: 18,
-                                                                color: primaryText,
+                                                                color:
+                                                                    primaryText,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),
@@ -376,59 +386,70 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                           Text(
                                                               'Chicken made and fried rice',
                                                               style: TextStyle(
-                                                                  color: primaryText,
+                                                                  color:
+                                                                      primaryText,
                                                                   fontSize:
                                                                       10)),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
+                                                  gridImage
+                                                      ? SizedBox()
+                                                      : Text(
+                                                          '£15',
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              color:
+                                                                  primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
                                                 ],
                                               ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 5, 0, 0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    topBarIconBtn(
-                                                        'assets/egg.png',
-                                                        Colors.white60,
-                                                        secondaryBackground,
-                                                        5,
-                                                        6,
-                                                        20,
-                                                        onPressed: () {}),
-                                                    SizedBox(width: 5),
-                                                    topBarIconBtn(
-                                                        'assets/Sellfish.png',
-                                                        secondaryColor,
-                                                        secondaryBackground,
-                                                        5,
-                                                        6,
-                                                        20,
-                                                        onPressed: () {}),
-                                                    SizedBox(width: 5),
-                                                    topBarIconBtn(
-                                                        'assets/wine.png',
-                                                        Colors.brown,
-                                                        secondaryBackground,
-                                                        5,
-                                                        6,
-                                                        20,
-                                                        onPressed: () {}),
-                                                    SizedBox(width: 5),
-                                                    topBarIconBtn(
-                                                        'assets/bean.png',
-                                                        Colors.green,
-                                                        secondaryBackground,
-                                                        5,
-                                                        6,
-                                                        20,
-                                                        onPressed: () {}),
-                                                  ],
-                                                ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  topBarIconBtn(
+                                                      'assets/egg.png',
+                                                      Color(0xffAC9C8B),
+                                                      secondaryBackground,
+                                                      5,
+                                                      6,
+                                                      20,
+                                                      onPressed: () {}),
+                                                  SizedBox(width: 5),
+                                                  topBarIconBtn(
+                                                      'assets/Sellfish.png',
+                                                      Color(0xff00C4D9),
+                                                      secondaryBackground,
+                                                      5,
+                                                      6,
+                                                      20,
+                                                      onPressed: () {}),
+                                                  SizedBox(width: 5),
+                                                  topBarIconBtn(
+                                                      'assets/wine.png',
+                                                      Color(0xff9F2865),
+                                                      secondaryBackground,
+                                                      5,
+                                                      6,
+                                                      20,
+                                                      onPressed: () {}),
+                                                  SizedBox(width: 5),
+                                                  topBarIconBtn(
+                                                      'assets/bean.png',
+                                                      Color(0xff52C148),
+                                                      secondaryBackground,
+                                                      5,
+                                                      6,
+                                                      20,
+                                                      onPressed: () {}),
+                                                ],
                                               ),
                                             ],
                                           ),
@@ -461,7 +482,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       (BuildContext context, int index) {
                                     return Card(
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      color: Color(0xFFF5F5F5),
+                                      color: alternate,
                                       elevation: 1,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
@@ -470,7 +491,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         width: 250,
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                          color: secondaryBackground,
+                                          color: alternate,
                                         ),
                                         child: ListTile(
                                           leading: Image.asset(
@@ -484,7 +505,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   fontWeight: FontWeight.bold)),
                                           subtitle: Text(
                                               'Table : N/A\nStatus : Out of Delivery',
-                                              style: TextStyle(fontSize: 14, color:primaryText,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: primaryText,
                                               )),
                                           tileColor: secondaryBackground,
                                           dense: false,

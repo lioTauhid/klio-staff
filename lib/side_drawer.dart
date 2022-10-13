@@ -14,68 +14,58 @@ Widget sideDrawer() {
           child: Text(
             'klio',
             style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 22,
-              color: primaryText
-            ),
+                fontFamily: 'Poppins', fontSize: 22, color: primaryText),
           ),
         ),
         ListTile(
-          title: Text("Home", style: TextStyle( color: primaryText),),
+          title: Text(
+            "Home",
+            style: TextStyle(color: primaryText),
+          ),
           onTap: () {},
           leading: sideBarIconBtn('assets/home.png', primaryText),
         ),
         ListTile(
-          title: Text("Dashboard", style: TextStyle( color: primaryText)),
+          title: Text("Dashboard", style: TextStyle(color: primaryText)),
           onTap: () {},
-          leading:
-              sideBarIconBtn('assets/grid.png', primaryText),
+          leading: sideBarIconBtn('assets/grid.png', primaryText),
         ),
         ListTile(
-          title: Text("Notification", style: TextStyle( color: primaryText)),
+            title: Text("Notification", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/notification.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/notification.png', primaryText)),
         ListTile(
-          title: Text("Event", style: TextStyle( color: primaryText)),
+            title: Text("Event", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/calendar.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/calendar.png', primaryText)),
         ListTile(
-          title: Text("Cart", style: TextStyle( color: primaryText)),
+            title: Text("Cart", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/shopping-cart.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/shopping-cart.png', primaryText)),
         ListTile(
-          title: Text("Dine In", style: TextStyle( color: primaryText)),
+            title: Text("Dine In", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/table.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/table.png', primaryText)),
         ListTile(
-          title: Text("Financial", style: TextStyle( color: primaryText)),
+            title: Text("Financial", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/Dollar.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/Dollar.png', primaryText)),
         ListTile(
-          title: Text("Bookmark", style: TextStyle( color: primaryText)),
+            title: Text("Bookmark", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/book.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/book.png', primaryText)),
         ListTile(
-          title: Text("Listing", style: TextStyle( color: primaryText)),
+            title: Text("Listing", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/list.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/list.png', primaryText)),
         ListTile(
-          title: Text("User", style: TextStyle( color: primaryText)),
+            title: Text("User", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/users.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/users.png', primaryText)),
         ListTile(
-          title: Text("Setting", style: TextStyle( color: primaryText)),
+            title: Text("Setting", style: TextStyle(color: primaryText)),
             onTap: () {},
-            leading: sideBarIconBtn('assets/settings.png', primaryText)
-        ),
+            leading: sideBarIconBtn('assets/settings.png', primaryText)),
       ],
     ),
   );

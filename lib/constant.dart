@@ -8,22 +8,24 @@ Color primaryText = Color(0xff262626);
 Color textSecondary = Color(0xff7B7B7B);
 Color primaryBackground = Color(0xffF1F4F8);
 Color secondaryBackground = Color(0xffFFFFFF);
+Color alternate = Color(0xff434343);
 
 const Color black = Colors.black;
 const Color white = Colors.white;
-const Color alternate = Color(0xffFF5963);
 
 void applyThem(bool dark) {
   if (dark) {
-    primaryText = Color(0xff7B7B7B);
-    textSecondary = Color(0xff262626);
+    primaryText = Color(0xffFFFFFF);
+    textSecondary = Color(0xffD9D9D9);
     primaryBackground = Color(0xff121212);
     secondaryBackground = Color(0xff262626);
+    alternate = Color(0xff434343);
   }else{
     primaryText = Color(0xff262626);
     textSecondary = Color(0xff7B7B7B);
     primaryBackground = Color(0xffF1F4F8);
     secondaryBackground = Color(0xffFFFFFF);
+    alternate = Color(0xffF5F5F5);
   }
 }
 

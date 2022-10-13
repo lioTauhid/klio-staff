@@ -1,19 +1,15 @@
-
-
-
 import 'package:flutter/material.dart';
 
 import 'constant.dart';
 import 'custom_widget.dart';
 
-Widget leftSideView(){
+Widget leftSideView() {
   return Drawer(
     width: 400,
     child: Container(
       height: double.infinity,
       color: secondaryBackground,
-      padding:
-      EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
+      padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -24,47 +20,31 @@ Widget leftSideView(){
             children: [
               Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                crossAxisAlignment:
-                CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  iconTextBtn(
-                      'assets/dine-in.png',
-                      'DINE IN',
-                      primaryColor,
+                  iconTextBtn('assets/dine-in.png', 'DINE IN', primaryColor,
                       secondaryBackground,
                       onPressed: () {}),
-                  iconTextBtn(
-                      'assets/takeway.png',
-                      'DINE IN',
-                      primaryBackground,
-                      primaryText,
+                  iconTextBtn('assets/takeway.png', 'DINE IN',
+                      primaryBackground, primaryText,
                       onPressed: () {}),
-                  iconTextBtn(
-                      'assets/delivery.png',
-                      'DINE IN',
-                      primaryBackground,
-                      primaryText,
+                  iconTextBtn('assets/delivery.png', 'DINE IN',
+                      primaryBackground, primaryText,
                       onPressed: () {}),
-                  iconTextBtn(
-                      'assets/table.png',
-                      'DINE IN',
-                      primaryBackground,
+                  iconTextBtn('assets/table.png', 'DINE IN', primaryBackground,
                       primaryText,
                       onPressed: () {}),
                 ],
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    0, 15, 0, 15),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
                   width: double.infinity,
                   height: 35,
                   decoration: BoxDecoration(
                     color: primaryBackground,
-                    borderRadius:
-                    BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -76,8 +56,7 @@ Widget leftSideView(){
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: secondaryBackground,
-                              borderRadius:
-                              BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: DropdownButton<String>(
                               items: <String>[
@@ -85,19 +64,20 @@ Widget leftSideView(){
                                 'Item 2',
                                 'Item 3',
                               ].map((String value) {
-                                return new DropdownMenuItem<
-                                    String>(
+                                return new DropdownMenuItem<String>(
                                   value: value,
-                                  child: new Text(value, style: TextStyle(color: primaryText),),
+                                  child: new Text(
+                                    value,
+                                    style: TextStyle(color: primaryText),
+                                  ),
                                 );
                               }).toList(),
                               hint: Text(
                                 "Drop Down Item",
                                 style:
-                                TextStyle(fontSize: 12,color: primaryText),
+                                    TextStyle(fontSize: 12, color: primaryText),
                               ),
-                              borderRadius:
-                              BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10),
                               underline: SizedBox(),
                               onChanged: (value) {},
                             )),
@@ -112,9 +92,7 @@ Widget leftSideView(){
                           color: secondaryBackground,
                           onPressed: () {},
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(
-                                6.0),
+                            borderRadius: BorderRadius.circular(6.0),
                           ),
                           child: Image.asset(
                             "assets/edit-alt.png",
@@ -132,9 +110,7 @@ Widget leftSideView(){
                           color: secondaryBackground,
                           onPressed: () {},
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(
-                                6.0),
+                            borderRadius: BorderRadius.circular(6.0),
                           ),
                           child: Image.asset(
                             "assets/add.png",
@@ -151,92 +127,93 @@ Widget leftSideView(){
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    flex: 12,
+                    flex: 10,
                     child: Text('Description',
                         style: TextStyle(fontSize: 10, color: primaryText)),
                   ),
                   Expanded(
-                    flex: 6,
+                    flex: 4,
                     child: Text('Qty',
-                        style: TextStyle(fontSize: 10,color: primaryText)),
+                        style: TextStyle(fontSize: 10, color: primaryText)),
                   ),
                   Expanded(
                     flex: 4,
                     child: Text('Rate',
-                        style: TextStyle(fontSize: 10,color: primaryText)),
+                        style: TextStyle(fontSize: 10, color: primaryText)),
                   ),
                   Expanded(
                     flex: 4,
                     child: Text('Total',
-                        style: TextStyle(fontSize: 10,color: primaryText)),
+                        style: TextStyle(fontSize: 10, color: primaryText)),
                   ),
                   Expanded(
                     flex: 1,
                     child: Text('',
-                        style: TextStyle(fontSize: 10,color: primaryText)),
+                        style: TextStyle(fontSize: 10, color: primaryText)),
                   ),
                 ],
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    0, 10, 0, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: 4,
-                  itemBuilder:
-                      (BuildContext context, int index) {
+                  itemBuilder: (BuildContext context, int index) {
                     return Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                          flex: 12,
+                          flex: 8,
                           child: Text('Chicken Masala',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: primaryText,
-                                  fontWeight:
-                                  FontWeight.bold)),
+                                  fontWeight: FontWeight.bold)),
                         ),
                         Expanded(
                           flex: 6,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('- 12 +',
+                              topBarIconBtn('assets/remove.png',
+                                  secondaryBackground, primaryText, 0, 2, 12,
+                                  onPressed: () {}),
+                              SizedBox(width: 5),
+                              Text('12',
                                   style: TextStyle(
-                                      color: primaryText,
-                                      fontSize: 12)),
+                                      color: primaryText, fontSize: 12)),
+                              SizedBox(width: 5),
+                              topBarIconBtn('assets/add.png',
+                                  secondaryBackground, primaryText, 0, 2, 12,
+                                  onPressed: () {}),
                             ],
                           ),
                         ),
                         Expanded(
                           flex: 4,
                           child: Text('1.5',
-                              style: TextStyle(
-                                  color: primaryText,
-                                  fontSize: 12)),
+                              style:
+                                  TextStyle(color: primaryText, fontSize: 12)),
                         ),
                         Expanded(
                           flex: 4,
                           child: Text('12',
-                              style: TextStyle(
-                                  color: primaryText,
-                                  fontSize: 12)),
+                              style:
+                                  TextStyle(color: primaryText, fontSize: 12)),
                         ),
                         Expanded(
                           flex: 1,
                           child: IconButton(
                             padding: EdgeInsets.zero,
                             icon: Icon(
-                              Icons
-                                  .delete_forever_outlined,
-                              color: alternate,
+                              Icons.delete_forever_outlined,
+                              color: Colors.redAccent,
                               size: 18,
                             ),
                             onPressed: () {
-                              print(
-                                  'IconButton pressed ...');
+                              print('IconButton pressed ...');
                             },
                           ),
                         ),
@@ -251,78 +228,65 @@ Widget leftSideView(){
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    0, 10, 0, 10),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
                 child: Container(
                   width: double.infinity,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: primaryBackground,
-                    borderRadius:
-                    BorderRadius.circular(20),
+                    color: alternate,
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
-                    padding:
-                    EdgeInsetsDirectional.fromSTEB(
-                        20, 10, 20, 10),
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               flex: 4,
                               child: Text(
                                 'Sub Total',
-                                style: TextStyle(
-                                    color: primaryText,
-                                    fontSize: 12),
+                                style:
+                                    TextStyle(color: primaryText, fontSize: 12),
                               ),
                             ),
                             Expanded(
                               flex: 4,
                               child: Text(
                                 'Service',
-                                style: TextStyle(
-                                    color: primaryText,
-                                    fontSize: 12),
+                                style:
+                                    TextStyle(color: primaryText, fontSize: 12),
                               ),
                             ),
                             Expanded(
                               flex: 4,
                               child: Text(
                                 'Discount',
-                                style: TextStyle(
-                                    color: primaryText,
-                                    fontSize: 12),
+                                style:
+                                    TextStyle(color: primaryText, fontSize: 12),
                               ),
                             ),
                             Expanded(
                               flex: 4,
                               child: Text(
-                                'Due',
+                                'Total',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: 14,
-                                    fontWeight:
-                                    FontWeight.bold),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
                         ),
                         Column(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Expanded(
                               flex: 4,
@@ -331,8 +295,7 @@ Widget leftSideView(){
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: 12,
-                                    fontWeight:
-                                    FontWeight.bold),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             Expanded(
@@ -342,8 +305,7 @@ Widget leftSideView(){
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: 12,
-                                    fontWeight:
-                                    FontWeight.bold),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             Expanded(
@@ -353,8 +315,7 @@ Widget leftSideView(){
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: 12,
-                                    fontWeight:
-                                    FontWeight.bold),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             Expanded(
@@ -364,8 +325,7 @@ Widget leftSideView(){
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: primaryColor,
-                                    fontWeight:
-                                    FontWeight.bold),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -376,45 +336,33 @@ Widget leftSideView(){
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    0, 10, 0, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide(
-                        "assets/check.png", 'ORDER',
+                    iconTextBtnWide("assets/check.png", 'ORDER',
                         onPressed: () {}),
-                    iconTextBtnWide(
-                        "assets/credit-card.png", 'Pay',
+                    iconTextBtnWide("assets/credit-card.png", 'Pay',
                         onPressed: () {}),
-                    iconTextBtnWide(
-                        "assets/print.png", 'Print',
+                    iconTextBtnWide("assets/print.png", 'Print',
                         onPressed: () {}),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    0, 10, 0, 12),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 12),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide(
-                        "assets/percentage.png", 'Discout',
+                    iconTextBtnWide("assets/percentage.png", 'Discout',
                         onPressed: () {}),
-                    iconTextBtnWide(
-                        "assets/add.png", 'Add Misc',
+                    iconTextBtnWide("assets/add.png", 'Add Misc',
                         onPressed: () {}),
-                    iconTextBtnWide(
-                        "assets/delete.png", 'Delete',
+                    iconTextBtnWide("assets/delete.png", 'Delete',
                         onPressed: () {}),
                   ],
                 ),
