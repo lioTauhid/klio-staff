@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+
+const Color primaryColor = Color(0xffED7402);
+const Color secondaryColor = Color(0xff30ACFF);
+const Color accentColor = Color(0xffFDAD2B);
+
+Color primaryText = Color(0xff262626);
+Color textSecondary = Color(0xff7B7B7B);
+Color primaryBackground = Color(0xffF1F4F8);
+Color secondaryBackground = Color(0xffFFFFFF);
+
+const Color black = Colors.black;
+const Color white = Colors.white;
+const Color alternate = Color(0xffFF5963);
+
+void applyThem(bool dark) {
+  if (dark) {
+    primaryText = Color(0xff7B7B7B);
+    textSecondary = Color(0xff262626);
+    primaryBackground = Color(0xff121212);
+    secondaryBackground = Color(0xff262626);
+  }else{
+    primaryText = Color(0xff262626);
+    textSecondary = Color(0xff7B7B7B);
+    primaryBackground = Color(0xffF1F4F8);
+    secondaryBackground = Color(0xffFFFFFF);
+  }
+}
+
+void showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(
+      message,
+    ),
+    duration: Duration(seconds: 5),
+    backgroundColor: accentColor,
+    action: SnackBarAction(
+      label: 'Ok',
+      textColor: secondaryColor,
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  ));
+}
+
+showWarningDialog(BuildContext context, String message, {Function? onAccept}) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.warning,
+              color: Colors.orange,
+            ),
+            Text(' Warning!'),
+          ],
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              onAccept;
+            },
+            child: Text("Yes"),
+          ),
+          TextButton(
+            child: Text("No"),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    },
+  );
+}
