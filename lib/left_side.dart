@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'constant.dart';
+import 'custom_dialog.dart';
 import 'custom_widget.dart';
 
-Widget leftSideView() {
+Widget leftSideView(BuildContext context) {
   return Drawer(
     width: 400,
     elevation: 0,
@@ -24,18 +25,23 @@ Widget leftSideView() {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  iconTextBtn('assets/dine-in.png', 'DINE IN', primaryColor,
-                      white,
-                      onPressed: () {}),
-                  iconTextBtn('assets/takeway.png', 'DINE IN',
+                  iconTextBtn(
+                      'assets/dine-in.png', 'DINE IN', primaryColor, white,
+                      onPressed: () {
+                    showCustomDialog(context, "Table Reservation",
+                        tableBody(context), 50, 50);
+                  }),
+                  iconTextBtn('assets/takeway.png', 'TAKEAWAY',
                       primaryBackground, primaryText,
                       onPressed: () {}),
-                  iconTextBtn('assets/delivery.png', 'DINE IN',
+                  iconTextBtn('assets/delivery.png', 'DELIVERY',
                       primaryBackground, primaryText,
                       onPressed: () {}),
-                  iconTextBtn('assets/table.png', 'DINE IN', primaryBackground,
-                      primaryText,
-                      onPressed: () {}),
+                  iconTextBtn('assets/table.png', 'TABLE', primaryBackground,
+                      primaryText, onPressed: () {
+                    showCustomDialog(context, "Table Reservation",
+                        tableBody(context), 50, 50);
+                  }),
                 ],
               ),
               Padding(
@@ -91,7 +97,10 @@ Widget leftSideView() {
                           elevation: 0,
                           padding: EdgeInsets.zero,
                           color: secondaryBackground,
-                          onPressed: () {},
+                          onPressed: () {
+                            showCustomDialog(context, "Update Customer",
+                                addCustomer(context), 60, 400);
+                          },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.0),
                           ),
@@ -109,7 +118,10 @@ Widget leftSideView() {
                           elevation: 0,
                           padding: EdgeInsets.zero,
                           color: secondaryBackground,
-                          onPressed: () {},
+                          onPressed: () {
+                            showCustomDialog(context, "Add Customer",
+                                addCustomer(context), 60, 400);
+                          },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.0),
                           ),
@@ -186,8 +198,8 @@ Widget leftSideView() {
                                   style: TextStyle(
                                       color: primaryText, fontSize: 12)),
                               SizedBox(width: 6),
-                              topBarIconBtn('assets/add.png',
-                                  primaryBackground, primaryText, 0, 2, 14,
+                              topBarIconBtn('assets/add.png', primaryBackground,
+                                  primaryText, 0, 2, 14,
                                   onPressed: () {}),
                             ],
                           ),
@@ -343,11 +355,14 @@ Widget leftSideView() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide("assets/check.png", 'ORDER', primaryColor, white,
+                    iconTextBtnWide(
+                        "assets/check.png", 'ORDER', primaryColor, white,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/credit-card.png", 'Pay', alternate, primaryText,
+                    iconTextBtnWide(
+                        "assets/credit-card.png", 'Pay', alternate, primaryText,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/print.png", 'Print', alternate,primaryText,
+                    iconTextBtnWide(
+                        "assets/print.png", 'Print', alternate, primaryText,
                         onPressed: () {}),
                   ],
                 ),
@@ -359,11 +374,14 @@ Widget leftSideView() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide("assets/percentage.png", 'Discout', alternate,primaryText,
+                    iconTextBtnWide("assets/percentage.png", 'Discout',
+                        alternate, primaryText,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/add.png", 'Add Misc', alternate,primaryText,
+                    iconTextBtnWide(
+                        "assets/add.png", 'Add Misc', alternate, primaryText,
                         onPressed: () {}),
-                    iconTextBtnWide("assets/delete.png", 'Delete', alternate,primaryText,
+                    iconTextBtnWide(
+                        "assets/delete.png", 'Delete', alternate, primaryText,
                         onPressed: () {}),
                   ],
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:klio_staff/side_drawer.dart';
 
 import 'constant.dart';
+import 'custom_dialog.dart';
 import 'custom_widget.dart';
 import 'left_side.dart';
 
@@ -40,7 +41,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       key: scaffoldKey,
       backgroundColor: primaryBackground,
       drawer: sideDrawer(),
-      endDrawer: leftSideView(),
+      endDrawer: leftSideView(context),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -52,59 +53,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Expanded(
-                //   flex: 4,
-                //   child: Container(
-                //     height: double.infinity,
-                //     decoration: BoxDecoration(
-                //       color: secondaryBackground,
-                //     ),
-                //     child: GestureDetector(
-                //       onTap: () {
-                //         scaffoldKey.currentState!.openDrawer();
-                //       },
-                //       child: Column(
-                //         mainAxisSize: MainAxisSize.max,
-                //         children: [
-                //           Padding(
-                //             padding:
-                //                 EdgeInsetsDirectional.fromSTEB(0, 30, 0, 30),
-                //             child: Text(
-                //               'klio',
-                //               style: TextStyle(
-                //                 fontFamily: 'Poppins',
-                //                 fontSize: 22,
-                //               ),
-                //             ),
-                //           ),
-                //           sideBarIconBtn('assets/home.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/grid.png', primaryColor),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn(
-                //               'assets/notification.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/calendar.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn(
-                //               'assets/shopping-cart.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/table.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/Dollar.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/book.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/list.png', textSecondary),
-                //           SizedBox(height: 5),
-                //           sideBarIconBtn('assets/users.png', textSecondary),
-                //           SizedBox(height: 20),
-                //           sideBarIconBtn('assets/settings.png', textSecondary)
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Expanded(
                   flex: 75,
                   child: Container(
@@ -222,13 +170,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       setState(() {});
                                     }),
                                     SizedBox(width: 12),
-                                    topBarIconBtn(
-                                        'assets/logout.png',
-                                        primaryColor,
-                                        secondaryBackground,
-                                        8,
-                                        15,
-                                        40,
+                                    topBarIconBtn('assets/logout.png',
+                                        primaryColor, white, 8, 15, 40,
                                         onPressed: () {}),
                                   ],
                                 ),
@@ -289,7 +232,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               padding: EdgeInsets.zero,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: size.width > size.height? 3:2,
+                                crossAxisCount:
+                                    size.width > size.height ? 3 : 2,
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
                                 childAspectRatio: 2.5,
@@ -304,153 +248,159 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     color: secondaryBackground,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 6),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        gridImage
-                                            ? Expanded(
-                                                flex: 3,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: Image.asset(
-                                                    'assets/imm.png',
-                                                  ),
-                                                ),
-                                              )
-                                            : SizedBox(),
-                                        SizedBox(
-                                          width: 6,
-                                        ),
-                                        Expanded(
-                                          flex: 5,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 3,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                      color: primaryColor,
+                                  child: GestureDetector(
+                                    onTap: (){showCustomDialog(context, "Addons", foodMenuBody(context), 200, 400);},
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 6),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          gridImage
+                                              ? Expanded(
+                                                  flex: 3,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(10),
+                                                    child: Image.asset(
+                                                      'assets/imm.png',
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Expanded(
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      scrollDirection:
-                                                          Axis.vertical,
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            'Chicken Roasts and fried',
-                                                            style: TextStyle(
-                                                                fontSize: 18,
-                                                                color:
-                                                                    primaryText,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          Text(
-                                                              'Chicken made and fried rice',
+                                                )
+                                              : SizedBox(),
+                                          SizedBox(
+                                            width: 6,
+                                          ),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: 3,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                        color: primaryColor,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Expanded(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Chicken Roasts and fried',
                                                               style: TextStyle(
+                                                                  fontSize: 18,
                                                                   color:
                                                                       primaryText,
-                                                                  fontSize:
-                                                                      10)),
-                                                        ],
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Text(
+                                                                'Chicken made and fried rice',
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        primaryText,
+                                                                    fontSize:
+                                                                        10)),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  gridImage
-                                                      ? SizedBox()
-                                                      : Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                                        child: Text(
-                                                            '£15',
-                                                            style: TextStyle(
-                                                                fontSize: 14,
-                                                                color:
-                                                                    primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                    gridImage
+                                                        ? SizedBox()
+                                                        : Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    0, 0, 10, 0),
+                                                            child: Text(
+                                                              '£15',
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  color:
+                                                                      primaryColor,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
                                                           ),
-                                                      ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  topBarIconBtn(
-                                                      'assets/egg.png',
-                                                      Color(0xffAC9C8B),
-                                                      secondaryBackground,
-                                                      5,
-                                                      6,
-                                                      20,
-                                                      onPressed: () {}),
-                                                  SizedBox(width: 5),
-                                                  topBarIconBtn(
-                                                      'assets/Sellfish.png',
-                                                      Color(0xff00C4D9),
-                                                      secondaryBackground,
-                                                      5,
-                                                      6,
-                                                      20,
-                                                      onPressed: () {}),
-                                                  SizedBox(width: 5),
-                                                  topBarIconBtn(
-                                                      'assets/wine.png',
-                                                      Color(0xff9F2865),
-                                                      secondaryBackground,
-                                                      5,
-                                                      6,
-                                                      20,
-                                                      onPressed: () {}),
-                                                  SizedBox(width: 5),
-                                                  topBarIconBtn(
-                                                      'assets/bean.png',
-                                                      Color(0xff52C148),
-                                                      secondaryBackground,
-                                                      5,
-                                                      6,
-                                                      20,
-                                                      onPressed: () {}),
-                                                ],
-                                              ),
-                                            ],
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    topBarIconBtn(
+                                                        'assets/egg.png',
+                                                        Color(0xffAC9C8B),
+                                                        secondaryBackground,
+                                                        5,
+                                                        6,
+                                                        20,
+                                                        onPressed: () {}),
+                                                    SizedBox(width: 5),
+                                                    topBarIconBtn(
+                                                        'assets/Sellfish.png',
+                                                        Color(0xff00C4D9),
+                                                        secondaryBackground,
+                                                        5,
+                                                        6,
+                                                        20,
+                                                        onPressed: () {}),
+                                                    SizedBox(width: 5),
+                                                    topBarIconBtn(
+                                                        'assets/wine.png',
+                                                        Color(0xff9F2865),
+                                                        secondaryBackground,
+                                                        5,
+                                                        6,
+                                                        20,
+                                                        onPressed: () {}),
+                                                    SizedBox(width: 5),
+                                                    topBarIconBtn(
+                                                        'assets/bean.png',
+                                                        Color(0xff52C148),
+                                                        secondaryBackground,
+                                                        5,
+                                                        6,
+                                                        20,
+                                                        onPressed: () {}),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -522,7 +472,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   children: [
                                     bottomIconTextBtn('assets/delivery.png',
                                         'Order Detail', primaryColor,
-                                        onPressed: () {}),
+                                        onPressed: () {
+                                      showCustomDialog(context, "Table Reservation",
+                                          orderDetail(context), 50, 400);}),
                                     SizedBox(width: 8),
                                     bottomIconTextBtn('assets/circle-error.png',
                                         'Cancel Order', primaryColor,
@@ -548,9 +500,29 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 size.width > size.height
                     ? Expanded(
                         flex: 30,
-                        child: leftSideView(),
+                        child: leftSideView(context),
                       )
-                    : Row(),
+                    : Container(
+                        height: 50,
+                        width: 15,
+                        padding: EdgeInsets.zero,
+                        margin: EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(100),
+                              bottomLeft: Radius.circular(100)),
+                          color: primaryColor,
+                        ),
+                        child: MaterialButton(
+                            onPressed: () {
+                              scaffoldKey.currentState!.openEndDrawer();
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              color: white,
+                            ),
+                            padding: EdgeInsets.all(12)),
+                      ),
               ],
             ),
           ),
