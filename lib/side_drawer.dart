@@ -14,7 +14,7 @@ Widget sideDrawer() {
           child: Text(
             'klio',
             style: TextStyle(
-                fontFamily: 'Poppins', fontSize: 22, color: primaryText),
+                fontFamily: 'Poppins', fontSize: fontBig, color: primaryText),
           ),
         ),
         ListTile(

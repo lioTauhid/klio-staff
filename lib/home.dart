@@ -71,7 +71,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   onPressed: () {
                                     scaffoldKey.currentState!.openDrawer();
                                   },
-                                  icon: Image.asset('assets/menu.png',
+                                  icon: Image.asset('assets/menu.png', height: 20,width: 20,
                                       color: primaryText)),
                               Expanded(
                                 flex: 1,
@@ -82,13 +82,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     Text(
                                       'Amirul',
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: fontMediumExtra,
                                           fontWeight: FontWeight.bold,
                                           color: primaryText),
                                     ),
                                     Text('12:14 AM | 22 july',
                                         style: TextStyle(
-                                            fontSize: 10, color: primaryText)),
+                                            fontSize: fontVerySmall, color: primaryText)),
                                   ],
                                 ),
                               ),
@@ -107,7 +107,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             keyboardType: TextInputType.text,
                                             style: TextStyle(
                                                 fontFamily: 'Poppins',
-                                                fontSize: 15),
+                                                fontSize: fontSmall),
                                             decoration: InputDecoration(
                                                 filled: true,
                                                 fillColor: secondaryBackground,
@@ -123,7 +123,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                 ),
                                                 hintText: 'Search item',
                                                 hintStyle: TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: fontMedium,
                                                     color: primaryText),
                                                 border: OutlineInputBorder(
                                                     borderRadius:
@@ -315,7 +315,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                             Text(
                                                               'Chicken Roasts and fried',
                                                               style: TextStyle(
-                                                                  fontSize: 18,
+                                                                  fontSize: fontMediumExtra,
                                                                   color:
                                                                       primaryText,
                                                                   fontWeight:
@@ -328,7 +328,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     color:
                                                                         primaryText,
                                                                     fontSize:
-                                                                        10)),
+                                                                    fontVerySmall)),
                                                           ],
                                                         ),
                                                       ),
@@ -343,7 +343,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                             child: Text(
                                                               '£15',
                                                               style: TextStyle(
-                                                                  fontSize: 14,
+                                                                  fontSize: fontMediumExtra,
                                                                   color:
                                                                       primaryColor,
                                                                   fontWeight:
@@ -446,13 +446,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           ),
                                           title: Text('TAKEWAY',
                                               style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: fontMedium,
                                                   color: primaryText,
                                                   fontWeight: FontWeight.bold)),
                                           subtitle: Text(
                                               'Table : N/A\nStatus : Out of Delivery',
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: fontSmall,
                                                 color: primaryText,
                                               )),
                                           tileColor: secondaryBackground,

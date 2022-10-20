@@ -29,7 +29,7 @@ Widget leftSideView(BuildContext context) {
                       'assets/dine-in.png', 'DINE IN', primaryColor, white,
                       onPressed: () {
                     showCustomDialog(context, "Table Reservation",
-                        tableBody(context), 50, 50);
+                        tableBody(context), 50, 60);
                   }),
                   iconTextBtn('assets/takeway.png', 'TAKEAWAY',
                       primaryBackground, primaryText,
@@ -48,7 +48,7 @@ Widget leftSideView(BuildContext context) {
                 padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
                   width: double.infinity,
-                  height: 35,
+                  height: 40,
                   decoration: BoxDecoration(
                     color: primaryBackground,
                     borderRadius: BorderRadius.circular(10),
@@ -59,7 +59,7 @@ Widget leftSideView(BuildContext context) {
                       SizedBox(width: 10),
                       Expanded(
                         child: Container(
-                            height: 26,
+                            height: 32,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: secondaryBackground,
@@ -82,7 +82,7 @@ Widget leftSideView(BuildContext context) {
                               hint: Text(
                                 "Drop Down Item",
                                 style:
-                                    TextStyle(fontSize: 12, color: primaryText),
+                                    TextStyle(fontSize: fontVerySmall, color: primaryText),
                               ),
                               borderRadius: BorderRadius.circular(10),
                               underline: SizedBox(),
@@ -142,27 +142,27 @@ Widget leftSideView(BuildContext context) {
                   Expanded(
                     flex: 10,
                     child: Text('Description',
-                        style: TextStyle(fontSize: 10, color: primaryText)),
+                        style: TextStyle(fontSize: fontVerySmall, color: textSecondary)),
                   ),
                   Expanded(
                     flex: 4,
                     child: Text('Qty',
-                        style: TextStyle(fontSize: 10, color: primaryText)),
+                        style: TextStyle(fontSize: fontVerySmall, color: textSecondary)),
                   ),
                   Expanded(
                     flex: 4,
                     child: Text('Rate',
-                        style: TextStyle(fontSize: 10, color: primaryText)),
+                        style: TextStyle(fontSize: fontVerySmall, color: textSecondary)),
                   ),
                   Expanded(
                     flex: 4,
                     child: Text('Total',
-                        style: TextStyle(fontSize: 10, color: primaryText)),
+                        style: TextStyle(fontSize: fontVerySmall, color: textSecondary)),
                   ),
                   Expanded(
                     flex: 1,
                     child: Text('',
-                        style: TextStyle(fontSize: 10, color: primaryText)),
+                        style: TextStyle(fontSize: fontVerySmall, color: textSecondary)),
                   ),
                 ],
               ),
@@ -181,7 +181,7 @@ Widget leftSideView(BuildContext context) {
                           flex: 8,
                           child: Text('Chicken Masala',
                               style: TextStyle(
-                                  fontSize: 13,
+                                  fontSize: fontSmall,
                                   color: primaryText,
                                   fontWeight: FontWeight.bold)),
                         ),
@@ -191,15 +191,15 @@ Widget leftSideView(BuildContext context) {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               topBarIconBtn('assets/remove.png',
-                                  primaryBackground, primaryText, 0, 2, 14,
+                                  primaryBackground, primaryText, 0, 2, 16,
                                   onPressed: () {}),
                               SizedBox(width: 6),
                               Text('12',
                                   style: TextStyle(
-                                      color: primaryText, fontSize: 12)),
+                                      color: primaryText, fontSize: fontVerySmall)),
                               SizedBox(width: 6),
                               topBarIconBtn('assets/add.png', primaryBackground,
-                                  primaryText, 0, 2, 14,
+                                  primaryText, 0, 2, 16,
                                   onPressed: () {}),
                             ],
                           ),
@@ -208,13 +208,13 @@ Widget leftSideView(BuildContext context) {
                           flex: 4,
                           child: Text('1.5',
                               style:
-                                  TextStyle(color: primaryText, fontSize: 12)),
+                                  TextStyle(color: primaryText, fontSize: fontVerySmall)),
                         ),
                         Expanded(
                           flex: 4,
                           child: Text('12',
                               style:
-                                  TextStyle(color: primaryText, fontSize: 12)),
+                                  TextStyle(color: primaryText, fontSize: fontVerySmall)),
                         ),
                         Expanded(
                           flex: 1,
@@ -265,7 +265,7 @@ Widget leftSideView(BuildContext context) {
                               child: Text(
                                 'Sub Total',
                                 style:
-                                    TextStyle(color: primaryText, fontSize: 12),
+                                    TextStyle(color: primaryText, fontSize: fontVerySmall),
                               ),
                             ),
                             Expanded(
@@ -273,7 +273,7 @@ Widget leftSideView(BuildContext context) {
                               child: Text(
                                 'Service',
                                 style:
-                                    TextStyle(color: primaryText, fontSize: 12),
+                                    TextStyle(color: primaryText, fontSize: fontVerySmall),
                               ),
                             ),
                             Expanded(
@@ -281,7 +281,7 @@ Widget leftSideView(BuildContext context) {
                               child: Text(
                                 'Discount',
                                 style:
-                                    TextStyle(color: primaryText, fontSize: 12),
+                                    TextStyle(color: primaryText, fontSize: fontVerySmall),
                               ),
                             ),
                             Expanded(
@@ -290,7 +290,7 @@ Widget leftSideView(BuildContext context) {
                                 'Total',
                                 style: TextStyle(
                                     color: primaryText,
-                                    fontSize: 14,
+                                    fontSize: fontMedium,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -307,7 +307,7 @@ Widget leftSideView(BuildContext context) {
                                 '£20',
                                 style: TextStyle(
                                     color: primaryText,
-                                    fontSize: 12,
+                                    fontSize: fontVerySmall,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -317,7 +317,7 @@ Widget leftSideView(BuildContext context) {
                                 '£5',
                                 style: TextStyle(
                                     color: primaryText,
-                                    fontSize: 12,
+                                    fontSize: fontVerySmall,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -327,7 +327,7 @@ Widget leftSideView(BuildContext context) {
                                 '£-10',
                                 style: TextStyle(
                                     color: primaryText,
-                                    fontSize: 12,
+                                    fontSize: fontVerySmall,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -336,7 +336,7 @@ Widget leftSideView(BuildContext context) {
                               child: Text(
                                 '£15',
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: fontMedium,
                                     color: primaryColor,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -379,7 +379,9 @@ Widget leftSideView(BuildContext context) {
                         onPressed: () {}),
                     iconTextBtnWide(
                         "assets/add.png", 'Add Misc', alternate, primaryText,
-                        onPressed: () {}),
+                        onPressed: () {
+                          showCustomDialog(context, "Update Customer",
+                              addMisc(context), 30, 400);}),
                     iconTextBtnWide(
                         "assets/delete.png", 'Delete', alternate, primaryText,
                         onPressed: () {}),

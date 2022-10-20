@@ -32,8 +32,9 @@ dependencies:
   flutter:
     sdk: flutter
   intl: 0.17.0
-  shared_preferences: 2.0.15
-  url_launcher: 6.1.5
+  shared_preferences: ^2.0.15
+  http: ^0.13.5
+
 
 dev_dependencies:
   flutter_test:

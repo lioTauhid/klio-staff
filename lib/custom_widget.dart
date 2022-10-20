@@ -70,7 +70,7 @@ Widget iconTextBtn(
     String imagePath, String text, Color background, Color iconColor,
     {Function()? onPressed}) {
   return SizedBox(
-    width: 50,
+    width: 65,
     child: Column(
       children: [
         MaterialButton(
@@ -85,7 +85,7 @@ Widget iconTextBtn(
           child: Image.asset(imagePath, color: iconColor),
         ),
         SizedBox(height: 5),
-        Text(text, style: TextStyle(color: primaryText, fontSize: 10)),
+        Text(text, style: TextStyle(color: primaryText, fontSize: fontVerySmall)),
       ],
     ),
   );
@@ -95,13 +95,13 @@ Widget iconTextBtnWide(
     String imagePath, String text, Color backColor, Color contentColor,
     {Function()? onPressed}) {
   return Container(
-    width: 80,
-    height: 50,
+    width: 95,
+    height: 60,
     decoration: BoxDecoration(
         color: backColor, borderRadius: BorderRadius.circular(10)),
     child: MaterialButton(
       elevation: 0,
-      onPressed: () {},
+      onPressed: onPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -109,7 +109,7 @@ Widget iconTextBtnWide(
             imagePath,
             color: contentColor,
           ),
-          Text(text, style: TextStyle(color: contentColor, fontSize: 10)),
+          Text(text, style: TextStyle(color: contentColor, fontSize: fontVerySmall)),
         ],
       ),
     ),
@@ -130,7 +130,7 @@ Widget normalButton(String text, Color background, Color textColor,
       ),
       child: Text(
         text,
-        style: TextStyle(color: textColor, fontSize: 14),
+        style: TextStyle(color: textColor, fontSize: fontSmall),
       ));
 }
 
@@ -139,7 +139,7 @@ Widget normalTextField() {
       onChanged: (text) async {},
       onEditingComplete: () async {},
       keyboardType: TextInputType.text,
-      style: TextStyle(fontFamily: 'Poppins', fontSize: 15, color: primaryText),
+      style: TextStyle(fontFamily: 'Poppins', fontSize: fontSmall, color: primaryText),
       decoration: InputDecoration(
         fillColor: secondaryBackground,
         border: OutlineInputBorder(
@@ -154,11 +154,96 @@ Widget textMixer(String boldText, String normalText, MainAxisAlignment alignment
     children: [
       Text(
         boldText,
-        style: TextStyle(fontSize: 10, color: primaryText, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: fontVerySmall, color: primaryText, fontWeight: FontWeight.bold),
       ),
       Text(
         normalText,
-        style: TextStyle(fontSize: 10, color: textSecondary),
+        style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+      ),
+    ],
+  );
+}
+
+Widget textRow1(String text1, String text2){
+  return       Row(
+    children: [
+      Expanded(
+        flex: 1,
+        child: Text(
+          text1,
+          style: TextStyle(
+              fontSize: fontVerySmall,
+              color: textSecondary,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      SizedBox(width: 8),
+      Expanded(
+        flex: 1,
+        child: Text(
+          text2,
+          style: TextStyle(
+              fontSize: fontVerySmall,
+              color: textSecondary,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget textFieldRow1(String text1, String text2){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+          flex: 1,
+          child: SizedBox(
+            height: 35,
+            child: TextFormField(
+                onChanged: (text) async {},
+                onEditingComplete: () async {},
+                keyboardType: TextInputType.text,
+                style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: fontVerySmall,
+                    color: textSecondary),
+                decoration: InputDecoration(
+                    fillColor: secondaryBackground,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    hintStyle: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: fontVerySmall,
+                        color: textSecondary),
+                    hintText: text1)),
+          )
+      ),
+      SizedBox(width: 8),
+      Expanded(
+          flex: 1,
+          child: SizedBox(
+            height: 35,
+            child: TextFormField(
+                onChanged: (text) async {},
+                onEditingComplete: () async {},
+                keyboardType: TextInputType.text,
+                style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: fontVerySmall,
+                    color: textSecondary),
+                decoration: InputDecoration(
+                    fillColor: secondaryBackground,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    hintStyle: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: fontVerySmall,
+                        color: textSecondary),
+                    hintText: text2)),
+          )
       ),
     ],
   );
