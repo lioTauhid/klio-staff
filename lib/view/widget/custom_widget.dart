@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'constant.dart';
+import '../../constant/color.dart';
+import '../../constant/value.dart';
 
 Widget sideBarIconBtn(String imagePath, Color color, {Function()? onPressed}) {
   return IconButton(
@@ -134,8 +135,9 @@ Widget normalButton(String text, Color background, Color textColor,
       ));
 }
 
-Widget normalTextField() {
+Widget normalTextField(TextEditingController controller) {
   return TextFormField(
+      controller: controller,
       onChanged: (text) async {},
       onEditingComplete: () async {},
       keyboardType: TextInputType.text,

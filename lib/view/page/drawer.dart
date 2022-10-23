@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'constant.dart';
-import 'custom_widget.dart';
+import '../../constant/color.dart';
+import '../../constant/value.dart';
+import '../widget/custom_widget.dart';
 
 Widget sideDrawer() {
   return Drawer(

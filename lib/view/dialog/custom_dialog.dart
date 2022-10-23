@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'constant.dart';
-import 'custom_widget.dart';
+import '../../constant/color.dart';
+import '../../constant/value.dart';
+import '../../controller/home_controller.dart';
+import '../widget/custom_widget.dart';
+
 
 Future<void> showCustomDialog(BuildContext context, String title, Widget widget,
     int heightReduce, int widthReduce) async {
@@ -57,7 +61,8 @@ Widget dialogHeader(String title, BuildContext context) {
   );
 }
 
-Widget addCustomer(BuildContext context) {
+Widget addCustomer(BuildContext context, {Function()? onPressed}) {
+  HomeController homeController = Get.find();
   return Padding(
     padding: const EdgeInsets.all(30.0),
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -66,35 +71,35 @@ Widget addCustomer(BuildContext context) {
         style: TextStyle(fontSize: fontMediumExtra, color: primaryText),
       ),
       SizedBox(height: 10),
-      normalTextField(),
+      normalTextField(homeController.controllerName.value),
       SizedBox(height: 10),
       Text(
         'Email',
         style: TextStyle(fontSize: fontMediumExtra, color: primaryText),
       ),
       SizedBox(height: 10),
-      normalTextField(),
+      normalTextField(homeController.controllerEmail.value),
       SizedBox(height: 10),
       Text(
         'Phone*',
         style: TextStyle(fontSize: fontMediumExtra, color: primaryText),
       ),
       SizedBox(height: 10),
-      normalTextField(),
+      normalTextField(homeController.controllerPhone.value),
       SizedBox(height: 10),
       Text(
         'Delivery Address',
         style: TextStyle(fontSize: fontMediumExtra, color: primaryText),
       ),
       SizedBox(height: 10),
-      normalTextField(),
+      normalTextField(homeController.controllerAddress.value),
       SizedBox(height: 10),
       SizedBox(height: 10),
       Expanded(child: SizedBox(height: Size.infinite.height)),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          normalButton('Submit', primaryColor, white, onPressed: () {}),
+          normalButton('Submit', primaryColor, white, onPressed: onPressed),
         ],
       ),
     ]),

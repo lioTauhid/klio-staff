@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 const Color primaryColor = Color(0xffED7402);
 const Color secondaryColor = Color(0xff30ACFF);
 const Color accentColor = Color(0xffFDAD2B);
@@ -12,17 +13,6 @@ Color alternate = Color(0xff434343);
 
 const Color black = Colors.black;
 const Color white = Colors.white;
-
-const fontVeryBig = 26.0;
-const fontBig = 22.0;
-
-const fontMediumExtra = 18.0;
-const fontMedium = 16.0;
-
-const fontSmall = 14.0;
-const fontVerySmall = 12.0;
-
-const dialogPadding = 20.0;
 
 
 void applyThem(bool dark) {
