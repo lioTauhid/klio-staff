@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 const Color primaryColor = Color(0xffED7402);
-const Color secondaryColor = Color(0xff30ACFF);
 const Color accentColor = Color(0xffFDAD2B);
 
+Color secondaryColor = Color(0xffFEF4E1);
 Color primaryText = Color(0xff262626);
 Color textSecondary = Color(0xff7B7B7B);
 Color primaryBackground = Color(0xffF1F4F8);
@@ -14,15 +13,16 @@ Color alternate = Color(0xff434343);
 const Color black = Colors.black;
 const Color white = Colors.white;
 
-
 void applyThem(bool dark) {
   if (dark) {
+    // secondaryColor = Color(0xffFEF4E1);
     primaryText = Color(0xffFFFFFF);
     textSecondary = Color(0xffD9D9D9);
     primaryBackground = Color(0xff121212);
     secondaryBackground = Color(0xff262626);
     alternate = Color(0xff434343);
-  }else{
+  } else {
+    // secondaryColor = Color(0xffFEF4E1);
     primaryText = Color(0xff262626);
     textSecondary = Color(0xff7B7B7B);
     primaryBackground = Color(0xffF1F4F8);
@@ -31,51 +31,51 @@ void applyThem(bool dark) {
   }
 }
 
-void showSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(
-      message,
-    ),
-    duration: Duration(seconds: 5),
-    backgroundColor: accentColor,
-    action: SnackBarAction(
-      label: 'Ok',
-      textColor: secondaryColor,
-      onPressed: () {
-        // Some code to undo the change.
-      },
-    ),
-  ));
-}
+// void showSnackBar(BuildContext context, String message) {
+//   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//     content: Text(
+//       message,
+//     ),
+//     duration: Duration(seconds: 5),
+//     backgroundColor: accentColor,
+//     action: SnackBarAction(
+//       label: 'Ok',
+//       textColor: secondaryColor,
+//       onPressed: () {
+//         // Some code to undo the change.
+//       },
+//     ),
+//   ));
+// }
 
-showWarningDialog(BuildContext context, String message, {Function? onAccept}) {
-  showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Row(
-          children: [
-            Icon(
-              Icons.warning,
-              color: Colors.orange,
-            ),
-            Text(' Warning!'),
-          ],
-        ),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              onAccept;
-            },
-            child: Text("Yes"),
-          ),
-          TextButton(
-            child: Text("No"),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      );
-    },
-  );
-}
+// showWarningDialog(BuildContext context, String message, {Function? onAccept}) {
+//   showDialog<void>(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         title: Row(
+//           children: [
+//             Icon(
+//               Icons.warning,
+//               color: Colors.orange,
+//             ),
+//             Text(' Warning!'),
+//           ],
+//         ),
+//         content: Text(message),
+//         actions: [
+//           TextButton(
+//             onPressed: () {
+//               onAccept;
+//             },
+//             child: Text("Yes"),
+//           ),
+//           TextButton(
+//             child: Text("No"),
+//             onPressed: () => Navigator.of(context).pop(),
+//           ),
+//         ],
+//       );
+//     },
+//   );
+// }

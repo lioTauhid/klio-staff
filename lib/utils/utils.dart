@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../constant/color.dart';
+import '../constant/value.dart';
 
 class Utils {
+  static final apiHeader = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer $token'
+  };
+
+  static String getTables(List list){
+    String tables = '';
+    for (var element in list) {
+      tables='${element.number},$tables';
+    }
+    return tables;
+  }
+
   static void showLoading([String? message]) {
     Get.dialog(
       Dialog(

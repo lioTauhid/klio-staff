@@ -24,7 +24,6 @@ class ApiClient {
   //POST
   Future<dynamic> post(String endPoint, dynamic payloadObj, {dynamic header}) async {
     var uri = Uri.parse(baseUrl + endPoint);
-    // var payload = json.decode(payloadObj);
     try {
       var response =
           await http.post(uri, body: payloadObj, headers: header).timeout(Duration(seconds: 20));
@@ -42,6 +41,7 @@ class ApiClient {
   dynamic _processResponse(http.Response response) {
     var jsonResponse = utf8.decode(response.bodyBytes);
     // print(response.statusCode);
+    // print(response.body);
     switch (response.statusCode) {
       case 200:
         return jsonResponse;
