@@ -11,5 +11,5 @@ const fontVerySmall = 14.0;
 
 const dialogPadding = 20.0;
 
-const baseUrl = "https://app.klio.digital/";
+const baseUrl = "https://app.klio.digital/api/";
 late String token;

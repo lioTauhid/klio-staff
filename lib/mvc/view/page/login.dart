@@ -156,7 +156,7 @@ class _LoginState extends State<Login> {
                        if(formKey.currentState!.validate()){
                          Utils.showLoading();
                          formKey.currentState!.save();
-                         var response = await ApiClient().post('api/login', {
+                         var response = await ApiClient().post('login', {
                            "email": controllerEmail.text,
                            "password": controllerPass.text
                          }).catchError((e){

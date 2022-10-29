@@ -31,12 +31,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     applyThem(darkMode);
-    try {
-      homeController.loadHomeData();
-    } catch (e) {
-      print(e.toString());
-      homeController.loadHomeData();
-    }
+    homeController.loadHomeData();
   }
 
   @override
@@ -88,7 +83,7 @@ class _HomeState extends State<Home> {
                                   children: [
                                     Obx(() {
                                       return Text(
-                                        homeController.user.value.data.name ??
+                                        homeController.user.value.data!.name ??
                                             '',
                                         style: TextStyle(
                                             fontSize: fontMediumExtra,
@@ -152,7 +147,8 @@ class _HomeState extends State<Home> {
                                         secondaryBackground,
                                         8,
                                         15,
-                                        40, onPressed: () {}),
+                                        40,
+                                        onPressed: () {}),
                                     SizedBox(width: 12),
                                     topBarIconBtn(
                                         Image.asset('assets/moon.png',
@@ -241,7 +237,8 @@ class _HomeState extends State<Home> {
                                         style: TextStyle(
                                             color: selectedCategory == index
                                                 ? white
-                                                : primaryText, fontSize: fontMedium),
+                                                : primaryText,
+                                            fontSize: fontMedium),
                                       )),
                                 );
                               },
@@ -270,9 +267,15 @@ class _HomeState extends State<Home> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
+                                      Utils.showLoading();
+                                      await homeController.getAddons(homeController
+                                          .menu.value.data![index].id!
+                                          .toInt());
+                                      Utils.hideLoading();
+                                      print(homeController.addons.value.data!.name);
                                       showCustomDialog(context, "Addons",
-                                          foodMenuBody(context), 200, 400);
+                                          foodMenuBody(context,homeController.addons.value.data!), 200, 400);
                                     },
                                     child: Padding(
                                       padding:
@@ -357,7 +360,14 @@ class _HomeState extends State<Home> {
                                                                           .bold),
                                                             ),
                                                             Text(
-                                                                'Chicken made and fried rice',
+                                                                homeController
+                                                                        .menu
+                                                                        .value
+                                                                        .data![
+                                                                            index]
+                                                                        .calorie
+                                                                        .toString() +
+                                                                    ' kcal | v',
                                                                 style: TextStyle(
                                                                     color:
                                                                         primaryText,

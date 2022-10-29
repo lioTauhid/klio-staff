@@ -41,7 +41,7 @@ class ApiClient {
   dynamic _processResponse(http.Response response) {
     var jsonResponse = utf8.decode(response.bodyBytes);
     // print(response.statusCode);
-    // print(response.body);
+    // print(response.request!.url);
     switch (response.statusCode) {
       case 200:
         return jsonResponse;

@@ -78,7 +78,7 @@ class Utils {
       message,
       icon: Icon(Icons.error),
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: secondaryColor,
+      backgroundColor: Colors.lightBlue,
       borderRadius: 20,
       margin: EdgeInsets.all(15),
       colorText: white,

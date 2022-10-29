@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/addons.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../controller/home_controller.dart';
@@ -106,7 +107,7 @@ Widget addCustomer(BuildContext context, {Function()? onPressed}) {
   );
 }
 
-Widget foodMenuBody(BuildContext context) {
+Widget foodMenuBody(BuildContext context, Data data) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -148,7 +149,7 @@ Widget foodMenuBody(BuildContext context) {
         children: [
           Expanded(
             flex: 3,
-            child: Text("Chicken Roast",
+            child: Text(data.name.toString(),
                 style: TextStyle(
                     fontSize: fontMedium,
                     color: primaryText,
@@ -194,7 +195,7 @@ Widget foodMenuBody(BuildContext context) {
                     primaryColor, 0, 2, 14,
                     onPressed: () {}),
                 SizedBox(width: 6),
-                Text('12',
+                Text('0',
                     style: TextStyle(color: primaryText, fontSize: fontMedium)),
                 SizedBox(width: 6),
                 topBarIconBtn(Image.asset('assets/add.png', color: white),
@@ -205,7 +206,7 @@ Widget foodMenuBody(BuildContext context) {
           ),
           Expanded(
             flex: 1,
-            child: Text("£1,522",
+            child: Text("£${data.price}",
                 style: TextStyle(
                     fontSize: fontMedium,
                     color: primaryText,
@@ -250,7 +251,7 @@ Widget foodMenuBody(BuildContext context) {
       ),
       Expanded(
         child: ListView.builder(
-            itemCount: 5,
+            itemCount: data.addons!.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -263,7 +264,7 @@ Widget foodMenuBody(BuildContext context) {
                       )),
                   Expanded(
                     flex: 3,
-                    child: Text("Chesse",
+                    child: Text(data.addons!.data![index].name.toString(),
                         style: TextStyle(
                             fontSize: fontSmall,
                             color: primaryText,
@@ -281,7 +282,7 @@ Widget foodMenuBody(BuildContext context) {
                             14,
                             onPressed: () {}),
                         SizedBox(width: 6),
-                        Text('12',
+                        Text('0',
                             style: TextStyle(
                                 color: primaryText,
                                 fontSize: fontSmall,
@@ -299,7 +300,7 @@ Widget foodMenuBody(BuildContext context) {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text("£15",
+                    child: Text("£${data.addons!.data![index].price.toString()}",
                         style: TextStyle(
                             fontSize: fontSmall,
                             color: primaryText,
@@ -578,22 +579,14 @@ Widget tableBody(BuildContext context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          SizedBox(
-            height: 35,
-            child: normalButton(
-                'Process without table', Colors.transparent, textSecondary,
-                onPressed: () {}),
-          ),
-          SizedBox(
-            height: 35,
-            child: normalButton('Please read', primaryBackground, primaryText,
-                onPressed: () {}),
-          ),
+          normalButton(
+              'Process without table', Colors.transparent, textSecondary,
+              onPressed: () {}),
+          normalButton('Please read', primaryBackground, primaryText,
+              onPressed: () {}),
           SizedBox(width: 100),
-          SizedBox(
-            height: 35,
-              child: normalButton('Submit', primaryColor, white,
-                  onPressed: () {})),
+          normalButton('Submit', primaryColor, white,
+              onPressed: () {}),
         ],
       ),
     ]),
@@ -1003,9 +996,9 @@ Widget orderDetail(BuildContext context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          normalButton('Create Invoice', primaryBackground, textSecondary,
+          normalButton('Create Invoice', primaryColor, white,
               onPressed: () {}),
-          normalButton('Close', primaryBackground, textSecondary,
+          normalButton('Close', textSecondary, white,
               onPressed: () {}),
         ],
       )
@@ -1014,9 +1007,11 @@ Widget orderDetail(BuildContext context) {
 }
 
 Widget addMisc(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+  return Container(
+    height: Size.infinite.height,
+    width: Size.infinite.width,
+    padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+    child: ListView(children: [
       textRow1('Name', 'Variant Name'),
       textFieldRow1('Enter menu name', 'Normal'),
       SizedBox(height: 10),
@@ -1027,13 +1022,72 @@ Widget addMisc(BuildContext context) {
       textFieldRow1('food vat', '000.00'),
       SizedBox(height: 10),
       textRow1('Image (130x130)', 'Select Menu Meal Period'),
-      textFieldRow1('No file chosen', ''),
+      // textFieldRow1('No file chosen', ''),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: 35,
+                child: MaterialButton(
+                    elevation: 0,
+                    color: primaryBackground,
+                    onPressed: (){},
+                    child: Text(
+                      'No file chosen',
+                      style: TextStyle(color: textSecondary, fontSize: fontSmall),
+                    ))
+                // child: normalButton('No file chosen', primaryColor, primaryColor),
+              )
+          ),
+          SizedBox(width: 8),
+          Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: 35,
+                child: TextFormField(
+                    onChanged: (text) async {},
+                    onEditingComplete: () async {},
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(
+                        fontSize: fontVerySmall,
+                        color: textSecondary),
+                    decoration: InputDecoration(
+                        fillColor: secondaryBackground,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        hintStyle: TextStyle(
+                            fontSize: fontVerySmall,
+                            color: textSecondary))),
+              )
+          ),
+        ],
+      ),
       SizedBox(height: 10),
       textRow1('Select Menu Category', 'Select Menu Addons'),
       textFieldRow1('', ''),
       SizedBox(height: 10),
       textRow1('Select Menu Allergies', ''),
-      textFieldRow1('', ''),
+      SizedBox(
+        height: 35,
+        child: TextFormField(
+            onChanged: (text) async {},
+            onEditingComplete: () async {},
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+                fontSize: fontVerySmall,
+                color: textSecondary),
+            decoration: InputDecoration(
+                fillColor: secondaryBackground,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                hintStyle: TextStyle(
+                    fontSize: fontVerySmall,
+                    color: textSecondary))),
+      ),
       textRow1('Menu Description', ''),
       TextFormField(
           onChanged: (text) async {},
@@ -1053,7 +1107,12 @@ Widget addMisc(BuildContext context) {
                 color: textSecondary),
           )),
       SizedBox(height: 10),
-      normalButton('Submit', primaryColor, white, onPressed: () {}),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          normalButton('Submit', primaryColor, white, onPressed: () {}),
+        ],
+      ),
     ]),
   );
 }
