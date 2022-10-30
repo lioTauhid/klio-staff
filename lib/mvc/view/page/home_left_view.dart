@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../utils/utils.dart';
 import '../../controller/home_controller.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
@@ -185,112 +186,122 @@ Widget leftSideView(BuildContext context) {
                   ),
                 ],
               ),
-              ListView.builder(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: 3,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
+              Obx(() {
+                  return ListView.builder(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                    shrinkWrap: true,
+                    itemCount: homeController.cardList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            flex: 8,
-                            child: Text('Chicken Masala',
-                                style: TextStyle(
-                                    fontSize: fontSmall,
-                                    color: primaryText,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 6,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                topBarIconBtn(
-                                    Image.asset('assets/remove.png',
-                                        color: primaryText),
-                                    primaryBackground,
-                                    0,
-                                    2,
-                                    16,
-                                    onPressed: () {}),
-                                SizedBox(width: 6),
-                                Text('12',
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                flex: 8,
+                                child: Text(homeController.cardList[index].name,
+                                    style: TextStyle(
+                                        fontSize: fontSmall,
+                                        color: primaryText,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                flex: 6,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    topBarIconBtn(
+                                        Image.asset('assets/remove.png',
+                                            color: primaryText),
+                                        primaryBackground,
+                                        0,
+                                        2,
+                                        16,
+                                        onPressed: () {
+                                          homeController.cardList[index].qty = Utils.incrementDecrement(
+                                              false, homeController.cardList[index].qty!.toInt());
+                                          homeController.cardList.refresh();
+                                        }),
+                                    SizedBox(width: 6),
+                                    Text(homeController.cardList[index].qty.toString(),
+                                        style: TextStyle(
+                                            color: primaryText,
+                                            fontSize: fontVerySmall)),
+                                    SizedBox(width: 6),
+                                    topBarIconBtn(
+                                        Image.asset('assets/add.png',
+                                            color: primaryText),
+                                        primaryBackground,
+                                        0,
+                                        2,
+                                        16,
+                                        onPressed: () {
+                                          homeController.cardList[index].qty = Utils.incrementDecrement(
+                                              true, homeController.cardList[index].qty!.toInt());
+                                          homeController.cardList.refresh();
+                                        }),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Text(homeController.cardList[index].variant!.toString(),
                                     style: TextStyle(
                                         color: primaryText,
                                         fontSize: fontVerySmall)),
-                                SizedBox(width: 6),
-                                topBarIconBtn(
-                                    Image.asset('assets/add.png',
-                                        color: primaryText),
-                                    primaryBackground,
-                                    0,
-                                    2,
-                                    16,
-                                    onPressed: () {}),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Text('1.5',
-                                style: TextStyle(
-                                    color: primaryText,
-                                    fontSize: fontVerySmall)),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Text('12',
-                                style: TextStyle(
-                                    color: primaryText,
-                                    fontSize: fontVerySmall)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              icon: Icon(
-                                Icons.delete_forever_outlined,
-                                color: Colors.redAccent,
-                                size: 18,
                               ),
-                              onPressed: () {
-                                print('IconButton pressed ...');
-                              },
-                            ),
+                              Expanded(
+                                flex: 4,
+                                child: Text("£${(homeController.cardList[index].qty! * double.parse(homeController.cardList[index].variant!))}",
+                                    style: TextStyle(
+                                        color: primaryText,
+                                        fontSize: fontVerySmall)),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                    Icons.delete_forever_outlined,
+                                    color: Colors.redAccent,
+                                    size: 18,
+                                  ),
+                                  onPressed: () {
+                                    print('IconButton pressed ...');
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      color: alternate,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text("Ice cream 2x1.5",
+                                      style: TextStyle(
+                                          fontSize: fontVerySmall,
+                                          color: primaryText))),
+                              SizedBox(width: 5),
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      color: alternate,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text("Cheese 2x1.5",
+                                      style: TextStyle(
+                                          fontSize: fontVerySmall,
+                                          color: primaryText))),
+                            ],
                           ),
                         ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: alternate,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text("Ice cream 2x1.5",
-                                  style: TextStyle(
-                                      fontSize: fontVerySmall,
-                                      color: primaryText))),
-                          SizedBox(width: 5),
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: alternate,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text("Cheese 2x1.5",
-                                  style: TextStyle(
-                                      fontSize: fontVerySmall,
-                                      color: primaryText))),
-                        ],
-                      ),
-                    ],
+                      );
+                    },
                   );
-                },
+                }
               ),
             ],
           ),

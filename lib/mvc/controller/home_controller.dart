@@ -26,20 +26,28 @@ class HomeController extends GetxController with ErrorController {
   Rx<TextEditingController> controllerPhone = TextEditingController().obs;
   Rx<TextEditingController> controllerAddress = TextEditingController().obs;
 
+  // temp variables
+  Rx<AddonsData> menuData = AddonsData().obs;
+  RxList cardList = [].obs;
+  RxDouble variantPrice = 0.0.obs;
+
+
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
     Utils.showLoading();
     getCurrentUser();
-    getCustomer();
-    getOrder();
+    await getCustomer();
+    await getOrder();
     await getMenuByCategory();
+    await getCategory();
+    Utils.hideLoading();
+  }
 
+  Future<void> getCategory() async {
     var response = await ApiClient()
         .get('pos/category', header: Utils.apiHeader)
         .catchError(handleApiError);
-    if (response == null) return;
     category.value = categoryFromJson(response);
-    Utils.hideLoading();
   }
 
   void getCurrentUser() async {

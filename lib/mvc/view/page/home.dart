@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   TextEditingController? textController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool gridImage = true;
-  int selectedCategory = 0;
+  int selectedCategory = -1;
   int selectedOrder = -1;
   bool darkMode = false;
 

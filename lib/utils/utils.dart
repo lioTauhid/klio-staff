@@ -10,10 +10,10 @@ class Utils {
     'Authorization': 'Bearer $token'
   };
 
-  static String getTables(List list){
+  static String getTables(List list) {
     String tables = '';
     for (var element in list) {
-      tables='${element.number},$tables';
+      tables = '${element.number},$tables';
     }
     return tables;
   }
@@ -40,7 +40,8 @@ class Utils {
     if (Get.isDialogOpen!) Get.back();
   }
 
-  static void showWarningDialog(BuildContext context, String message, {Function? onAccept}) {
+  static void showWarningDialog(BuildContext context, String message,
+      {Function? onAccept}) {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -101,16 +102,46 @@ class Utils {
     // ));
   }
 
-  static bool isPasswordValid(String password){
-    if(password.length>=6){
+  static bool isPasswordValid(String password) {
+    if (password.length >= 6) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  static bool isEmailValid(String email){
-    RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  static bool isEmailValid(String email) {
+    RegExp regex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     return regex.hasMatch(email);
+  }
+
+  static int incrementDecrement(bool increment, int val) {
+    if (increment) {
+      val++;
+    } else {
+      if (val > 0) {
+        val--;
+      }
+    }
+    return val;
+  }
+
+  static String findPriceByListNearValue(List list, String nearItem) {
+    for (var element in list) {
+      if (element.name == nearItem) {
+        return element.price.toString();
+      }
+    }
+    return '';
+  }
+
+  static String findIdByListNearValue(List list, String nearItem) {
+    for (var element in list) {
+      if (element.name == nearItem) {
+        return element.id.toString();
+      }
+    }
+    return '';
   }
 }

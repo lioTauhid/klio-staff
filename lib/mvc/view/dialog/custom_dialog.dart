@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:klio_staff/mvc/model/addons.dart';
+import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../controller/home_controller.dart';
 import '../widget/custom_widget.dart';
+
+HomeController homeController = Get.find();
 
 Future<void> showCustomDialog(BuildContext context, String title, Widget widget,
     int heightReduce, int widthReduce) async {
@@ -48,7 +51,7 @@ Widget dialogHeader(String title, BuildContext context) {
         ),
         IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           icon: Icon(
             Icons.close,
@@ -61,12 +64,11 @@ Widget dialogHeader(String title, BuildContext context) {
 }
 
 Widget addCustomer(BuildContext context, {Function()? onPressed}) {
-  HomeController homeController = Get.find();
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
     padding: EdgeInsets.all(30),
-    child: ListView( children: [
+    child: ListView(children: [
       Text(
         'Name*',
         style: TextStyle(fontSize: fontMediumExtra, color: primaryText),
@@ -107,7 +109,16 @@ Widget addCustomer(BuildContext context, {Function()? onPressed}) {
   );
 }
 
-Widget foodMenuBody(BuildContext context, Data data) {
+Widget foodMenuBody(BuildContext context, AddonsData data) {
+  homeController.menuData.value = data;
+  homeController.menuData.value.qty = 0;
+  for (int i = 0; i < homeController.menuData.value.addons!.data!.length; i++) {
+    homeController.menuData.value.addons!.data![i].qty = 0;
+    homeController.menuData.value.addons!.data![i].isChecked = false;
+  }
+  homeController.variantPrice.value = 0;
+  double unitPrice = double.parse(data.variants!.data![0].price.toString()) ?? double.parse(homeController.menuData.value.price.toString());
+  homeController.menuData.value.variant = unitPrice.toString();
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -144,76 +155,90 @@ Widget foodMenuBody(BuildContext context, Data data) {
           ),
         ],
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 3,
-            child: Text(data.name.toString(),
-                style: TextStyle(
-                    fontSize: fontMedium,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-                height: 26,
-                alignment: Alignment.center,
-                margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: textSecondary, width: 1)),
-                child: DropdownButton<String>(
-                  items: <String>[
-                    'Full',
-                    '2: 2',
-                  ].map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(
-                        value,
-                        style: TextStyle(color: primaryText),
-                      ),
-                    );
-                  }).toList(),
-                  hint: Text(
-                    "   Full   ",
-                    style: TextStyle(fontSize: fontMedium, color: primaryText),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  underline: SizedBox(),
-                  onChanged: (value) {},
-                )),
-          ),
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                topBarIconBtn(Image.asset('assets/remove.png', color: white),
-                    primaryColor, 0, 2, 14,
-                    onPressed: () {}),
-                SizedBox(width: 6),
-                Text('0',
-                    style: TextStyle(color: primaryText, fontSize: fontMedium)),
-                SizedBox(width: 6),
-                topBarIconBtn(Image.asset('assets/add.png', color: white),
-                    primaryColor, 0, 2, 14,
-                    onPressed: () {}),
-              ],
+      Obx(() {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text(data.name.toString(),
+                  style: TextStyle(
+                      fontSize: fontMedium,
+                      color: primaryText,
+                      fontWeight: FontWeight.bold)),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text("£${data.price}",
-                style: TextStyle(
-                    fontSize: fontMedium,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                  height: 35,
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: textSecondary, width: 1)),
+                  child: DropdownButton<String>(
+                    items: data.variants!.data!.map((dynamic val) {
+                      return DropdownMenuItem<String>(
+                        value: val.name.toString(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(val.name,
+                              style: TextStyle(
+                                  color: primaryText, fontSize: fontVerySmall)),
+                        ),
+                      );
+                    }).toList(),
+                    borderRadius: BorderRadius.circular(10),
+                    underline: SizedBox(),
+                    isExpanded: true,
+                    dropdownColor: primaryBackground,
+                    value: data.variants!.data![0].name,
+                    onChanged: (value) {
+                      unitPrice = double.parse(Utils.findPriceByListNearValue(
+                          data.variants!.data!, value!));
+                      homeController.menuData.value.variant = unitPrice.toString();
+                      // for store variant as id
+                      // homeController.menuData.value.variant = Utils.findIdByListNearValue(
+                      //     data.variants!.data!, value);
+                    },
+                  )),
+            ),
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  topBarIconBtn(Image.asset('assets/remove.png', color: white),
+                      primaryColor, 0, 2, 14, onPressed: () {
+                        homeController.menuData.value.qty = Utils.incrementDecrement(
+                        false, homeController.menuData.value.qty!.toInt());
+                    homeController.menuData.refresh();
+                  }),
+                  SizedBox(width: 6),
+                  Text(homeController.menuData.value.qty.toString(),
+                      style:
+                          TextStyle(color: primaryText, fontSize: fontMedium)),
+                  SizedBox(width: 6),
+                  topBarIconBtn(Image.asset('assets/add.png', color: white),
+                      primaryColor, 0, 2, 14, onPressed: () {
+                        homeController.menuData.value.qty = Utils.incrementDecrement(
+                        true, homeController.menuData.value.qty!.toInt());
+                        homeController.menuData.refresh();
+                      }),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text("£${(homeController.menuData.value.qty! * unitPrice)}",
+                  style: TextStyle(
+                      fontSize: fontMedium,
+                      color: primaryText,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      }),
       Divider(color: textSecondary, thickness: 1),
       const SizedBox(height: 20),
       Row(
@@ -249,9 +274,9 @@ Widget foodMenuBody(BuildContext context, Data data) {
           ),
         ],
       ),
-      Expanded(
-        child: ListView.builder(
-            itemCount: data.addons!.data!.length,
+      Expanded(child: Obx(() {
+        return ListView.builder(
+            itemCount: homeController.menuData.value.addons!.data!.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -259,12 +284,20 @@ Widget foodMenuBody(BuildContext context, Data data) {
                   Expanded(
                       flex: 1,
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 60.0),
-                        child: Checkbox(value: true, onChanged: (checked) {}),
-                      )),
+                          padding: const EdgeInsets.only(right: 60.0),
+                          child: Checkbox(
+                              value: homeController.menuData.value.addons!
+                                  .data![index].isChecked,
+                              onChanged: (checked) {
+                                homeController.menuData.value.addons!
+                                    .data![index].isChecked = checked!;
+                                homeController.menuData.refresh();
+                              }))),
                   Expanded(
                     flex: 3,
-                    child: Text(data.addons!.data![index].name.toString(),
+                    child: Text(
+                        homeController.menuData.value.addons!.data![index].name
+                            .toString(),
                         style: TextStyle(
                             fontSize: fontSmall,
                             color: primaryText,
@@ -280,9 +313,16 @@ Widget foodMenuBody(BuildContext context, Data data) {
                             0,
                             2,
                             14,
-                            onPressed: () {}),
+                            onPressed: () {
+                              homeController.menuData.value.addons!.data![index].qty = Utils.incrementDecrement(
+                                  false,  homeController.menuData.value.addons!.data![index].qty!.toInt());
+                              homeController.menuData.refresh();
+                            }),
                         SizedBox(width: 6),
-                        Text('0',
+                        Text(
+                            homeController
+                                .menuData.value.addons!.data![index].qty
+                                .toString(),
                             style: TextStyle(
                                 color: primaryText,
                                 fontSize: fontSmall,
@@ -294,13 +334,19 @@ Widget foodMenuBody(BuildContext context, Data data) {
                             0,
                             2,
                             14,
-                            onPressed: () {}),
+                            onPressed: () {
+                              homeController.menuData.value.addons!.data![index].qty = Utils.incrementDecrement(
+                                  true,  homeController.menuData.value.addons!.data![index].qty!.toInt());
+                              homeController.menuData.refresh();
+                            }),
                       ],
                     ),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text("£${data.addons!.data![index].price.toString()}",
+                    child: Text("£${homeController
+                        .menuData.value.addons!.data![index].qty! * double.parse(homeController
+                        .menuData.value.addons!.data![index].price.toString())}",
                         style: TextStyle(
                             fontSize: fontSmall,
                             color: primaryText,
@@ -308,15 +354,24 @@ Widget foodMenuBody(BuildContext context, Data data) {
                   ),
                 ],
               );
-            }),
-      ),
+            });
+      })),
       MaterialButton(
           elevation: 0,
           color: primaryColor,
           height: 40,
           minWidth: 160,
           // padding: EdgeInsets.all(20),
-          onPressed: () {},
+          onPressed: () {
+            homeController.cardList.add(homeController.menuData.value);
+            Get.back();
+            // print(homeController.menuData.value.toJson());
+            // print(homeController.menuData.value.qty);
+            // print(homeController.menuData.value.addons!.data);
+            // print(homeController.menuData.value.addons!.data![0].qty);
+            // print(homeController.menuData.value.addons!.data![1].qty);
+            // print(homeController.menuData.value.addons!.data![1].isChecked);
+          },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),
@@ -340,7 +395,8 @@ Widget foodMenuBody(BuildContext context, Data data) {
 
 Widget tableBody(BuildContext context) {
   Size size = MediaQuery.of(context).size;
-  ScrollController _scrollController= ScrollController();;
+  ScrollController _scrollController = ScrollController();
+  ;
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
     child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -407,7 +463,8 @@ Widget tableBody(BuildContext context) {
                         height: .4,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: textSecondary, width: .3)),
+                            border:
+                                Border.all(color: textSecondary, width: .3)),
                       ),
                       SizedBox(height: 15),
                       Text("Running Order In Table",
@@ -467,14 +524,16 @@ Widget tableBody(BuildContext context) {
                                               style: TextStyle(
                                                   fontSize: fontSmall,
                                                   color: primaryText,
-                                                  fontWeight: FontWeight.bold))),
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       Expanded(
                                           flex: 3,
                                           child: Text('7:30AM\n2/5/2022',
                                               style: TextStyle(
                                                   fontSize: fontSmall,
                                                   color: primaryText,
-                                                  fontWeight: FontWeight.bold))),
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       Expanded(
                                         flex: 2,
                                         child: Text('2',
@@ -585,8 +644,7 @@ Widget tableBody(BuildContext context) {
           normalButton('Please read', primaryBackground, primaryText,
               onPressed: () {}),
           SizedBox(width: 100),
-          normalButton('Submit', primaryColor, white,
-              onPressed: () {}),
+          normalButton('Submit', primaryColor, white, onPressed: () {}),
         ],
       ),
     ]),
@@ -996,10 +1054,8 @@ Widget orderDetail(BuildContext context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          normalButton('Create Invoice', primaryColor, white,
-              onPressed: () {}),
-          normalButton('Close', textSecondary, white,
-              onPressed: () {}),
+          normalButton('Create Invoice', primaryColor, white, onPressed: () {}),
+          normalButton('Close', textSecondary, white, onPressed: () {}),
         ],
       )
     ]),
@@ -1029,18 +1085,18 @@ Widget addMisc(BuildContext context) {
           Expanded(
               flex: 1,
               child: SizedBox(
-                height: 35,
-                child: MaterialButton(
-                    elevation: 0,
-                    color: primaryBackground,
-                    onPressed: (){},
-                    child: Text(
-                      'No file chosen',
-                      style: TextStyle(color: textSecondary, fontSize: fontSmall),
-                    ))
-                // child: normalButton('No file chosen', primaryColor, primaryColor),
-              )
-          ),
+                  height: 35,
+                  child: MaterialButton(
+                      elevation: 0,
+                      color: primaryBackground,
+                      onPressed: () {},
+                      child: Text(
+                        'No file chosen',
+                        style: TextStyle(
+                            color: textSecondary, fontSize: fontSmall),
+                      ))
+                  // child: normalButton('No file chosen', primaryColor, primaryColor),
+                  )),
           SizedBox(width: 8),
           Expanded(
               flex: 1,
@@ -1051,18 +1107,15 @@ Widget addMisc(BuildContext context) {
                     onEditingComplete: () async {},
                     keyboardType: TextInputType.text,
                     style: TextStyle(
-                        fontSize: fontVerySmall,
-                        color: textSecondary),
+                        fontSize: fontVerySmall, color: textSecondary),
                     decoration: InputDecoration(
                         fillColor: secondaryBackground,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
                         ),
                         hintStyle: TextStyle(
-                            fontSize: fontVerySmall,
-                            color: textSecondary))),
-              )
-          ),
+                            fontSize: fontVerySmall, color: textSecondary))),
+              )),
         ],
       ),
       SizedBox(height: 10),
@@ -1076,17 +1129,14 @@ Widget addMisc(BuildContext context) {
             onChanged: (text) async {},
             onEditingComplete: () async {},
             keyboardType: TextInputType.text,
-            style: TextStyle(
-                fontSize: fontVerySmall,
-                color: textSecondary),
+            style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
             decoration: InputDecoration(
                 fillColor: secondaryBackground,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
-                hintStyle: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: textSecondary))),
+                hintStyle:
+                    TextStyle(fontSize: fontVerySmall, color: textSecondary))),
       ),
       textRow1('Menu Description', ''),
       TextFormField(

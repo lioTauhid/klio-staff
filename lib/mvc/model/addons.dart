@@ -13,10 +13,10 @@ class Addons {
     this.data,
   });
 
-  Data? data;
+  AddonsData? data;
 
   factory Addons.fromJson(Map<String, dynamic> json) => Addons(
-    data: Data.fromJson(json["data"]),
+    data: AddonsData.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -24,12 +24,14 @@ class Addons {
   };
 }
 
-class Data {
-  Data({
+class AddonsData {
+  AddonsData({
     this.id,
     this.name,
     this.image,
     this.price,
+    this.taxVat,
+    this.qty,
     this.addons,
     this.variants,
     this.variant,
@@ -39,15 +41,19 @@ class Data {
   String? name;
   String? image;
   String? price;
+  String? taxVat;
+  int? qty;
   AddonsClass? addons;
   Variants? variants;
-  dynamic variant;
+  String? variant;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory AddonsData.fromJson(Map<String, dynamic> json) => AddonsData(
     id: json["id"],
     name: json["name"],
     image: json["image"],
     price: json["price"],
+    taxVat: json["tax_vat"],
+    qty: json["qty"],
     addons: AddonsClass.fromJson(json["addons"]),
     variants: Variants.fromJson(json["variants"]),
     variant: json["variant"],
@@ -58,6 +64,8 @@ class Data {
     "name": name,
     "image": image,
     "price": price,
+    "tax_vat": taxVat,
+    "qty": qty,
     "addons": addons!.toJson(),
     "variants": variants!.toJson(),
     "variant": variant,
@@ -84,10 +92,14 @@ class AddonsDatum {
   AddonsDatum({
     this.name,
     this.price,
+    this.qty,
+    this.isChecked,
   });
 
   String? name;
   String? price;
+  int? qty;
+  bool? isChecked;
 
   factory AddonsDatum.fromJson(Map<String, dynamic> json) => AddonsDatum(
     name: json["name"],
