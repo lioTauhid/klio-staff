@@ -17,304 +17,310 @@ Widget leftSideView(BuildContext context) {
     child: Container(
       height: double.infinity,
       color: secondaryBackground,
-      padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
+      padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 15),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  iconTextBtn(
-                      'assets/dine-in.png', 'DINE IN', primaryColor, white,
-                      onPressed: () {
-                    showCustomDialog(context, "Table Reservation",
-                        tableBody(context), 50, 200);
-                  }),
-                  iconTextBtn('assets/takeway.png', 'TAKEAWAY',
-                      primaryBackground, primaryText,
-                      onPressed: () {}),
-                  iconTextBtn('assets/delivery.png', 'DELIVERY',
-                      primaryBackground, primaryText,
-                      onPressed: () {}),
-                  iconTextBtn('assets/table.png', 'TABLE', primaryBackground,
-                      primaryText, onPressed: () {
-                    showCustomDialog(context, "Table Reservation",
-                        tableBody(context), 50, 200);
-                  }),
-                ],
-              ),
-              Container(
-                width: double.infinity,
-                height: 40,
-                margin: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
-                decoration: BoxDecoration(
-                  color: primaryBackground,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Container(
-                          height: 32,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Obx(() {
-                            return DropdownButton<String>(
-                              items: homeController.customer.value.data!
-                                  .map((dynamic val) {
-                                return DropdownMenuItem<String>(
-                                  value: val.name.toString(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(val.name,
-                                        style: TextStyle(color: primaryText)),
-                                  ),
-                                );
-                              }).toList(),
-                              borderRadius: BorderRadius.circular(10),
-                              underline: SizedBox(),
-                              isExpanded: true,
-                              dropdownColor: primaryBackground,
-                              value: homeController.customerName.toString(),
-                              onChanged: (value) {
-                                homeController.customerName.value = value!;
-                              },
-                            );
-                          })),
-                    ),
-                    SizedBox(width: 10),
-                    SizedBox(
-                      height: 26,
-                      width: 26,
-                      child: MaterialButton(
-                        elevation: 0,
-                        padding: EdgeInsets.zero,
-                        color: secondaryBackground,
-                        onPressed: () {
-                          showCustomDialog(
-                              context,
-                              "Update Customer",
-                              addCustomer(context, onPressed: () {
-                                print(homeController.controllerName.value.text);
-                              }),
-                              60,
-                              400);
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        child: Image.asset(
-                          "assets/edit-alt.png",
-                          color: primaryText,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    SizedBox(
-                      height: 26,
-                      width: 26,
-                      child: MaterialButton(
-                        elevation: 0,
-                        padding: EdgeInsets.zero,
-                        color: secondaryBackground,
-                        onPressed: () {
-                          showCustomDialog(
-                              context,
-                              "Add Customer",
-                              addCustomer(context, onPressed: () {
-                                print(homeController.controllerName.value.text);
-                                homeController.addCustomer();
-                              }),
-                              60,
-                              400);
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        child: Image.asset(
-                          "assets/add.png",
-                          color: primaryText,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                  ],
-                ),
-              ),
-              Row(
+          Expanded(
+            child: SizedBox(
+              height: Size.infinite.height,
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(
-                    flex: 10,
-                    child: Text('Description',
-                        style: TextStyle(
-                            fontSize: fontVerySmall, color: textSecondary)),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      iconTextBtn(
+                          'assets/dine-in.png', 'DINE IN', primaryColor, white,
+                          onPressed: () {
+                        showCustomDialog(context, "Table Reservation",
+                            tableBody(context), 50, 200);
+                      }),
+                      iconTextBtn('assets/takeway.png', 'TAKEAWAY',
+                          primaryBackground, primaryText,
+                          onPressed: () {}),
+                      iconTextBtn('assets/delivery.png', 'DELIVERY',
+                          primaryBackground, primaryText,
+                          onPressed: () {}),
+                      iconTextBtn('assets/table.png', 'TABLE', primaryBackground,
+                          primaryText, onPressed: () {
+                        showCustomDialog(context, "Table Reservation",
+                            tableBody(context), 50, 200);
+                      }),
+                    ],
                   ),
-                  Expanded(
-                    flex: 4,
-                    child: Text('Qty',
-                        style: TextStyle(
-                            fontSize: fontVerySmall, color: textSecondary)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Text('Rate',
-                        style: TextStyle(
-                            fontSize: fontVerySmall, color: textSecondary)),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Text('Total',
-                        style: TextStyle(
-                            fontSize: fontVerySmall, color: textSecondary)),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text('',
-                        style: TextStyle(
-                            fontSize: fontVerySmall, color: textSecondary)),
-                  ),
-                ],
-              ),
-              Obx(() {
-                return ListView.builder(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                  shrinkWrap: true,
-                  itemCount: homeController.cardList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    width: double.infinity,
+                    height: 40,
+                    margin: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                    decoration: BoxDecoration(
+                      color: primaryBackground,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: Text(
-                                  homeController.cardList[index].name
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontSize: fontSmall,
-                                      color: primaryText,
-                                      fontWeight: FontWeight.bold)),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                              height: 32,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Obx(() {
+                                return DropdownButton<String>(
+                                  items: homeController.customer.value.data!
+                                      .map((dynamic val) {
+                                    return DropdownMenuItem<String>(
+                                      value: val.name.toString(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(val.name,
+                                            style: TextStyle(color: primaryText)),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  borderRadius: BorderRadius.circular(10),
+                                  underline: SizedBox(),
+                                  isExpanded: true,
+                                  dropdownColor: primaryBackground,
+                                  value: homeController.customerName.toString(),
+                                  onChanged: (value) {
+                                    homeController.customerName.value = value!;
+                                  },
+                                );
+                              })),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          height: 26,
+                          width: 26,
+                          child: MaterialButton(
+                            elevation: 0,
+                            padding: EdgeInsets.zero,
+                            color: secondaryBackground,
+                            onPressed: () {
+                              showCustomDialog(
+                                  context,
+                                  "Update Customer",
+                                  addCustomer(context, onPressed: () {
+                                    print(homeController.controllerName.value.text);
+                                  }),
+                                  60,
+                                  400);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
                             ),
-                            Expanded(
-                              flex: 6,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            child: Image.asset(
+                              "assets/edit-alt.png",
+                              color: primaryText,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          height: 26,
+                          width: 26,
+                          child: MaterialButton(
+                            elevation: 0,
+                            padding: EdgeInsets.zero,
+                            color: secondaryBackground,
+                            onPressed: () {
+                              showCustomDialog(
+                                  context,
+                                  "Add Customer",
+                                  addCustomer(context, onPressed: () {
+                                    print(homeController.controllerName.value.text);
+                                    homeController.addCustomer();
+                                  }),
+                                  60,
+                                  400);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Image.asset(
+                              "assets/add.png",
+                              color: primaryText,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        flex: 10,
+                        child: Text('Description',
+                            style: TextStyle(
+                                fontSize: fontVerySmall, color: textSecondary)),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text('Qty',
+                            style: TextStyle(
+                                fontSize: fontVerySmall, color: textSecondary)),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text('Rate',
+                            style: TextStyle(
+                                fontSize: fontVerySmall, color: textSecondary)),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text('Total',
+                            style: TextStyle(
+                                fontSize: fontVerySmall, color: textSecondary)),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text('',
+                            style: TextStyle(
+                                fontSize: fontVerySmall, color: textSecondary)),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Obx(() {
+                      return ListView.builder(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                        itemCount: homeController.cardList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  topBarIconBtn(
-                                      Image.asset('assets/remove.png',
-                                          color: primaryText),
-                                      primaryBackground,
-                                      0,
-                                      2,
-                                      16, onPressed: () {
-                                    homeController.cardList[index].qty =
-                                        Utils.incrementDecrement(
-                                            false,
-                                            homeController.cardList[index].qty!
-                                                .toInt());
-                                    homeController.cardList.refresh();
-                                  }),
-                                  SizedBox(width: 6),
-                                  Text(
-                                      homeController.cardList[index].qty
-                                          .toString(),
-                                      style: TextStyle(
-                                          color: primaryText,
-                                          fontSize: fontVerySmall)),
-                                  SizedBox(width: 6),
-                                  topBarIconBtn(
-                                      Image.asset('assets/add.png',
-                                          color: primaryText),
-                                      primaryBackground,
-                                      0,
-                                      2,
-                                      16, onPressed: () {
-                                    homeController.cardList[index].qty =
-                                        Utils.incrementDecrement(
-                                            true,
-                                            homeController.cardList[index].qty!
-                                                .toInt());
-                                    homeController.cardList.refresh();
-                                  }),
+                                  Expanded(
+                                    flex: 8,
+                                    child: Text(
+                                        homeController.cardList[index].name
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: fontSmall,
+                                            color: primaryText,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  Expanded(
+                                    flex: 6,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        topBarIconBtn(
+                                            Image.asset('assets/remove.png',
+                                                color: primaryText),
+                                            primaryBackground,
+                                            0,
+                                            2,
+                                            16, onPressed: () {
+                                          homeController.cardList[index].qty =
+                                              Utils.incrementDecrement(
+                                                  false,
+                                                  homeController.cardList[index].qty!
+                                                      .toInt());
+                                          homeController.cardList.refresh();
+                                        }),
+                                        SizedBox(width: 6),
+                                        Text(
+                                            homeController.cardList[index].qty
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: primaryText,
+                                                fontSize: fontVerySmall)),
+                                        SizedBox(width: 6),
+                                        topBarIconBtn(
+                                            Image.asset('assets/add.png',
+                                                color: primaryText),
+                                            primaryBackground,
+                                            0,
+                                            2,
+                                            16, onPressed: () {
+                                          homeController.cardList[index].qty =
+                                              Utils.incrementDecrement(
+                                                  true,
+                                                  homeController.cardList[index].qty!
+                                                      .toInt());
+                                          homeController.cardList.refresh();
+                                        }),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Text(
+                                        homeController.cardList[index].variant!
+                                            .toString(),
+                                        style: TextStyle(
+                                            color: primaryText,
+                                            fontSize: fontVerySmall)),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Text(
+                                        "£${(homeController.cardList[index].qty! * double.parse(homeController.cardList[index].variant!))}",
+                                        style: TextStyle(
+                                            color: primaryText,
+                                            fontSize: fontVerySmall)),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Icon(
+                                        Icons.delete_forever_outlined,
+                                        color: Colors.redAccent,
+                                        size: 18,
+                                      ),
+                                      onPressed: () {
+                                        homeController.cardList.removeAt(index);
+                                        homeController.cardList.refresh();
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Text(
-                                  homeController.cardList[index].variant!
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: primaryText,
-                                      fontSize: fontVerySmall)),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Text(
-                                  "£${(homeController.cardList[index].qty! * double.parse(homeController.cardList[index].variant!))}",
-                                  style: TextStyle(
-                                      color: primaryText,
-                                      fontSize: fontVerySmall)),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Icon(
-                                  Icons.delete_forever_outlined,
-                                  color: Colors.redAccent,
-                                  size: 18,
-                                ),
-                                onPressed: () {
-                                  homeController.cardList.removeAt(index);
-                                  homeController.cardList.refresh();
-                                },
+                              Row(
+                                children: [
+                                  for (AddonsDatum addons in homeController
+                                      .cardList[index].addons!.data!
+                                      .toList())
+                                    addons.isChecked == true
+                                        ? Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            margin: EdgeInsets.only(right: 5),
+                                            decoration: BoxDecoration(
+                                                color: alternate,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Text(
+                                                '${addons.name} ${addons.qty}x${addons.price}',
+                                                style: TextStyle(
+                                                    fontSize: fontVerySmall,
+                                                    color: primaryText)))
+                                        : SizedBox(),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            for (AddonsDatum addons in homeController
-                                .cardList[index].addons!.data!
-                                .toList())
-                              addons.isChecked == true
-                                  ? Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
-                                      margin: EdgeInsets.only(right: 5),
-                                      decoration: BoxDecoration(
-                                          color: alternate,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Text(
-                                          '${addons.name} ${addons.qty}x${addons.price}',
-                                          style: TextStyle(
-                                              fontSize: fontVerySmall,
-                                              color: primaryText)))
-                                  : SizedBox(),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }),
-            ],
+                            ],
+                          );
+                        },
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
           ),
           Column(
             mainAxisSize: MainAxisSize.max,
@@ -445,7 +451,7 @@ Widget leftSideView(BuildContext context) {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 12),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

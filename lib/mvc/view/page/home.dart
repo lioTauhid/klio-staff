@@ -67,14 +67,18 @@ class _HomeState extends State<Home> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    scaffoldKey.currentState!.openDrawer();
-                                  },
-                                  icon: Image.asset('assets/menu.png',
-                                      height: 20,
-                                      width: 20,
-                                      color: primaryText)),
+                              SizedBox(
+                                height: 45,
+                                width: 45,
+                                child: IconButton(
+                                    onPressed: () {
+                                      scaffoldKey.currentState!.openDrawer();
+                                    },
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.asset('assets/option.png',
+                                        fit: BoxFit.fitHeight,
+                                        color: primaryColor)),
+                              ),
                               Expanded(
                                 flex: 1,
                                 child: Column(
