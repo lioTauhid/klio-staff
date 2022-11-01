@@ -62,25 +62,26 @@ class _HomeState extends State<Home> {
                       children: [
                         Padding(
                           padding:
-                              EdgeInsetsDirectional.fromSTEB(15, 20, 20, 20),
+                              EdgeInsetsDirectional.fromSTEB(15, 15, 15, 15),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 45,
-                                width: 45,
+                                height: 38,
+                                width: 38,
                                 child: IconButton(
                                     onPressed: () {
                                       scaffoldKey.currentState!.openDrawer();
                                     },
                                     padding: EdgeInsets.zero,
-                                    icon: Image.asset('assets/option.png',
+                                    icon: Image.asset('assets/drawer.png',
                                         fit: BoxFit.fitHeight,
                                         color: primaryColor)),
                               ),
+                              SizedBox(width: 10),
                               Expanded(
-                                flex: 1,
+                                flex: 2,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +204,7 @@ class _HomeState extends State<Home> {
                         Container(
                           width: double.infinity,
                           height: 40,
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 5),
+                          padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 5),
                           child: Obx(() {
                             return ListView.builder(
                               padding: EdgeInsets.zero,
@@ -253,7 +254,7 @@ class _HomeState extends State<Home> {
                           child: Obx(() {
                             return GridView.builder(
                               padding: EdgeInsetsDirectional.fromSTEB(
-                                  20, 10, 20, 10),
+                                  15, 10, 15, 10),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:

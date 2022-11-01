@@ -46,8 +46,8 @@ Widget leftSideView(BuildContext context) {
                       iconTextBtn('assets/delivery.png', 'DELIVERY',
                           primaryBackground, primaryText,
                           onPressed: () {}),
-                      iconTextBtn('assets/table.png', 'TABLE', primaryBackground,
-                          primaryText, onPressed: () {
+                      iconTextBtn('assets/table.png', 'TABLE',
+                          primaryBackground, primaryText, onPressed: () {
                         showCustomDialog(context, "Table Reservation",
                             tableBody(context), 50, 200);
                       }),
@@ -81,7 +81,8 @@ Widget leftSideView(BuildContext context) {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(val.name,
-                                            style: TextStyle(color: primaryText)),
+                                            style:
+                                                TextStyle(color: primaryText)),
                                       ),
                                     );
                                   }).toList(),
@@ -109,7 +110,8 @@ Widget leftSideView(BuildContext context) {
                                   context,
                                   "Update Customer",
                                   addCustomer(context, onPressed: () {
-                                    print(homeController.controllerName.value.text);
+                                    print(homeController
+                                        .controllerName.value.text);
                                   }),
                                   60,
                                   400);
@@ -136,7 +138,8 @@ Widget leftSideView(BuildContext context) {
                                   context,
                                   "Add Customer",
                                   addCustomer(context, onPressed: () {
-                                    print(homeController.controllerName.value.text);
+                                    print(homeController
+                                        .controllerName.value.text);
                                     homeController.addCustomer();
                                   }),
                                   60,
@@ -215,7 +218,8 @@ Widget leftSideView(BuildContext context) {
                                   Expanded(
                                     flex: 6,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         topBarIconBtn(
                                             Image.asset('assets/remove.png',
@@ -227,7 +231,8 @@ Widget leftSideView(BuildContext context) {
                                           homeController.cardList[index].qty =
                                               Utils.incrementDecrement(
                                                   false,
-                                                  homeController.cardList[index].qty!
+                                                  homeController
+                                                      .cardList[index].qty!
                                                       .toInt());
                                           homeController.cardList.refresh();
                                         }),
@@ -249,7 +254,8 @@ Widget leftSideView(BuildContext context) {
                                           homeController.cardList[index].qty =
                                               Utils.incrementDecrement(
                                                   true,
-                                                  homeController.cardList[index].qty!
+                                                  homeController
+                                                      .cardList[index].qty!
                                                       .toInt());
                                           homeController.cardList.refresh();
                                         }),
@@ -305,7 +311,7 @@ Widget leftSideView(BuildContext context) {
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             child: Text(
-                                                '${addons.name} ${addons.qty}x${addons.price}',
+                                                '${addons.name}  ${addons.qty}x${addons.price}',
                                                 style: TextStyle(
                                                     fontSize: fontVerySmall,
                                                     color: primaryText)))
@@ -355,7 +361,7 @@ Widget leftSideView(BuildContext context) {
                           Expanded(
                             flex: 4,
                             child: Text(
-                              'Service',
+                              'Service + Vat',
                               style: TextStyle(
                                   color: primaryText, fontSize: fontVerySmall),
                             ),
@@ -380,53 +386,57 @@ Widget leftSideView(BuildContext context) {
                           ),
                         ],
                       ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Text(
-                              '£20',
-                              style: TextStyle(
-                                  color: primaryText,
-                                  fontSize: fontVerySmall,
-                                  fontWeight: FontWeight.bold),
+                      Obx(() {
+                        return Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Text(
+                                Utils.calcSubTotal(homeController.cardList)
+                                    .toString(),
+                                style: TextStyle(
+                                    color: primaryText,
+                                    fontSize: fontVerySmall,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Text(
-                              '£5',
-                              style: TextStyle(
-                                  color: primaryText,
-                                  fontSize: fontVerySmall,
-                                  fontWeight: FontWeight.bold),
+                            Expanded(
+                              flex: 4,
+                              child: Text(
+                                '${homeController.settings.value.data![14].value}% + ${Utils.vatTotal(homeController.cardList).toString()}%',
+                                style: TextStyle(
+                                    color: primaryText,
+                                    fontSize: fontVerySmall,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Text(
-                              '£-10',
-                              style: TextStyle(
-                                  color: primaryText,
-                                  fontSize: fontVerySmall,
-                                  fontWeight: FontWeight.bold),
+                            Expanded(
+                              flex: 4,
+                              child: Text(
+                                '£-10',
+                                // '£-${homeController.settings.value.data![15].value}',
+                                style: TextStyle(
+                                    color: primaryText,
+                                    fontSize: fontVerySmall,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Text(
-                              '£15',
-                              style: TextStyle(
-                                  fontSize: fontMedium,
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.bold),
+                            Expanded(
+                              flex: 4,
+                              child: Text(
+                                '£${(Utils.calcSubTotal(homeController.cardList) + Utils.percentage(Utils.calcSubTotal(homeController.cardList), (Utils.vatTotal(homeController.cardList) + double.parse(homeController.settings.value.data![14].value.toString())))) - 10}',
+                                style: TextStyle(
+                                    fontSize: fontMedium,
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        );
+                      }),
                     ],
                   ),
                 ),

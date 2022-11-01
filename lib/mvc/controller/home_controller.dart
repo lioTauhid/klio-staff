@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/settings.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../constant/value.dart';
 import '../../service/api/api_client.dart';
@@ -20,6 +21,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<Customer> customer = Customer().obs;
   Rx<Order> order = Order().obs;
   Rx<Addons> addons = Addons().obs;
+  Rx<Settings> settings = Settings().obs;
   RxString customerName = ''.obs;
   Rx<TextEditingController> controllerName = TextEditingController().obs;
   Rx<TextEditingController> controllerEmail = TextEditingController().obs;
@@ -35,7 +37,7 @@ class HomeController extends GetxController with ErrorController {
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
     Utils.showLoading();
-    getCurrentUser();
+    await getCurrentUserData();
     await getCustomer();
     await getOrder();
     await getMenuByCategory();
@@ -50,7 +52,7 @@ class HomeController extends GetxController with ErrorController {
     category.value = categoryFromJson(response);
   }
 
-  void getCurrentUser() async {
+  Future<void> getCurrentUserData() async {
     var response = await ApiClient()
         .get('user', header: Utils.apiHeader)
         .catchError(handleApiError);
@@ -58,6 +60,10 @@ class HomeController extends GetxController with ErrorController {
     /// check token validity to logout later
     if (response == null) return;
     user.value = userFromJson(response);
+    response = await ApiClient()
+        .get('setting', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    settings.value = settingsFromJson(response);
   }
 
   Future<void> getMenuByCategory({dynamic id = ''}) async {

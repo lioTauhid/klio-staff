@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constant/color.dart';
 import '../constant/value.dart';
+import '../mvc/model/addons.dart';
 
 class Utils {
   static final apiHeader = {
@@ -143,5 +144,30 @@ class Utils {
       }
     }
     return '';
+  }
+
+  static double calcSubTotal(List<dynamic> list) {
+    double itemTotal = 0;
+    double adTotal = 0;
+    list.forEach((element) {
+      itemTotal =
+          itemTotal + (element.qty! * double.parse(element.variant.toString()));
+      element.addons!.data!.forEach((addon) {
+        adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
+      });
+    });
+    return itemTotal + adTotal;
+  }
+
+  static double vatTotal(List<dynamic> list) {
+    double vat = 0;
+    list.forEach((element) {
+      vat = vat + double.parse(element.taxVat.toString());
+    });
+    return vat;
+  }
+
+  static double percentage(double total, double percentage) {
+    return (total/100)*percentage;
   }
 }
