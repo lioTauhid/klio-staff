@@ -159,15 +159,48 @@ class Utils {
     return itemTotal + adTotal;
   }
 
+  // static double calcSubTotalWithVat(List<dynamic> list) {
+  //   double itemTotal = 0;
+  //   double adTotal = 0;
+  //   list.forEach((element) {
+  //     double vat = double.parse(element.taxVat.toString());
+  //     itemTotal =
+  //         itemTotal + (element.qty! * double.parse(element.variant.toString()));
+  //     itemTotal = itemTotal + percentage(itemTotal, vat);
+  //     element.addons!.data!.forEach((addon) {
+  //       adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
+  //     });
+  //     adTotal = adTotal + percentage(adTotal, vat);
+  //   });
+  //   return itemTotal + adTotal;
+  // }
+
   static double vatTotal(List<dynamic> list) {
-    double vat = 0;
+    double itemTotal = 0;
+    double adTotal = 0;
+    double vatTotal = 0;
     list.forEach((element) {
-      vat = vat + double.parse(element.taxVat.toString());
+      double vat = double.parse(element.taxVat.toString());
+      itemTotal =
+          itemTotal + (element.qty! * double.parse(element.variant.toString()));
+      vatTotal = vatTotal + percentage(itemTotal, vat);
+      element.addons!.data!.forEach((addon) {
+        adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
+      });
+      vatTotal = vatTotal + percentage(adTotal, vat);
     });
-    return vat;
+    return vatTotal;
   }
 
+  // static double vatTotal(List<dynamic> list) {
+  //   double vat = 0;
+  //   list.forEach((element) {
+  //     vat = vat + double.parse(element.taxVat.toString());
+  //   });
+  //   return vat;
+  // }
+
   static double percentage(double total, double percentage) {
-    return (total/100)*percentage;
+    return (total / 100) * percentage;
   }
 }

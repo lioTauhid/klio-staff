@@ -17,7 +17,7 @@ Widget leftSideView(BuildContext context) {
     child: Container(
       height: double.infinity,
       color: secondaryBackground,
-      padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 15),
+      padding: EdgeInsetsDirectional.fromSTEB(15, 15, 15, 15),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,7 +332,7 @@ Widget leftSideView(BuildContext context) {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                // margin: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                margin: EdgeInsetsDirectional.only(top: 8),
                 width: double.infinity,
                 height: 100,
                 decoration: BoxDecoration(
@@ -406,7 +406,7 @@ Widget leftSideView(BuildContext context) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '${homeController.settings.value.data![14].value}% + ${Utils.vatTotal(homeController.cardList).toString()}%',
+                                '${homeController.settings.value.data![14].value}% + £${Utils.vatTotal(homeController.cardList).toString()}',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: fontVerySmall,
@@ -427,7 +427,11 @@ Widget leftSideView(BuildContext context) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '£${(Utils.calcSubTotal(homeController.cardList) + Utils.percentage(Utils.calcSubTotal(homeController.cardList), (Utils.vatTotal(homeController.cardList) + double.parse(homeController.settings.value.data![14].value.toString())))) - 10}',
+                                '£${((Utils.calcSubTotal(homeController.cardList) +
+                                    Utils.percentage(Utils.calcSubTotal(homeController.cardList),
+                                        double.parse(homeController.settings.value.data![14].value.toString())) +
+                                    Utils.vatTotal(homeController.cardList)) -
+                                    10).toStringAsFixed(2)}',
                                 style: TextStyle(
                                     fontSize: fontMedium,
                                     color: primaryColor,

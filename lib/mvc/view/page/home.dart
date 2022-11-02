@@ -68,8 +68,8 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 38,
-                                width: 38,
+                                height: 32,
+                                width: 32,
                                 child: IconButton(
                                     onPressed: () {
                                       scaffoldKey.currentState!.openDrawer();
