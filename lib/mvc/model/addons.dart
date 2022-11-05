@@ -90,23 +90,27 @@ class AddonsClass {
 
 class AddonsDatum {
   AddonsDatum({
+    this.id,
     this.name,
     this.price,
     this.qty,
     this.isChecked,
   });
 
+  int? id;
   String? name;
   String? price;
   int? qty;
   bool? isChecked;
 
   factory AddonsDatum.fromJson(Map<String, dynamic> json) => AddonsDatum(
+    id: json["id"],
     name: json["name"],
     price: json["price"],
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "name": name,
     "price": price,
   };

@@ -117,8 +117,9 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
     homeController.menuData.value.addons!.data![i].isChecked = false;
   }
   homeController.variantPrice.value = 0;
-  double unitPrice = double.parse(data.variants!.data![0].price.toString()) ?? double.parse(homeController.menuData.value.price.toString());
-  homeController.menuData.value.variant = unitPrice.toString();
+  double unitPrice = double.parse(data.variants!.data![0].price.toString()) ??
+      double.parse(homeController.menuData.value.price.toString());
+  homeController.menuData.value.variant = data.variants!.data![0].id.toString();
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -196,10 +197,12 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                     onChanged: (value) {
                       unitPrice = double.parse(Utils.findPriceByListNearValue(
                           data.variants!.data!, value!));
-                      homeController.menuData.value.variant = unitPrice.toString();
+                      // homeController.menuData.value.variant = unitPrice.toString();
                       // for store variant as id
-                      // homeController.menuData.value.variant = Utils.findIdByListNearValue(
-                      //     data.variants!.data!, value);
+                      homeController.menuData.value.variant =
+                          Utils.findIdByListNearValue(
+                              data.variants!.data!, value);
+                      print(homeController.menuData.value.variant);
                     },
                   )),
             ),
@@ -210,8 +213,9 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                 children: [
                   topBarIconBtn(Image.asset('assets/remove.png', color: white),
                       primaryColor, 0, 2, 14, onPressed: () {
-                        homeController.menuData.value.qty = Utils.incrementDecrement(
-                        false, homeController.menuData.value.qty!.toInt());
+                    homeController.menuData.value.qty =
+                        Utils.incrementDecrement(
+                            false, homeController.menuData.value.qty!.toInt());
                     homeController.menuData.refresh();
                   }),
                   SizedBox(width: 6),
@@ -221,16 +225,18 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                   SizedBox(width: 6),
                   topBarIconBtn(Image.asset('assets/add.png', color: white),
                       primaryColor, 0, 2, 14, onPressed: () {
-                        homeController.menuData.value.qty = Utils.incrementDecrement(
-                        true, homeController.menuData.value.qty!.toInt());
-                        homeController.menuData.refresh();
-                      }),
+                    homeController.menuData.value.qty =
+                        Utils.incrementDecrement(
+                            true, homeController.menuData.value.qty!.toInt());
+                    homeController.menuData.refresh();
+                  }),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
-              child: Text("£${(homeController.menuData.value.qty! * unitPrice)}",
+              child: Text(
+                  "£${(homeController.menuData.value.qty! * unitPrice)}",
                   style: TextStyle(
                       fontSize: fontMedium,
                       color: primaryText,
@@ -312,12 +318,16 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                             primaryColor,
                             0,
                             2,
-                            14,
-                            onPressed: () {
-                              homeController.menuData.value.addons!.data![index].qty = Utils.incrementDecrement(
-                                  false,  homeController.menuData.value.addons!.data![index].qty!.toInt());
-                              homeController.menuData.refresh();
-                            }),
+                            14, onPressed: () {
+                          homeController
+                                  .menuData.value.addons!.data![index].qty =
+                              Utils.incrementDecrement(
+                                  false,
+                                  homeController
+                                      .menuData.value.addons!.data![index].qty!
+                                      .toInt());
+                          homeController.menuData.refresh();
+                        }),
                         SizedBox(width: 6),
                         Text(
                             homeController
@@ -333,20 +343,23 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                             primaryColor,
                             0,
                             2,
-                            14,
-                            onPressed: () {
-                              homeController.menuData.value.addons!.data![index].qty = Utils.incrementDecrement(
-                                  true,  homeController.menuData.value.addons!.data![index].qty!.toInt());
-                              homeController.menuData.refresh();
-                            }),
+                            14, onPressed: () {
+                          homeController
+                                  .menuData.value.addons!.data![index].qty =
+                              Utils.incrementDecrement(
+                                  true,
+                                  homeController
+                                      .menuData.value.addons!.data![index].qty!
+                                      .toInt());
+                          homeController.menuData.refresh();
+                        }),
                       ],
                     ),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text("£${homeController
-                        .menuData.value.addons!.data![index].qty! * double.parse(homeController
-                        .menuData.value.addons!.data![index].price.toString())}",
+                    child: Text(
+                        "£${homeController.menuData.value.addons!.data![index].qty! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
                         style: TextStyle(
                             fontSize: fontSmall,
                             color: primaryText,
@@ -396,7 +409,6 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
 Widget tableBody(BuildContext context) {
   Size size = MediaQuery.of(context).size;
   ScrollController _scrollController = ScrollController();
-  ;
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
     child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -408,222 +420,229 @@ Widget tableBody(BuildContext context) {
           thumbColor: primaryColor,
           radius: Radius.circular(20),
           controller: _scrollController,
-          child: GridView.builder(
-              padding: EdgeInsets.zero,
-              controller: _scrollController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: size.width > size.height ? 3 : 2,
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 0,
-                childAspectRatio: .7,
-              ),
-              scrollDirection: Axis.vertical,
-              itemCount: 7,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  // width: 40,
-                  // height: 50,
-                  padding: const EdgeInsets.all(20.0),
-                  margin: const EdgeInsets.all(30.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: textSecondary, width: .3)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Table NO : 02',
-                                style: TextStyle(
-                                    fontSize: fontBig,
-                                    fontWeight: FontWeight.bold,
-                                    color: primaryText),
-                              ),
-                              Text('Sit capacity: 5 Available: 1',
-                                  style: TextStyle(
-                                      fontSize: fontVerySmall,
-                                      color: primaryText)),
-                            ],
-                          ),
-                          Image.asset(
-                            "assets/table2.png",
-                            height: 60,
-                            width: 60,
-                            fit: BoxFit.fill,
-                            color: primaryColor,
-                          )
-                        ],
-                      ),
-                      Container(
-                        height: .4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border:
-                                Border.all(color: textSecondary, width: .3)),
-                      ),
-                      SizedBox(height: 15),
-                      Text("Running Order In Table",
-                          style: TextStyle(
-                              fontSize: fontSmall,
-                              color: primaryText,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child: Text(
-                                'Order',
-                                style: TextStyle(
-                                    color: textSecondary,
-                                    fontSize: fontVerySmall),
-                              )),
-                          Expanded(
-                              flex: 3,
-                              child: Text(
-                                'Time',
-                                style: TextStyle(
-                                    color: textSecondary,
-                                    fontSize: fontVerySmall),
-                              )),
-                          Expanded(
-                              flex: 2,
-                              child: Text(
-                                'Person',
-                                style: TextStyle(
-                                    color: textSecondary,
-                                    fontSize: fontVerySmall),
-                              )),
-                          Expanded(
-                              flex: 1,
-                              child: Text(
-                                '',
-                                style: TextStyle(
-                                    color: textSecondary,
-                                    fontSize: fontVerySmall),
-                              )),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: 3,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 2,
-                                          child: Text('#A002',
-                                              style: TextStyle(
-                                                  fontSize: fontSmall,
-                                                  color: primaryText,
-                                                  fontWeight:
-                                                      FontWeight.bold))),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Text('7:30AM\n2/5/2022',
-                                              style: TextStyle(
-                                                  fontSize: fontSmall,
-                                                  color: primaryText,
-                                                  fontWeight:
-                                                      FontWeight.bold))),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text('2',
-                                            style: TextStyle(
-                                                fontSize: fontSmall,
-                                                color: primaryText,
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                      Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: Image.asset(
-                                              "assets/delete.png",
-                                              color: Colors.red,
-                                              height: 18,
-                                              width: 18,
-                                            ),
-                                          )),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: .5,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: textSecondary, width: .3)),
-                                  ),
-                                ],
-                              );
-                            }),
-                      ),
-                      SizedBox(height: 15),
-                      SizedBox(
-                        height: 35,
-                        child: Row(
+          child: Obx(() {
+            return GridView.builder(
+                padding: EdgeInsets.zero,
+                controller: _scrollController,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: size.width > size.height ? 3 : 2,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 0,
+                  childAspectRatio: 1.4,
+                ),
+                scrollDirection: Axis.vertical,
+                itemCount: homeController.tables.value.data!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.all(20.0),
+                    margin: const EdgeInsets.all(30.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: textSecondary, width: .3)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(
-                              flex: 5,
-                              child: TextFormField(
-                                  onChanged: (text) async {},
-                                  onEditingComplete: () async {},
-                                  keyboardType: TextInputType.text,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  homeController.tables.value.data![index].name
+                                      .toString(),
                                   style: TextStyle(
-                                      fontSize: fontVerySmall,
+                                      fontSize: fontBig,
+                                      fontWeight: FontWeight.bold,
                                       color: primaryText),
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(40),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(40),
-                                        borderSide: BorderSide(
-                                            color: textSecondary, width: .5),
-                                      ),
-                                      contentPadding:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      hintStyle: TextStyle(
-                                          fontSize: fontVerySmall,
-                                          color: primaryText),
-                                      hintText: 'Person')),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: MaterialButton(
-                                  elevation: 0,
-                                  color: primaryColor,
-                                  height: 45,
-                                  // minWidth: 180,
-                                  // padding: EdgeInsets.all(20),
-                                  onPressed: () {},
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: Text(
-                                    "Add",
+                                ),
+                                Text(
+                                    'Sit capacity: ${homeController.tables.value.data![index].capacity.toString()} Available: ${homeController.tables.value.data![index].available.toString()}',
                                     style: TextStyle(
-                                        color: white, fontSize: fontVerySmall),
-                                  )),
+                                        fontSize: fontVerySmall,
+                                        color: primaryText)),
+                              ],
                             ),
+                            Image.network(
+                              // "assets/table2.png",
+                              homeController.tables.value.data![index].image
+                                  .toString(),
+                              height: 60,
+                              width: 60,
+                              fit: BoxFit.fill,
+                              color: primaryColor,
+                            )
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
+                        Container(
+                          height: .4,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border:
+                                  Border.all(color: textSecondary, width: .3)),
+                        ),
+                        // SizedBox(height: 15),
+                        // Text("Running Order In Table",
+                        //     style: TextStyle(
+                        //         fontSize: fontSmall,
+                        //         color: primaryText,
+                        //         fontWeight: FontWeight.bold)),
+                        // SizedBox(height: 10),
+                        // Row(
+                        //   children: [
+                        //     Expanded(
+                        //         flex: 2,
+                        //         child: Text(
+                        //           'Order',
+                        //           style: TextStyle(
+                        //               color: textSecondary,
+                        //               fontSize: fontVerySmall),
+                        //         )),
+                        //     Expanded(
+                        //         flex: 3,
+                        //         child: Text(
+                        //           'Time',
+                        //           style: TextStyle(
+                        //               color: textSecondary,
+                        //               fontSize: fontVerySmall),
+                        //         )),
+                        //     Expanded(
+                        //         flex: 2,
+                        //         child: Text(
+                        //           'Person',
+                        //           style: TextStyle(
+                        //               color: textSecondary,
+                        //               fontSize: fontVerySmall),
+                        //         )),
+                        //     Expanded(
+                        //         flex: 1,
+                        //         child: Text(
+                        //           '',
+                        //           style: TextStyle(
+                        //               color: textSecondary,
+                        //               fontSize: fontVerySmall),
+                        //         )),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 10),
+                        // Expanded(
+                        //   child: ListView.builder(
+                        //       itemCount: 3,
+                        //       itemBuilder: (BuildContext context, int index) {
+                        //         return Column(
+                        //           children: [
+                        //             Row(
+                        //               children: [
+                        //                 Expanded(
+                        //                     flex: 2,
+                        //                     child: Text('#A002',
+                        //                         style: TextStyle(
+                        //                             fontSize: fontSmall,
+                        //                             color: primaryText,
+                        //                             fontWeight:
+                        //                                 FontWeight.bold))),
+                        //                 Expanded(
+                        //                     flex: 3,
+                        //                     child: Text('7:30AM\n2/5/2022',
+                        //                         style: TextStyle(
+                        //                             fontSize: fontSmall,
+                        //                             color: primaryText,
+                        //                             fontWeight:
+                        //                                 FontWeight.bold))),
+                        //                 Expanded(
+                        //                   flex: 2,
+                        //                   child: Text('2',
+                        //                       style: TextStyle(
+                        //                           fontSize: fontSmall,
+                        //                           color: primaryText,
+                        //                           fontWeight: FontWeight.bold)),
+                        //                 ),
+                        //                 Expanded(
+                        //                     flex: 1,
+                        //                     child: IconButton(
+                        //                       onPressed: () {},
+                        //                       icon: Image.asset(
+                        //                         "assets/delete.png",
+                        //                         color: Colors.red,
+                        //                         height: 18,
+                        //                         width: 18,
+                        //                       ),
+                        //                     )),
+                        //               ],
+                        //             ),
+                        //             Container(
+                        //               height: .5,
+                        //               decoration: BoxDecoration(
+                        //                   borderRadius: BorderRadius.circular(8),
+                        //                   border: Border.all(
+                        //                       color: textSecondary, width: .3)),
+                        //             ),
+                        //           ],
+                        //         );
+                        //       }),
+                        // ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 35,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: TextFormField(
+                                    onChanged: (text) async {},
+                                    onEditingComplete: () async {},
+                                    keyboardType: TextInputType.text,
+                                    style: TextStyle(
+                                        fontSize: fontVerySmall,
+                                        color: primaryText),
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          borderSide: BorderSide(
+                                              color: textSecondary, width: .5),
+                                        ),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        hintStyle: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: primaryText),
+                                        hintText: 'Person')),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: MaterialButton(
+                                    elevation: 0,
+                                    color: primaryColor,
+                                    height: 45,
+                                    // minWidth: 180,
+                                    // padding: EdgeInsets.all(20),
+                                    onPressed: () {},
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                    child: Text(
+                                      "Add",
+                                      style: TextStyle(
+                                          color: white,
+                                          fontSize: fontVerySmall),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                });
+          }),
         ),
       ),
       Container(
@@ -1144,8 +1163,7 @@ Widget addMisc(BuildContext context) {
           onEditingComplete: () async {},
           keyboardType: TextInputType.text,
           maxLines: 2,
-          style: TextStyle(
-              fontFamily: 'Poppins', fontSize: fontSmall, color: textSecondary),
+          style: TextStyle(fontSize: fontSmall, color: textSecondary),
           decoration: InputDecoration(
             fillColor: secondaryBackground,
             border: OutlineInputBorder(

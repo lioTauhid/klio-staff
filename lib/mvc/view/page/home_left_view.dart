@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/Customer.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
@@ -9,7 +10,7 @@ import '../../model/addons.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
 
-Widget leftSideView(BuildContext context) {
+Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
   HomeController homeController = Get.find();
   return Drawer(
     width: 400,
@@ -29,30 +30,43 @@ Widget leftSideView(BuildContext context) {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      iconTextBtn(
-                          'assets/dine-in.png', 'DINE IN', primaryColor, white,
-                          onPressed: () {
-                        showCustomDialog(context, "Table Reservation",
-                            tableBody(context), 50, 200);
-                      }),
-                      iconTextBtn('assets/takeway.png', 'TAKEAWAY',
-                          primaryBackground, primaryText,
-                          onPressed: () {}),
-                      iconTextBtn('assets/delivery.png', 'DELIVERY',
-                          primaryBackground, primaryText,
-                          onPressed: () {}),
-                      iconTextBtn('assets/table.png', 'TABLE',
-                          primaryBackground, primaryText, onPressed: () {
-                        showCustomDialog(context, "Table Reservation",
-                            tableBody(context), 50, 200);
-                      }),
-                    ],
-                  ),
+                  Obx(() {
+                    return Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        for (int i = 1; i < 5; i++)
+                          iconTextBtn(
+                              leftTopBtnTxt[i - 1].values.first,
+                              leftTopBtnTxt[i - 1].keys.first,
+                              homeController.topBtnPosition.value == i
+                                  ? primaryColor
+                                  : primaryBackground,
+                              homeController.topBtnPosition.value == i
+                                  ? white
+                                  : primaryText, onPressed: () {
+                            homeController.topBtnPosition.value = i;
+                            switch (i) {
+                              case 1:
+                                homeController.getTables();
+                                showCustomDialog(context, "Table Reservation",
+                                    tableBody(context), 50, 200);
+                                break;
+                              case 2:
+                                break;
+                              case 3:
+                                break;
+                              default:
+                                homeController.getTables();
+                                showCustomDialog(context, "Table Reservation",
+                                    tableBody(context), 50, 200);
+                                break;
+                            }
+                          })
+                      ],
+                    );
+                  }),
                   Container(
                     width: double.infinity,
                     height: 40,
@@ -74,7 +88,7 @@ Widget leftSideView(BuildContext context) {
                               ),
                               child: Obx(() {
                                 return DropdownButton<String>(
-                                  items: homeController.customer.value.data!
+                                  items: homeController.customers.value.data!
                                       .map((dynamic val) {
                                     return DropdownMenuItem<String>(
                                       value: val.name.toString(),
@@ -105,16 +119,33 @@ Widget leftSideView(BuildContext context) {
                             elevation: 0,
                             padding: EdgeInsets.zero,
                             color: secondaryBackground,
-                            onPressed: () {
+                            onPressed: () async {
                               showCustomDialog(
                                   context,
                                   "Update Customer",
                                   addCustomer(context, onPressed: () {
-                                    print(homeController
-                                        .controllerName.value.text);
+                                    //perform validation
+                                    homeController.addUpdateCustomer(false,
+                                        id: Utils.findIdByListNearValue(
+                                            homeController.customers.value.data!
+                                                .toList(),
+                                            homeController.customerName.value));
                                   }),
                                   60,
                                   400);
+                              Customer customer = await homeController
+                                  .getCustomer(Utils.findIdByListNearValue(
+                                      homeController.customers.value.data!
+                                          .toList(),
+                                      homeController.customerName.value));
+                              homeController.controllerName.value.text =
+                                  customer.data!.name!;
+                              homeController.controllerEmail.value.text =
+                                  customer.data!.email!;
+                              homeController.controllerPhone.value.text =
+                                  customer.data!.phone!;
+                              homeController.controllerAddress.value.text =
+                                  customer.data!.deliveryAddress!;
                             },
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6.0),
@@ -138,9 +169,7 @@ Widget leftSideView(BuildContext context) {
                                   context,
                                   "Add Customer",
                                   addCustomer(context, onPressed: () {
-                                    print(homeController
-                                        .controllerName.value.text);
-                                    homeController.addCustomer();
+                                    homeController.addUpdateCustomer(true);
                                   }),
                                   60,
                                   400);
@@ -265,8 +294,11 @@ Widget leftSideView(BuildContext context) {
                                   Expanded(
                                     flex: 4,
                                     child: Text(
-                                        homeController.cardList[index].variant!
-                                            .toString(),
+                                        Utils.findPriceByListId(
+                                            homeController.cardList.value[index]
+                                                .variants!.data!,
+                                            homeController.cardList.value[index]
+                                                .variant!),
                                         style: TextStyle(
                                             color: primaryText,
                                             fontSize: fontVerySmall)),
@@ -274,7 +306,7 @@ Widget leftSideView(BuildContext context) {
                                   Expanded(
                                     flex: 4,
                                     child: Text(
-                                        "£${(homeController.cardList[index].qty! * double.parse(homeController.cardList[index].variant!))}",
+                                        "£${(homeController.cardList[index].qty! * double.parse(Utils.findPriceByListId(homeController.cardList.value[index].variants!.data!, homeController.cardList.value[index].variant!)))}",
                                         style: TextStyle(
                                             color: primaryText,
                                             fontSize: fontVerySmall)),
@@ -406,7 +438,7 @@ Widget leftSideView(BuildContext context) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '${homeController.settings.value.data![14].value}% + £${Utils.vatTotal(homeController.cardList).toString()}',
+                                '${homeController.settings.value.data![14].value}% + £${Utils.vatTotal(homeController.cardList).toStringAsFixed(2)}',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: fontVerySmall,
@@ -416,8 +448,7 @@ Widget leftSideView(BuildContext context) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '£-10',
-                                // '£-${homeController.settings.value.data![15].value}',
+                                '£-${homeController.discount.value}',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: fontVerySmall,
@@ -427,11 +458,7 @@ Widget leftSideView(BuildContext context) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '£${((Utils.calcSubTotal(homeController.cardList) +
-                                    Utils.percentage(Utils.calcSubTotal(homeController.cardList),
-                                        double.parse(homeController.settings.value.data![14].value.toString())) +
-                                    Utils.vatTotal(homeController.cardList)) -
-                                    10).toStringAsFixed(2)}',
+                                '£${((Utils.calcSubTotal(homeController.cardList) + Utils.percentage(Utils.calcSubTotal(homeController.cardList), double.parse(homeController.settings.value.data![14].value.toString())) + Utils.vatTotal(homeController.cardList)) - homeController.discount.value).toStringAsFixed(2)}',
                                 style: TextStyle(
                                     fontSize: fontMedium,
                                     color: primaryColor,
@@ -454,7 +481,9 @@ Widget leftSideView(BuildContext context) {
                   children: [
                     iconTextBtnWide(
                         "assets/check.png", 'ORDER', primaryColor, white,
-                        onPressed: () {}),
+                        onPressed: () {
+                      homeController.addNewOrder();
+                    }),
                     iconTextBtnWide(
                         "assets/credit-card.png", 'Pay', alternate, primaryText,
                         onPressed: () {}),
@@ -472,8 +501,18 @@ Widget leftSideView(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     iconTextBtnWide("assets/percentage.png", 'Discout',
-                        alternate, primaryText,
-                        onPressed: () {}),
+                        alternate, primaryText, onPressed: () {
+                      TextEditingController controller =
+                          TextEditingController();
+
+                      Utils.showInputDialog(
+                          'Add Discount in £', "Amount to discount", controller,
+                          onAccept: () {
+                        homeController.discount.value =
+                            int.parse(controller.text);
+                        Get.back();
+                      });
+                    }),
                     iconTextBtnWide(
                         "assets/add.png", 'Add Misc', alternate, primaryText,
                         onPressed: () {

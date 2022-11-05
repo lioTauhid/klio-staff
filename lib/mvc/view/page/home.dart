@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
       key: scaffoldKey,
       backgroundColor: primaryBackground,
       drawer: sideDrawer(),
-      endDrawer: leftSideView(context),
+      endDrawer: leftSideView(context, scaffoldKey.currentState),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -112,7 +112,7 @@ class _HomeState extends State<Home> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     SizedBox(
-                                        width: 240,
+                                        width: 280,
                                         height: 40,
                                         child: TextFormField(
                                             onChanged: (text) async {},
@@ -571,7 +571,7 @@ class _HomeState extends State<Home> {
                 size.width > size.height
                     ? Expanded(
                         flex: 30,
-                        child: leftSideView(context),
+                        child: leftSideView(context, scaffoldKey.currentState),
                       )
                     : Container(
                         height: 50,

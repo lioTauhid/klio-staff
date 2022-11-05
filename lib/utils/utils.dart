@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constant/color.dart';
 import '../constant/value.dart';
-import '../mvc/model/addons.dart';
 
 class Utils {
   static final apiHeader = {
@@ -41,66 +40,108 @@ class Utils {
     if (Get.isDialogOpen!) Get.back();
   }
 
-  static void showWarningDialog(BuildContext context, String message,
-      {Function? onAccept}) {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-            children: [
-              Icon(
-                Icons.warning,
-                color: Colors.orange,
-              ),
-              Text(' Warning!'),
-            ],
-          ),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                onAccept;
-              },
-              child: Text("Yes"),
+  static void showWarningDialog(String message, {Function()? onAccept}) {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: alternate,
+        title: Row(
+          children: [
+            Icon(
+              Icons.warning,
+              color: Colors.orange,
             ),
-            TextButton(
-              child: Text("No"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
+            Text(' Warning!', style: TextStyle(color: primaryText)),
           ],
-        );
-      },
+        ),
+        content: Text(message, style: TextStyle(color: primaryText)),
+        actions: [
+          TextButton(
+            onPressed: onAccept,
+            child: Text("Yes"),
+          ),
+          TextButton(
+            child: Text(
+              "No",
+              style: TextStyle(color: textSecondary),
+            ),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
     );
   }
+
+  static void showInputDialog(
+      String title, String message, TextEditingController controller,
+      {Function()? onAccept}) {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: alternate,
+        title: Row(
+          children: [
+            Icon(
+              Icons.input,
+              color: Colors.green,
+            ),
+            Text('  ' + title, style: TextStyle(color: primaryText)),
+          ],
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(message, style: TextStyle(color: primaryText)),
+            SizedBox(
+              height: 40,
+              child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: controller,
+                  style:
+                      TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                  decoration: InputDecoration(
+                      fillColor: secondaryBackground,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      hintText: 'Type here...',
+                      contentPadding: EdgeInsets.only(left: 5),
+                      hintStyle: TextStyle(
+                          fontSize: fontVerySmall, color: textSecondary))),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: onAccept,
+            child: Text("Add"),
+          ),
+          TextButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: textSecondary),
+            ),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  int execute(int func(int a, int b)) => func(4, 3);
 
   static void showSnackBar(String message) {
     Get.snackbar(
       "Information!",
       message,
-      icon: Icon(Icons.error),
+      icon: Icon(Icons.error, color: Colors.indigo),
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.lightBlue,
       borderRadius: 20,
       margin: EdgeInsets.all(15),
       colorText: white,
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: 5),
       isDismissible: true,
     );
-    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //   content: Text(
-    //     message,
-    //   ),
-    //   duration: Duration(seconds: 5),
-    //   backgroundColor: secondaryColor,
-    //   action: SnackBarAction(
-    //     label: 'Ok',
-    //     textColor: white,
-    //     onPressed: () {
-    //       // Some code to undo the change.
-    //     },
-    //   ),
-    // ));
   }
 
   static bool isPasswordValid(String password) {
@@ -146,12 +187,23 @@ class Utils {
     return '';
   }
 
+  static String findPriceByListId(List list, String id) {
+    for (var element in list) {
+      if (element.id == int.parse(id)) {
+        return element.price.toString();
+      }
+    }
+    return '';
+  }
+
   static double calcSubTotal(List<dynamic> list) {
     double itemTotal = 0;
     double adTotal = 0;
     list.forEach((element) {
-      itemTotal =
-          itemTotal + (element.qty! * double.parse(element.variant.toString()));
+      itemTotal = itemTotal +
+          (element.qty! *
+              double.parse(Utils.findPriceByListId(
+                  element.variants!.data!, element.variant!)));
       element.addons!.data!.forEach((addon) {
         adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
       });
@@ -159,30 +211,16 @@ class Utils {
     return itemTotal + adTotal;
   }
 
-  // static double calcSubTotalWithVat(List<dynamic> list) {
-  //   double itemTotal = 0;
-  //   double adTotal = 0;
-  //   list.forEach((element) {
-  //     double vat = double.parse(element.taxVat.toString());
-  //     itemTotal =
-  //         itemTotal + (element.qty! * double.parse(element.variant.toString()));
-  //     itemTotal = itemTotal + percentage(itemTotal, vat);
-  //     element.addons!.data!.forEach((addon) {
-  //       adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
-  //     });
-  //     adTotal = adTotal + percentage(adTotal, vat);
-  //   });
-  //   return itemTotal + adTotal;
-  // }
-
   static double vatTotal(List<dynamic> list) {
     double itemTotal = 0;
     double adTotal = 0;
     double vatTotal = 0;
     list.forEach((element) {
       double vat = double.parse(element.taxVat.toString());
-      itemTotal =
-          itemTotal + (element.qty! * double.parse(element.variant.toString()));
+      itemTotal = itemTotal +
+          (element.qty! *
+              double.parse(Utils.findPriceByListId(
+                  element.variants!.data!, element.variant!)));
       vatTotal = vatTotal + percentage(itemTotal, vat);
       element.addons!.data!.forEach((addon) {
         adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
@@ -191,14 +229,6 @@ class Utils {
     });
     return vatTotal;
   }
-
-  // static double vatTotal(List<dynamic> list) {
-  //   double vat = 0;
-  //   list.forEach((element) {
-  //     vat = vat + double.parse(element.taxVat.toString());
-  //   });
-  //   return vat;
-  // }
 
   static double percentage(double total, double percentage) {
     return (total / 100) * percentage;

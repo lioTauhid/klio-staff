@@ -36,12 +36,26 @@ class ApiClient {
   }
 
   //PUT
+  Future<dynamic> put(String endPoint, dynamic payloadObj, {dynamic header}) async {
+    var uri = Uri.parse(baseUrl + endPoint);
+    try {
+      var response =
+      await http.put(uri, body: payloadObj, headers: header).timeout(Duration(seconds: 20));
+      return _processResponse(response);
+    } on SocketException {
+      throw ProcessDataException("No internet connection", uri.toString());
+    } on TimeoutException {
+      throw ProcessDataException("Not responding in time", uri.toString());
+    }
+  }
   //DELETE
+
 
   dynamic _processResponse(http.Response response) {
     var jsonResponse = utf8.decode(response.bodyBytes);
-    // print(response.statusCode);
-    // print(response.request!.url);
+    print(response.body);
+    print(response.statusCode);
+    print(response.request!.url);
     switch (response.statusCode) {
       case 200:
         return jsonResponse;

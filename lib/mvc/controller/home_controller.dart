@@ -1,14 +1,17 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/Customer.dart';
 import 'package:klio_staff/mvc/model/settings.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../constant/value.dart';
 import '../../service/api/api_client.dart';
 import '../../service/local/shared_pref.dart';
+import '../model/Tables.dart';
 import '../model/addons.dart';
 import '../model/category.dart';
-import '../model/customer.dart';
+import '../model/customers.dart';
 import '../model/menu.dart';
 import '../model/order.dart';
 import '../model/user.dart';
@@ -18,10 +21,11 @@ class HomeController extends GetxController with ErrorController {
   Rx<User> user = User().obs;
   Rx<Category> category = Category().obs;
   Rx<Menu> menu = Menu().obs;
-  Rx<Customer> customer = Customer().obs;
+  Rx<Customers> customers = Customers().obs;
   Rx<Order> order = Order().obs;
   Rx<Addons> addons = Addons().obs;
   Rx<Settings> settings = Settings().obs;
+  Rx<TableList> tables = TableList().obs;
   RxString customerName = ''.obs;
   Rx<TextEditingController> controllerName = TextEditingController().obs;
   Rx<TextEditingController> controllerEmail = TextEditingController().obs;
@@ -32,13 +36,16 @@ class HomeController extends GetxController with ErrorController {
   Rx<AddonsData> menuData = AddonsData().obs;
   RxList cardList = [].obs;
   RxDouble variantPrice = 0.0.obs;
+  RxInt discount = 0.obs;
 
+  // ui variables
+  RxInt topBtnPosition = 1.obs;
 
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
     Utils.showLoading();
     await getCurrentUserData();
-    await getCustomer();
+    await getCustomers();
     await getOrder();
     await getMenuByCategory();
     await getCategory();
@@ -74,12 +81,19 @@ class HomeController extends GetxController with ErrorController {
     menu.value = menuFromJson(response);
   }
 
-  Future<void> getCustomer() async {
+  Future<void> getCustomers() async {
     var response = await ApiClient()
         .get('pos/customer', header: Utils.apiHeader)
         .catchError(handleApiError);
-    customer.value = customerFromJson(response);
+    customers.value = customerFromJson(response);
     customerName.value = customerFromJson(response).data!.first.name.toString();
+  }
+
+  Future<Customer> getCustomer(String id) async {
+    var response = await ApiClient()
+        .get('pos/customer/$id', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    return cusFromJson(response);
   }
 
   Future<void> getOrder() async {
@@ -90,7 +104,15 @@ class HomeController extends GetxController with ErrorController {
     order.value = orderFromJson(response);
   }
 
-  void addCustomer() async {
+  void getTables() async {
+    var response = await ApiClient()
+        .get('pos/table', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    if (response == null) return;
+    tables.value = tablesFromJson(response);
+  }
+
+  void addUpdateCustomer(bool add, {String id = ''}) async {
     Utils.showLoading();
     var body = jsonEncode({
       "name": controllerName.value.text,
@@ -98,13 +120,59 @@ class HomeController extends GetxController with ErrorController {
       "phone": controllerPhone.value.text,
       "delivery_address": controllerAddress.value.text
     });
-    var response = await ApiClient()
-        .post('pos/customer', body, header: Utils.apiHeader)
+    var response;
+    if (add) {
+      response = await ApiClient()
+          .post('pos/customer', body, header: Utils.apiHeader)
+          .catchError(handleApiError);
+    } else {
+      response = await ApiClient()
+          .put('pos/customer/$id', body, header: Utils.apiHeader)
+          .catchError(handleApiError);
+    }
+    if (response == null) return;
+    getCustomers();
+    Utils.hideLoading();
+    Utils.showSnackBar("Customer added successfully");
+  }
+
+  void addNewOrder() {
+    Utils.showLoading();
+    List<Map> items = [{}];
+    cardList.value.forEach((element) {
+      AddonsData add = element;
+      items.add(
+        {
+          "id": add.id,
+          "quantity": add.qty,
+          "variant_id": int.parse(add.variant!),
+          "addons": [
+            for (AddonsDatum i in add.addons!.data!)
+              if (i.isChecked == true) {"id": i.id, "quantity": i.qty}
+          ],
+        },
+      );
+    });
+    items.removeAt(0);
+    var body = jsonEncode({
+      "order_type": leftTopBtnTxt[topBtnPosition.value - 1].keys.first,
+      "customer": Utils.findIdByListNearValue(
+          customers.value.data!.toList(), customerName.value),
+      "items": items,
+      "discount": discount.value,
+      // "tables": [
+      //   {"id": 16, "person": 18}
+      // ]
+    });
+    print(body);
+    var response = ApiClient()
+        .post('pos/order', body, header: Utils.apiHeader)
         .catchError(handleApiError);
     if (response == null) return;
-    getCustomer();
+    cardList.clear();
+    getOrder();
     Utils.hideLoading();
-    Utils.showSnackBar("Customer added");
+    Utils.showSnackBar("Order added successfully");
   }
 
   Future<void> getAddons(int id) async {

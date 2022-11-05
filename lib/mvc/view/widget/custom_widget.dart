@@ -46,8 +46,8 @@ Widget bottomIconTextBtn(String imagePath, String text, Color background,
   );
 }
 
-Widget topBarIconBtn(Image image, Color background,
-    double padding, double radius, double size,
+Widget topBarIconBtn(
+    Image image, Color background, double padding, double radius, double size,
     {Function()? onPressed}) {
   return SizedBox(
     height: size,
@@ -83,7 +83,8 @@ Widget iconTextBtn(
           child: Image.asset(imagePath, color: iconColor),
         ),
         SizedBox(height: 5),
-        Text(text, style: TextStyle(color: primaryText, fontSize: fontVerySmall)),
+        Text(text,
+            style: TextStyle(color: primaryText, fontSize: fontVerySmall)),
       ],
     ),
   );
@@ -107,7 +108,8 @@ Widget iconTextBtnWide(
             imagePath,
             color: contentColor,
           ),
-          Text(text, style: TextStyle(color: contentColor, fontSize: fontVerySmall)),
+          Text(text,
+              style: TextStyle(color: contentColor, fontSize: fontVerySmall)),
         ],
       ),
     ),
@@ -135,8 +137,6 @@ Widget normalButton(String text, Color background, Color textColor,
 Widget normalTextField(TextEditingController controller) {
   return TextFormField(
       controller: controller,
-      onChanged: (text) async {},
-      onEditingComplete: () async {},
       keyboardType: TextInputType.text,
       style: TextStyle(fontSize: fontSmall, color: primaryText),
       decoration: InputDecoration(
@@ -147,13 +147,17 @@ Widget normalTextField(TextEditingController controller) {
       ));
 }
 
-Widget textMixer(String boldText, String normalText, MainAxisAlignment alignment){
+Widget textMixer(
+    String boldText, String normalText, MainAxisAlignment alignment) {
   return Row(
     mainAxisAlignment: alignment,
     children: [
       Text(
         boldText,
-        style: TextStyle(fontSize: fontVerySmall, color: primaryText, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            fontSize: fontVerySmall,
+            color: primaryText,
+            fontWeight: FontWeight.bold),
       ),
       Text(
         normalText,
@@ -163,8 +167,8 @@ Widget textMixer(String boldText, String normalText, MainAxisAlignment alignment
   );
 }
 
-Widget textRow1(String text1, String text2){
-  return       Row(
+Widget textRow1(String text1, String text2) {
+  return Row(
     children: [
       Expanded(
         flex: 1,
@@ -191,7 +195,7 @@ Widget textRow1(String text1, String text2){
   );
 }
 
-Widget textFieldRow1(String text1, String text2){
+Widget textFieldRow1(String text1, String text2) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -203,20 +207,16 @@ Widget textFieldRow1(String text1, String text2){
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
                 keyboardType: TextInputType.text,
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: textSecondary),
+                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
                 decoration: InputDecoration(
                     fillColor: secondaryBackground,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
                     hintStyle: TextStyle(
-                        fontSize: fontVerySmall,
-                        color: textSecondary),
+                        fontSize: fontVerySmall, color: textSecondary),
                     hintText: text1)),
-          )
-      ),
+          )),
       SizedBox(width: 8),
       Expanded(
           flex: 1,
@@ -226,20 +226,16 @@ Widget textFieldRow1(String text1, String text2){
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
                 keyboardType: TextInputType.text,
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: textSecondary),
+                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
                 decoration: InputDecoration(
                     fillColor: secondaryBackground,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
                     hintStyle: TextStyle(
-                        fontSize: fontVerySmall,
-                        color: textSecondary),
+                        fontSize: fontVerySmall, color: textSecondary),
                     hintText: text2)),
-          )
-      ),
+          )),
     ],
   );
 }

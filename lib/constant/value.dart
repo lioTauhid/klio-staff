@@ -1,5 +1,3 @@
-
-
 const fontVeryBig = 26.0;
 const fontBig = 22.0;
 
@@ -13,3 +11,10 @@ const dialogPadding = 20.0;
 
 const baseUrl = "https://app.klio.digital/api/";
 late String token;
+
+const List<Map<String, String>> leftTopBtnTxt = [
+  {'Dine In': 'assets/dine-in.png'},
+  {'Takeway': 'assets/takeway.png'},
+  {'Delivery': 'assets/delivery.png'},
+  {'Table': 'assets/table.png'}
+];
