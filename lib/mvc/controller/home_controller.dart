@@ -31,12 +31,14 @@ class HomeController extends GetxController with ErrorController {
   Rx<TextEditingController> controllerEmail = TextEditingController().obs;
   Rx<TextEditingController> controllerPhone = TextEditingController().obs;
   Rx<TextEditingController> controllerAddress = TextEditingController().obs;
+  RxBool withoutTable =false.obs;
 
   // temp variables
   Rx<AddonsData> menuData = AddonsData().obs;
   RxList cardList = [].obs;
   RxDouble variantPrice = 0.0.obs;
-  RxInt discount = 0.obs;
+  RxDouble discount = 0.0.obs;
+  RxString discType = 'In Flat Amount'.obs;
 
   // ui variables
   RxInt topBtnPosition = 1.obs;
@@ -104,7 +106,7 @@ class HomeController extends GetxController with ErrorController {
     order.value = orderFromJson(response);
   }
 
-  void getTables() async {
+  Future<void> getTables() async {
     var response = await ApiClient()
         .get('pos/table', header: Utils.apiHeader)
         .catchError(handleApiError);
@@ -137,6 +139,10 @@ class HomeController extends GetxController with ErrorController {
   }
 
   void addNewOrder() {
+    if(withoutTable.isFalse){
+      Utils.showSnackBar("No table selected for new order");
+      return;
+    }
     Utils.showLoading();
     List<Map> items = [{}];
     cardList.value.forEach((element) {
@@ -160,9 +166,10 @@ class HomeController extends GetxController with ErrorController {
           customers.value.data!.toList(), customerName.value),
       "items": items,
       "discount": discount.value,
-      // "tables": [
-      //   {"id": 16, "person": 18}
-      // ]
+      "tables": [
+        for (var i in tables.value.data!.toList())
+          if (i.person != '') {"id": i.id, "person": int.parse(i.person.toString())}
+      ]
     });
     print(body);
     var response = ApiClient()
@@ -170,6 +177,8 @@ class HomeController extends GetxController with ErrorController {
         .catchError(handleApiError);
     if (response == null) return;
     cardList.clear();
+    tables.value.data!.clear();
+    discount.value = 0;
     getOrder();
     Utils.hideLoading();
     Utils.showSnackBar("Order added successfully");

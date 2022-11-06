@@ -26,20 +26,27 @@ class TableList {
 
 class Datum {
   Datum({
+    this.id,
     this.name,
     this.number,
     this.capacity,
     this.available,
     this.image,
+    this.message,
+    this.person,
   });
 
+  int? id;
   String? name;
   String? number;
   int? capacity;
   int? available;
   String? image;
+  String? message;
+  String? person;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    id: json["id"],
     name: json["name"],
     number: json["number"],
     capacity: json["capacity"],
@@ -48,10 +55,13 @@ class Datum {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "name": name,
     "number": number,
     "capacity": capacity,
     "available": available,
     "image": image,
+    "message": message,
+    "person": person,
   };
 }

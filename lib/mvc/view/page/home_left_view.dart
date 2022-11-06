@@ -45,11 +45,11 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                   : primaryBackground,
                               homeController.topBtnPosition.value == i
                                   ? white
-                                  : primaryText, onPressed: () {
+                                  : primaryText, onPressed: () async {
                             homeController.topBtnPosition.value = i;
                             switch (i) {
                               case 1:
-                                homeController.getTables();
+                                await homeController.getTables();
                                 showCustomDialog(context, "Table Reservation",
                                     tableBody(context), 50, 200);
                                 break;
@@ -427,7 +427,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                Utils.calcSubTotal(homeController.cardList)
+                                '£${Utils.calcSubTotal(homeController.cardList)}'
                                     .toString(),
                                 style: TextStyle(
                                     color: primaryText,
@@ -448,7 +448,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '£-${homeController.discount.value}',
+                                '£-${homeController.discount.value.toStringAsFixed(2)}',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: fontVerySmall,
@@ -505,11 +505,28 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                       TextEditingController controller =
                           TextEditingController();
 
-                      Utils.showInputDialog(
-                          'Add Discount in £', "Amount to discount", controller,
+                      showDiscountDialog('Add Discount in £', controller,
                           onAccept: () {
-                        homeController.discount.value =
-                            int.parse(controller.text);
+                        print('dsssss');
+                        if (homeController.cardList.length == 0) {
+                          Utils.showSnackBar('No cart item to discount');
+                          return;
+                        }
+                        if (homeController.discType.value == types[0]) {
+                          homeController.discount.value =
+                              double.parse(controller.text);
+                        } else {
+                          homeController.discount.value = Utils.percentage(
+                              Utils.calcSubTotal(homeController.cardList) +
+                                  Utils.percentage(
+                                      Utils.calcSubTotal(
+                                          homeController.cardList),
+                                      double.parse(homeController
+                                          .settings.value.data![14].value
+                                          .toString())) +
+                                  Utils.vatTotal(homeController.cardList),
+                              double.parse(controller.text));
+                        }
                         Get.back();
                       });
                     }),

@@ -38,6 +38,175 @@ Future<void> showCustomDialog(BuildContext context, String title, Widget widget,
   );
 }
 
+void showWarningDialog(String message, {Function()? onAccept}) {
+  Get.dialog(
+    AlertDialog(
+      backgroundColor: alternate,
+      title: Row(
+        children: [
+          Icon(
+            Icons.warning,
+            color: Colors.orange,
+          ),
+          Text(' Warning!', style: TextStyle(color: primaryText)),
+        ],
+      ),
+      content: Text(message, style: TextStyle(color: primaryText)),
+      actions: [
+        TextButton(
+          onPressed: onAccept,
+          child: Text("Yes"),
+        ),
+        TextButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: textSecondary),
+          ),
+          onPressed: () => Get.back(),
+        ),
+      ],
+    ),
+  );
+}
+
+void showInputDialog(
+    String title, String message, TextEditingController controller,
+    {Function()? onAccept}) {
+  Get.dialog(
+    AlertDialog(
+      backgroundColor: alternate,
+      title: Row(
+        children: [
+          Icon(
+            Icons.input,
+            color: Colors.green,
+          ),
+          Text('  ' + title, style: TextStyle(color: primaryText)),
+        ],
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(message, style: TextStyle(color: primaryText)),
+          SizedBox(
+            height: 40,
+            child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: controller,
+                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                decoration: InputDecoration(
+                    fillColor: secondaryBackground,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    hintText: 'Type here...',
+                    contentPadding: EdgeInsets.only(left: 5),
+                    hintStyle: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary))),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: onAccept,
+          child: Text("Add"),
+        ),
+        TextButton(
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: textSecondary),
+          ),
+          onPressed: () => Get.back(),
+        ),
+      ],
+    ),
+  );
+}
+
+void showDiscountDialog(String title, TextEditingController controller,
+    {Function()? onAccept}) {
+  Get.dialog(
+    AlertDialog(
+      backgroundColor: alternate,
+      title: Row(
+        children: [
+          Icon(
+            Icons.input,
+            color: Colors.green,
+          ),
+          Text('  ' + title, style: TextStyle(color: primaryText)),
+        ],
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Value to discount", style: TextStyle(color: primaryText)),
+          SizedBox(
+            height: 40,
+            child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: controller,
+                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                decoration: InputDecoration(
+                    fillColor: secondaryBackground,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    hintText: 'Type here...',
+                    contentPadding: EdgeInsets.only(left: 5),
+                    hintStyle: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary))),
+          ),
+          SizedBox(height: 15),
+          Text('Discount Type', style: TextStyle(color: primaryText)),
+          Container(
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: textSecondary, width: 1)),
+              child: Obx(() {
+                return DropdownButton<String>(
+                  items: types.map((dynamic val) {
+                    return DropdownMenuItem<String>(
+                      value: val,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(val, style: TextStyle(color: primaryText)),
+                      ),
+                    );
+                  }).toList(),
+                  borderRadius: BorderRadius.circular(8),
+                  underline: SizedBox(),
+                  isExpanded: true,
+                  dropdownColor: primaryBackground,
+                  value: homeController.discType.toString(),
+                  onChanged: (value) {
+                    homeController.discType.value = value!;
+                  },
+                );
+              }))
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: onAccept,
+          child: Text("Add"),
+        ),
+        TextButton(
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: textSecondary),
+          ),
+          onPressed: () => Get.back(),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget dialogHeader(String title, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -409,6 +578,10 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
 Widget tableBody(BuildContext context) {
   Size size = MediaQuery.of(context).size;
   ScrollController _scrollController = ScrollController();
+  for (int i = 0; i < homeController.tables.value.data!.length; i++) {
+    homeController.tables.value.data![i].message = '';
+    homeController.tables.value.data![i].person = '';
+  }
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
     child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -581,17 +754,31 @@ Widget tableBody(BuildContext context) {
                         //         );
                         //       }),
                         // ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 30),
                         SizedBox(
-                          height: 35,
+                          height: 45,
                           child: Row(
                             children: [
                               Expanded(
                                 flex: 5,
                                 child: TextFormField(
-                                    onChanged: (text) async {},
-                                    onEditingComplete: () async {},
-                                    keyboardType: TextInputType.text,
+                                    onChanged: (text) async {
+                                      if (homeController.tables.value
+                                              .data![index].available! >=
+                                          int.parse(text)) {
+                                        homeController.tables.value.data![index]
+                                            .person = text;
+                                        homeController.tables.value.data![index]
+                                            .message = '';
+                                        homeController.tables.refresh();
+                                      } else {
+                                        homeController.tables.value.data![index]
+                                                .message =
+                                            'Available sit is not smaller than entered person!';
+                                        homeController.tables.refresh();
+                                      }
+                                    },
+                                    keyboardType: TextInputType.number,
                                     style: TextStyle(
                                         fontSize: fontVerySmall,
                                         color: primaryText),
@@ -613,31 +800,38 @@ Widget tableBody(BuildContext context) {
                                             color: primaryText),
                                         hintText: 'Person')),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: MaterialButton(
-                                    elevation: 0,
-                                    color: primaryColor,
-                                    height: 45,
-                                    // minWidth: 180,
-                                    // padding: EdgeInsets.all(20),
-                                    onPressed: () {},
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                    child: Text(
-                                      "Add",
-                                      style: TextStyle(
-                                          color: white,
-                                          fontSize: fontVerySmall),
-                                    )),
-                              ),
+                              // SizedBox(
+                              //   width: 10,
+                              // ),
+                              // Expanded(
+                              //   flex: 2,
+                              //   child: MaterialButton(
+                              //       elevation: 0,
+                              //       color: primaryColor,
+                              //       height: 45,
+                              //       // minWidth: 180,
+                              //       // padding: EdgeInsets.all(20),
+                              //       onPressed: () {},
+                              //       shape: RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.circular(40),
+                              //       ),
+                              //       child: Text(
+                              //         "Add",
+                              //         style: TextStyle(
+                              //             color: white,
+                              //             fontSize: fontVerySmall),
+                              //       )),
+                              // ),
                             ],
                           ),
                         ),
+                        Expanded(
+                          child: Text(
+                              homeController
+                                      .tables.value.data![index].message ??
+                                  '',
+                              style: TextStyle(color: Colors.red)),
+                        )
                       ],
                     ),
                   );
@@ -659,11 +853,30 @@ Widget tableBody(BuildContext context) {
         children: [
           normalButton(
               'Process without table', Colors.transparent, textSecondary,
-              onPressed: () {}),
+              onPressed: () {
+                homeController.withoutTable.value = true;
+                Get.back();
+              }),
           normalButton('Please read', primaryBackground, primaryText,
               onPressed: () {}),
           SizedBox(width: 100),
-          normalButton('Submit', primaryColor, white, onPressed: () {}),
+          normalButton('Submit', primaryColor, white, onPressed: () {
+            // Utils.showLoading();
+            print(homeController.tables.value.toJson());
+            bool error = false;
+            homeController.tables.value.data!.forEach((element) {
+              if (element.message != '') {
+                error = true;
+                return;
+              }
+            });
+            if (error) {
+              Utils.showSnackBar("Check the person filed is valid!");
+            } else {
+              Get.back();
+            }
+            // homeController.selectedTables.add({"id": 16, "person": 18});
+          }),
         ],
       ),
     ]),
