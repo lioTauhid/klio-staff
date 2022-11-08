@@ -49,9 +49,11 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             homeController.topBtnPosition.value = i;
                             switch (i) {
                               case 1:
+                                Utils.showLoading();
                                 await homeController.getTables();
+                                Utils.hideLoading();
                                 showCustomDialog(context, "Table Reservation",
-                                    tableBody(context), 50, 200);
+                                    tableBody(context, false), 50, 200);
                                 break;
                               case 2:
                                 break;
@@ -60,7 +62,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                               default:
                                 homeController.getTables();
                                 showCustomDialog(context, "Table Reservation",
-                                    tableBody(context), 50, 200);
+                                    tableBody(context, true), 50, 200);
                                 break;
                             }
                           })
@@ -507,7 +509,6 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
 
                       showDiscountDialog('Add Discount in £', controller,
                           onAccept: () {
-                        print('dsssss');
                         if (homeController.cardList.length == 0) {
                           Utils.showSnackBar('No cart item to discount');
                           return;

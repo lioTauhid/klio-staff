@@ -472,7 +472,7 @@ class _HomeState extends State<Home> {
                                     scrollDirection: Axis.horizontal,
                                     padding: EdgeInsets.zero,
                                     itemCount:
-                                        homeController.order.value.data!.length,
+                                        homeController.orders.value.data!.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return Card(
@@ -503,7 +503,7 @@ class _HomeState extends State<Home> {
                                               color: primaryColor,
                                             ),
                                             title: Text(
-                                                homeController.order.value
+                                                homeController.orders.value
                                                         .data![index].type
                                                         .toString() ??
                                                     '',
@@ -513,8 +513,8 @@ class _HomeState extends State<Home> {
                                                     fontWeight:
                                                         FontWeight.bold)),
                                             subtitle: Text(
-                                                'Table : ${Utils.getTables(homeController.order.value.data![index].tables!.data!)}\n'
-                                                'Invoice : ${homeController.order.value.data![index].invoice.toString()}',
+                                                'Table : ${Utils.getTables(homeController.orders.value.data![index].tables!.data!)}\n'
+                                                'Invoice : ${homeController.orders.value.data![index].invoice.toString()}',
                                                 style: TextStyle(
                                                   fontSize: fontVerySmall,
                                                   color: primaryText,
@@ -538,7 +538,10 @@ class _HomeState extends State<Home> {
                                     bottomIconTextBtn(
                                         'assets/delivery.png',
                                         'Order Detail',
-                                        primaryColor, onPressed: () {
+                                        primaryColor, onPressed: () async {
+                                      Utils.showLoading();
+                                      await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
+                                      Utils.hideLoading();
                                       showCustomDialog(
                                           context,
                                           "Table Reservation",
@@ -549,11 +552,29 @@ class _HomeState extends State<Home> {
                                     SizedBox(width: 8),
                                     bottomIconTextBtn('assets/circle-error.png',
                                         'Cancel Order', primaryColor,
-                                        onPressed: () {}),
+                                        onPressed: () {
+                                          showWarningDialog('Are you sure to cancel this order?', onAccept: () async {
+                                            Utils.showLoading();
+                                            await homeController.cancelOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
+                                            await homeController.getOrders();
+                                            Utils.hideLoading();
+                                            Utils.hideLoading();
+                                            Utils.showSnackBar("Order canceled successfully");
+                                          });
+                                        }),
                                     SizedBox(width: 8),
                                     bottomIconTextBtn('assets/edit-alt.png',
                                         'Edit Order', primaryColor,
-                                        onPressed: () {}),
+                                        onPressed: () {
+                                          showWarningDialog('Are you sure to edit this order?', onAccept: () async {
+                                            Utils.showLoading();
+                                            await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
+                                            // update cart data from api
+                                            Utils.hideLoading();
+                                            // homeController.getOrders();
+                                            // Utils.hideLoading();
+                                          });
+                                        }),
                                     SizedBox(width: 8),
                                     bottomIconTextBtn('assets/delivery.png',
                                         'Kitchen Status', primaryColor,

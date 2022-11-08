@@ -14,6 +14,7 @@ import '../model/category.dart';
 import '../model/customers.dart';
 import '../model/menu.dart';
 import '../model/order.dart';
+import '../model/orders.dart';
 import '../model/user.dart';
 import 'error_controller.dart';
 
@@ -22,6 +23,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<Category> category = Category().obs;
   Rx<Menu> menu = Menu().obs;
   Rx<Customers> customers = Customers().obs;
+  Rx<Orders> orders = Orders().obs;
   Rx<Order> order = Order().obs;
   Rx<Addons> addons = Addons().obs;
   Rx<Settings> settings = Settings().obs;
@@ -31,7 +33,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<TextEditingController> controllerEmail = TextEditingController().obs;
   Rx<TextEditingController> controllerPhone = TextEditingController().obs;
   Rx<TextEditingController> controllerAddress = TextEditingController().obs;
-  RxBool withoutTable =false.obs;
+  RxBool withoutTable = false.obs;
 
   // temp variables
   Rx<AddonsData> menuData = AddonsData().obs;
@@ -48,7 +50,7 @@ class HomeController extends GetxController with ErrorController {
     Utils.showLoading();
     await getCurrentUserData();
     await getCustomers();
-    await getOrder();
+    await getOrders();
     await getMenuByCategory();
     await getCategory();
     Utils.hideLoading();
@@ -98,9 +100,24 @@ class HomeController extends GetxController with ErrorController {
     return cusFromJson(response);
   }
 
-  Future<void> getOrder() async {
+  Future<void> getOrders() async {
     var response = await ApiClient()
         .get('pos/order', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    if (response == null) return;
+    orders.value = ordersFromJson(response);
+  }
+
+  Future<void> cancelOrder(int id) async {
+    var response = await ApiClient()
+        .post('pos/order/$id/cancel', jsonEncode({}), header: Utils.apiHeader)
+        .catchError(handleApiError);
+    if (response == null) return;
+  }
+
+  Future<void> getOrder(int id) async {
+    var response = await ApiClient()
+        .get('pos/order/$id', header: Utils.apiHeader)
         .catchError(handleApiError);
     if (response == null) return;
     order.value = orderFromJson(response);
@@ -139,7 +156,7 @@ class HomeController extends GetxController with ErrorController {
   }
 
   void addNewOrder() {
-    if(withoutTable.isFalse){
+    if (withoutTable.isFalse) {
       Utils.showSnackBar("No table selected for new order");
       return;
     }
@@ -153,7 +170,7 @@ class HomeController extends GetxController with ErrorController {
           "quantity": add.qty,
           "variant_id": int.parse(add.variant!),
           "addons": [
-            for (AddonsDatum i in add.addons!.data!)
+            for (var i in add.addons!.data!)
               if (i.isChecked == true) {"id": i.id, "quantity": i.qty}
           ],
         },
@@ -165,10 +182,11 @@ class HomeController extends GetxController with ErrorController {
       "customer": Utils.findIdByListNearValue(
           customers.value.data!.toList(), customerName.value),
       "items": items,
-      "discount": discount.value,
+      "discount": discount.value ?? 0,
       "tables": [
         for (var i in tables.value.data!.toList())
-          if (i.person != '') {"id": i.id, "person": int.parse(i.person.toString())}
+          if (i.person != '')
+            {"id": i.id, "person": int.parse(i.person.toString())}
       ]
     });
     print(body);
@@ -179,7 +197,9 @@ class HomeController extends GetxController with ErrorController {
     cardList.clear();
     tables.value.data!.clear();
     discount.value = 0;
-    getOrder();
+    withoutTable.value = false;
+
+    getOrders();
     Utils.hideLoading();
     Utils.showSnackBar("Order added successfully");
   }
