@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:klio_staff/mvc/model/addons.dart';
+import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
@@ -278,11 +278,11 @@ Widget addCustomer(BuildContext context, {Function()? onPressed}) {
   );
 }
 
-Widget foodMenuBody(BuildContext context, AddonsData data) {
+Widget foodMenuBody(BuildContext context, MenuData data) {
   homeController.menuData.value = data;
-  homeController.menuData.value.qty = 0;
+  homeController.menuData.value.quantity = 0;
   for (int i = 0; i < homeController.menuData.value.addons!.data!.length; i++) {
-    homeController.menuData.value.addons!.data![i].qty = 0;
+    homeController.menuData.value.addons!.data![i].quantity = 0;
     homeController.menuData.value.addons!.data![i].isChecked = false;
   }
   homeController.variantPrice.value = 0;
@@ -382,21 +382,21 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                 children: [
                   topBarIconBtn(Image.asset('assets/remove.png', color: white),
                       primaryColor, 0, 2, 14, onPressed: () {
-                    homeController.menuData.value.qty =
-                        Utils.incrementDecrement(
-                            false, homeController.menuData.value.qty!.toInt());
+                    homeController.menuData.value.quantity =
+                        Utils.incrementDecrement(false,
+                            homeController.menuData.value.quantity!.toInt());
                     homeController.menuData.refresh();
                   }),
                   SizedBox(width: 6),
-                  Text(homeController.menuData.value.qty.toString(),
+                  Text(homeController.menuData.value.quantity.toString(),
                       style:
                           TextStyle(color: primaryText, fontSize: fontMedium)),
                   SizedBox(width: 6),
                   topBarIconBtn(Image.asset('assets/add.png', color: white),
                       primaryColor, 0, 2, 14, onPressed: () {
-                    homeController.menuData.value.qty =
-                        Utils.incrementDecrement(
-                            true, homeController.menuData.value.qty!.toInt());
+                    homeController.menuData.value.quantity =
+                        Utils.incrementDecrement(true,
+                            homeController.menuData.value.quantity!.toInt());
                     homeController.menuData.refresh();
                   }),
                 ],
@@ -405,7 +405,7 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
             Expanded(
               flex: 1,
               child: Text(
-                  "£${(homeController.menuData.value.qty! * unitPrice)}",
+                  "£${(homeController.menuData.value.quantity! * unitPrice)}",
                   style: TextStyle(
                       fontSize: fontMedium,
                       color: primaryText,
@@ -488,19 +488,19 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                             0,
                             2,
                             14, onPressed: () {
-                          homeController
-                                  .menuData.value.addons!.data![index].qty =
+                          homeController.menuData.value.addons!.data![index]
+                                  .quantity =
                               Utils.incrementDecrement(
                                   false,
-                                  homeController
-                                      .menuData.value.addons!.data![index].qty!
+                                  homeController.menuData.value.addons!
+                                      .data![index].quantity!
                                       .toInt());
                           homeController.menuData.refresh();
                         }),
                         SizedBox(width: 6),
                         Text(
                             homeController
-                                .menuData.value.addons!.data![index].qty
+                                .menuData.value.addons!.data![index].quantity
                                 .toString(),
                             style: TextStyle(
                                 color: primaryText,
@@ -513,12 +513,12 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                             0,
                             2,
                             14, onPressed: () {
-                          homeController
-                                  .menuData.value.addons!.data![index].qty =
+                          homeController.menuData.value.addons!.data![index]
+                                  .quantity =
                               Utils.incrementDecrement(
                                   true,
-                                  homeController
-                                      .menuData.value.addons!.data![index].qty!
+                                  homeController.menuData.value.addons!
+                                      .data![index].quantity!
                                       .toInt());
                           homeController.menuData.refresh();
                         }),
@@ -528,7 +528,7 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
                   Expanded(
                     flex: 1,
                     child: Text(
-                        "£${homeController.menuData.value.addons!.data![index].qty! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
+                        "£${homeController.menuData.value.addons!.data![index].quantity! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
                         style: TextStyle(
                             fontSize: fontSmall,
                             color: primaryText,
@@ -547,7 +547,7 @@ Widget foodMenuBody(BuildContext context, AddonsData data) {
           onPressed: () {
             homeController.cardList.add(homeController.menuData.value);
             Get.back();
-            // print(homeController.menuData.value.toJson());
+            print(homeController.menuData.value.toJson());
             // print(homeController.menuData.value.qty);
             // print(homeController.menuData.value.addons!.data);
             // print(homeController.menuData.value.addons!.data![0].qty);
@@ -580,7 +580,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
   ScrollController _scrollController = ScrollController();
   for (int i = 0; i < homeController.tables.value.data!.length; i++) {
     homeController.tables.value.data![i].message = '';
-    homeController.tables.value.data![i].person = '';
+    homeController.tables.value.data![i].person = 0;
   }
   homeController.withoutTable.value = false;
 
@@ -766,22 +766,27 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                     Expanded(
                                       flex: 5,
                                       child: TextFormField(
-                                          onChanged: (text) async {
+                                          onChanged: (text) {
+                                            if (text == '') {
+                                              homeController.tables.value
+                                                  .data![index].person = 0;
+                                              homeController.tables.refresh();
+                                            }
                                             print(text);
                                             if (homeController.tables.value
                                                     .data![index].available! >=
-                                                int.parse(text)) {
+                                                int.parse(text ?? '0')) {
                                               homeController
                                                   .tables
                                                   .value
                                                   .data![index]
-                                                  .person = text ?? '';
+                                                  .person = int.parse(text);
                                               homeController.tables.value
                                                   .data![index].message = '';
                                               homeController.tables.refresh();
                                             } else {
                                               homeController.tables.value
-                                                  .data![index].person = '';
+                                                  .data![index].person = 0;
                                               homeController.tables.value
                                                       .data![index].message =
                                                   'Available sit is not smaller than entered person!';
@@ -875,7 +880,6 @@ Widget tableBody(BuildContext context, bool showOnly) {
                     onPressed: () {}),
                 SizedBox(width: 100),
                 normalButton('Submit', primaryColor, white, onPressed: () {
-                  // Utils.showLoading();
                   print(homeController.tables.value.toJson());
                   bool error = false;
                   for (var element in homeController.tables.value.data!) {
@@ -888,19 +892,18 @@ Widget tableBody(BuildContext context, bool showOnly) {
                     Utils.showSnackBar("Check the person filed is valid!");
                   } else {
                     for (var element in homeController.tables.value.data!) {
-                      if (element.person != '') {
+                      if (element.person != 0) {
                         error = false;
                         break;
                       } else {
                         error = true;
-                        Utils.showSnackBar("Check the person filed is empty!");
-                        break;
                       }
                     }
                     if (!error) {
                       homeController.withoutTable.value = true;
                       Get.back();
-                    }
+                    } else
+                      Utils.showSnackBar("Check the person filed is empty!");
                   }
                 }),
               ],
@@ -1198,7 +1201,11 @@ Widget orderDetail(BuildContext context) {
                 flex: 1,
                 child: textMixer(
                     'Sub Total: ',
-                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) - double.parse(homeController.order.value.data!.serviceCharge.toString())}',
+                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) +
+                        double.parse(homeController.order.value.data!.discount.toString())-
+                        (double.parse(homeController.order.value.data!.deliveryCharge.toString()) +
+                        Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) +
+                        double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
                     MainAxisAlignment.start)),
             Expanded(
                 flex: 1,
@@ -1225,8 +1232,13 @@ Widget orderDetail(BuildContext context) {
                     MainAxisAlignment.start)),
             Expanded(
                 flex: 1,
-                child:
-                    textMixer('VAT: ', ''.toString(), MainAxisAlignment.start)),
+                child: textMixer(
+                    'VAT: ',
+                    Utils.vatTotal2(homeController
+                            .order.value.data!.orderDetails!.data!
+                            .toList())
+                        .toString(),
+                    MainAxisAlignment.start)),
             // child: textMixer('VAT: ', Utils.vatTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString(), MainAxisAlignment.start)),
             Expanded(
                 flex: 1,

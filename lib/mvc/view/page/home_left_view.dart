@@ -6,7 +6,7 @@ import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../../utils/utils.dart';
 import '../../controller/home_controller.dart';
-import '../../model/addons.dart';
+import '../../model/menu.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
 
@@ -259,17 +259,17 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                             0,
                                             2,
                                             16, onPressed: () {
-                                          homeController.cardList[index].qty =
+                                          homeController.cardList[index].quantity =
                                               Utils.incrementDecrement(
                                                   false,
                                                   homeController
-                                                      .cardList[index].qty!
+                                                      .cardList[index].quantity!
                                                       .toInt());
                                           homeController.cardList.refresh();
                                         }),
                                         SizedBox(width: 6),
                                         Text(
-                                            homeController.cardList[index].qty
+                                            homeController.cardList[index].quantity
                                                 .toString(),
                                             style: TextStyle(
                                                 color: primaryText,
@@ -282,11 +282,11 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                             0,
                                             2,
                                             16, onPressed: () {
-                                          homeController.cardList[index].qty =
+                                          homeController.cardList[index].quantity =
                                               Utils.incrementDecrement(
                                                   true,
                                                   homeController
-                                                      .cardList[index].qty!
+                                                      .cardList[index].quantity!
                                                       .toInt());
                                           homeController.cardList.refresh();
                                         }),
@@ -297,9 +297,9 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                     flex: 4,
                                     child: Text(
                                         Utils.findPriceByListId(
-                                            homeController.cardList.value[index]
+                                            homeController.cardList[index]
                                                 .variants!.data!,
-                                            homeController.cardList.value[index]
+                                            homeController.cardList[index]
                                                 .variant!),
                                         style: TextStyle(
                                             color: primaryText,
@@ -308,7 +308,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                   Expanded(
                                     flex: 4,
                                     child: Text(
-                                        "£${(homeController.cardList[index].qty! * double.parse(Utils.findPriceByListId(homeController.cardList.value[index].variants!.data!, homeController.cardList.value[index].variant!)))}",
+                                        "£${(homeController.cardList[index].quantity! * double.parse(Utils.findPriceByListId(homeController.cardList.value[index].variants!.data!, homeController.cardList.value[index].variant!)))}",
                                         style: TextStyle(
                                             color: primaryText,
                                             fontSize: fontVerySmall)),
@@ -333,8 +333,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                               Row(
                                 children: [
                                   for (AddonsDatum addons in homeController
-                                      .cardList[index].addons!.data!
-                                      .toList())
+                                      .cardList[index].addons!.data!)
                                     addons.isChecked == true
                                         ? Container(
                                             padding: EdgeInsets.symmetric(
@@ -345,7 +344,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             child: Text(
-                                                '${addons.name}  ${addons.qty}x${addons.price}',
+                                                '${addons.name}  ${addons.quantity}x${addons.price}',
                                                 style: TextStyle(
                                                     fontSize: fontVerySmall,
                                                     color: primaryText)))

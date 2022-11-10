@@ -6,6 +6,8 @@ import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
+import '../../model/menus.dart';
+import '../../model/order.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
 import 'drawer.dart';
@@ -264,7 +266,7 @@ class _HomeState extends State<Home> {
                                 childAspectRatio: 2.5,
                               ),
                               scrollDirection: Axis.vertical,
-                              itemCount: homeController.menu.value.data!.length,
+                              itemCount: homeController.menus.value.data!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
                                   decoration: BoxDecoration(
@@ -275,12 +277,12 @@ class _HomeState extends State<Home> {
                                     onTap: () async {
                                       Utils.showLoading();
                                       await homeController.getAddons(homeController
-                                          .menu.value.data![index].id!
+                                          .menus.value.data![index].id!
                                           .toInt());
                                       Utils.hideLoading();
-                                      print(homeController.addons.value.data!.name);
+                                      print(homeController.menu.value.data!.name);
                                       showCustomDialog(context, "Addons",
-                                          foodMenuBody(context,homeController.addons.value.data!), 200, 400);
+                                          foodMenuBody(context,homeController.menu.value.data!), 200, 400);
                                     },
                                     child: Padding(
                                       padding:
@@ -296,7 +298,7 @@ class _HomeState extends State<Home> {
                                                         BorderRadius.circular(
                                                             10),
                                                     child: Image.network(
-                                                      homeController.menu.value
+                                                      homeController.menus.value
                                                           .data![index].image
                                                           .toString(),
                                                     ),
@@ -350,7 +352,7 @@ class _HomeState extends State<Home> {
                                                           children: [
                                                             Text(
                                                               homeController
-                                                                  .menu
+                                                                  .menus
                                                                   .value
                                                                   .data![index]
                                                                   .name
@@ -366,7 +368,7 @@ class _HomeState extends State<Home> {
                                                             ),
                                                             Text(
                                                                 homeController
-                                                                        .menu
+                                                                        .menus
                                                                         .value
                                                                         .data![
                                                                             index]
@@ -394,7 +396,7 @@ class _HomeState extends State<Home> {
                                                                     0),
                                                             child: Text(
                                                               homeController
-                                                                  .menu
+                                                                  .menus
                                                                   .value
                                                                   .data![index]
                                                                   .price
@@ -420,7 +422,7 @@ class _HomeState extends State<Home> {
                                                   children: [
                                                     for (AllergiesDatum item
                                                         in homeController
-                                                            .menu
+                                                            .menus
                                                             .value
                                                             .data![index]
                                                             .allergies!
@@ -542,9 +544,10 @@ class _HomeState extends State<Home> {
                                       Utils.showLoading();
                                       await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
                                       Utils.hideLoading();
+                                      print(homeController.order.value.toJson());
                                       showCustomDialog(
                                           context,
-                                          "Table Reservation",
+                                          "Order Details",
                                           orderDetail(context),
                                           50,
                                           400);
@@ -568,8 +571,25 @@ class _HomeState extends State<Home> {
                                         onPressed: () {
                                           showWarningDialog('Are you sure to edit this order?', onAccept: () async {
                                             Utils.showLoading();
+                                            homeController.cardList.clear();
                                             await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
                                             // update cart data from api
+                                            for (OrderDetailsDatum order in homeController.order.value.data!.orderDetails!.data!.toList()){
+                                              order.addons!.data!.forEach((element) {
+                                                element.isChecked =true;
+                                              });
+                                              MenuData menuData =await  MenuData(id: order.id,name: order.food!.name,taxVat: order.vat , quantity: order.quantity, variant: order.variantId.toString(),variants: Variants(data: [VariantsDatum(id: order.variantId, name: order.variant!.name, price: order.price)]), addons: order.addons);
+                                              print(order.addons!.toJson());
+                                              print(menuData.addons!.toJson());
+                                              // List<VariantsDatum> vv = [VariantsDatum(id: order.variantId, name: order.variant!.name, price: order.price)];
+                                              print(menuData.toJson());
+                                              for (int i=0; i<menuData.addons!.data!.length; i++){
+                                                menuData.addons!.data![i].isChecked = true;
+                                              }
+                                              homeController.cardList.add(menuData);
+                                              homeController.cardList.refresh();
+                                            }
+                                            Utils.hideLoading();
                                             Utils.hideLoading();
                                             // homeController.getOrders();
                                             // Utils.hideLoading();

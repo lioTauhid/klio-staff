@@ -43,7 +43,7 @@ class Datum {
   int? available;
   String? image;
   String? message;
-  String? person;
+  int? person;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constant/color.dart';
 import '../constant/value.dart';
+import '../mvc/model/menu.dart';
 
 class Utils {
   static final apiHeader = {
@@ -112,11 +113,11 @@ class Utils {
     double adTotal = 0;
     list.forEach((element) {
       itemTotal = itemTotal +
-          (element.qty! *
+          (element.quantity! *
               double.parse(Utils.findPriceByListId(
                   element.variants!.data!, element.variant!)));
       element.addons!.data!.forEach((addon) {
-        adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
+        adTotal = adTotal + (addon.quantity! * double.parse(addon.price.toString()));
       });
     });
     return itemTotal + adTotal;
@@ -129,12 +130,29 @@ class Utils {
     list.forEach((element) {
       double vat = double.parse(element.taxVat.toString());
       itemTotal = itemTotal +
-          (element.qty! *
+          (element.quantity! *
               double.parse(Utils.findPriceByListId(
                   element.variants!.data!, element.variant!)));
       vatTotal = vatTotal + percentage(itemTotal, vat);
-      element.addons!.data!.forEach((addon) {
-        adTotal = adTotal + (addon.qty! * double.parse(addon.price.toString()));
+      element!.addons!.data!.forEach((addon) {
+        adTotal = adTotal + (addon.quantity! * double.parse(addon.price.toString()));
+      });
+      vatTotal = vatTotal + percentage(adTotal, vat);
+    });
+    return vatTotal;
+  }
+
+  static double vatTotal2(List<dynamic> list) {
+    double itemTotal = 0;
+    double adTotal = 0;
+    double vatTotal = 0;
+    list.forEach((element) {
+      double vat = double.parse(element.vat.toString());
+      itemTotal = itemTotal +
+          (element.quantity! * double.parse(element.price!));
+      vatTotal = vatTotal + percentage(itemTotal, vat);
+      element!.addons!.data!.forEach((addon) {
+        adTotal = adTotal + (addon.quantity! * double.parse(addon.price.toString()));
       });
       vatTotal = vatTotal + percentage(adTotal, vat);
     });

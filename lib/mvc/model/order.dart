@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'menu.dart';
+
 Order orderFromJson(String str) => Order.fromJson(json.decode(str));
 
 String orderToJson(Order data) => json.encode(data.toJson());
@@ -44,21 +46,21 @@ class Data {
     this.tables,
   });
 
-  String? invoice;
-  String? status;
-  String? type;
-  String? processingTime;
-  String? orderBy;
-  String? discount;
-  String? rewardsAmount;
-  String? serviceCharge;
-  String? deliveryCharge;
-  String? grandTotal;
+  String ?invoice;
+  String ?status;
+  String ?type;
+  String ?processingTime;
+  String ?orderBy;
+  String ?discount;
+  String ?rewardsAmount;
+  String ?serviceCharge;
+  String ?deliveryCharge;
+  String ?grandTotal;
   dynamic deliveryType;
-  String? address;
+  String ?address;
   dynamic note;
   Cus? customer;
-  OrderDetails? orderDetails;
+  OrderDetails ?orderDetails;
   Tables? tables;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -121,7 +123,7 @@ class OrderDetails {
     this.data,
   });
 
-  List<OrderDetailsDatum>? data;
+  List<OrderDetailsDatum> ?data;
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) => OrderDetails(
     data: List<OrderDetailsDatum>.from(json["data"].map((x) => OrderDetailsDatum.fromJson(x))),
@@ -135,6 +137,8 @@ class OrderDetails {
 class OrderDetailsDatum {
   OrderDetailsDatum({
     this.id,
+    this.foodId,
+    this.variantId,
     this.processingTime,
     this.status,
     this.price,
@@ -147,18 +151,22 @@ class OrderDetailsDatum {
   });
 
   int? id;
+  int ?foodId;
+  int ?variantId;
   String? processingTime;
-  String? status;
-  String? price;
-  int? quantity;
+  String ?status;
+  String ?price;
+  int ?quantity;
   String? vat;
-  String? totalPrice;
-  Food? food;
-  Cus? variant;
-  AddonList? addons;
+  String ?totalPrice;
+  Food ?food;
+  VariantsDatum ?variant;
+  AddonsClass ?addons;
 
   factory OrderDetailsDatum.fromJson(Map<String, dynamic> json) => OrderDetailsDatum(
     id: json["id"],
+    foodId: json["food_id"],
+    variantId: json["variant_id"],
     processingTime: json["processing_time"],
     status: json["status"],
     price: json["price"],
@@ -166,12 +174,14 @@ class OrderDetailsDatum {
     vat: json["vat"],
     totalPrice: json["total_price"],
     food: Food.fromJson(json["food"]),
-    variant: Cus.fromJson(json["variant"]),
-    addons: AddonList.fromJson(json["addons"]),
+    variant: VariantsDatum.fromJson(json["variant"]),
+    addons: AddonsClass.fromJson(json["addons"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "food_id": foodId,
+    "variant_id": variantId,
     "processing_time": processingTime,
     "status": status,
     "price": price,
@@ -184,45 +194,65 @@ class OrderDetailsDatum {
   };
 }
 
-class AddonList {
-  AddonList({
-    this.data,
-  });
+// class Variant {
+//   Variant({
+//     this.name,
+//   });
+//
+//   String? name;
+//
+//   factory Variant.fromJson(Map<String, dynamic> json) => Variant(
+//     name: json["name"],
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "name": name,
+//   };
+// }
 
-  List<AddonsDatum>? data;
-
-  factory AddonList.fromJson(Map<String, dynamic> json) => AddonList(
-    data: List<AddonsDatum>.from(json["data"].map((x) => AddonsDatum.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
-}
-
-class AddonsDatum {
-  AddonsDatum({
-    this.id,
-    this.name,
-    this.quantity,
-  });
-
-  int? id;
-  String? name;
-  int? quantity;
-
-  factory AddonsDatum.fromJson(Map<String, dynamic> json) => AddonsDatum(
-    id: json["id"],
-    name: json["name"],
-    quantity: json["quantity"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "quantity": quantity,
-  };
-}
+// class Addons {
+//   Addons({
+//     this.data,
+//   });
+//
+//   List<AddonsDatum>? data;
+//
+//   factory Addons.fromJson(Map<String, dynamic> json) => Addons(
+//     data: List<AddonsDatum>.from(json["data"].map((x) => AddonsDatum.fromJson(x))),
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+//   };
+// }
+//
+// class AddonsDatum {
+//   AddonsDatum({
+//     this.id,
+//     this.name,
+//     this.quantity,
+//     this.price,
+//   });
+//
+//   int ?id;
+//   String? name;
+//   int ?quantity;
+//   String? price;
+//
+//   factory AddonsDatum.fromJson(Map<String, dynamic> json) => AddonsDatum(
+//     id: json["id"],
+//     name: json["name"],
+//     quantity: json["quantity"],
+//     price: json["price"],
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "id": id,
+//     "name": name,
+//     "quantity": quantity,
+//     "price": price,
+//   };
+// }
 
 class Food {
   Food({
@@ -231,7 +261,7 @@ class Food {
   });
 
   String? name;
-  String? image;
+  String ?image;
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
     name: json["name"],
@@ -249,7 +279,7 @@ class Tables {
     this.data,
   });
 
-  List<TablesDatum>? data;
+  List<TablesDatum> ?data;
 
   factory Tables.fromJson(Map<String, dynamic> json) => Tables(
     data: List<TablesDatum>.from(json["data"].map((x) => TablesDatum.fromJson(x))),
@@ -262,20 +292,24 @@ class Tables {
 
 class TablesDatum {
   TablesDatum({
-    this.id,
+    this.tableId,
     this.number,
+    this.totalPerson,
   });
 
-  int? id;
+  int? tableId;
   String? number;
+  int? totalPerson;
 
   factory TablesDatum.fromJson(Map<String, dynamic> json) => TablesDatum(
-    id: json["id"],
+    tableId: json["table_id"],
     number: json["number"],
+    totalPerson: json["total_person"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    "table_id": tableId,
     "number": number,
+    "total_person": totalPerson,
   };
 }

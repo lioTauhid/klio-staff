@@ -9,10 +9,10 @@ import '../../constant/value.dart';
 import '../../service/api/api_client.dart';
 import '../../service/local/shared_pref.dart';
 import '../model/Tables.dart';
-import '../model/addons.dart';
+import '../model/menu.dart';
 import '../model/category.dart';
 import '../model/customers.dart';
-import '../model/menu.dart';
+import '../model/menus.dart';
 import '../model/order.dart';
 import '../model/orders.dart';
 import '../model/user.dart';
@@ -21,11 +21,11 @@ import 'error_controller.dart';
 class HomeController extends GetxController with ErrorController {
   Rx<User> user = User().obs;
   Rx<Category> category = Category().obs;
-  Rx<Menu> menu = Menu().obs;
+  Rx<Menus> menus = Menus().obs;
   Rx<Customers> customers = Customers().obs;
   Rx<Orders> orders = Orders().obs;
   Rx<Order> order = Order().obs;
-  Rx<Addons> addons = Addons().obs;
+  Rx<Menu> menu = Menu().obs;
   Rx<Settings> settings = Settings().obs;
   Rx<TableList> tables = TableList().obs;
   RxString customerName = ''.obs;
@@ -36,7 +36,7 @@ class HomeController extends GetxController with ErrorController {
   RxBool withoutTable = false.obs;
 
   // temp variables
-  Rx<AddonsData> menuData = AddonsData().obs;
+  Rx<MenuData> menuData = MenuData().obs;
   RxList cardList = [].obs;
   RxDouble variantPrice = 0.0.obs;
   RxDouble discount = 0.0.obs;
@@ -82,7 +82,7 @@ class HomeController extends GetxController with ErrorController {
     var response = await ApiClient()
         .get(endPoint, header: Utils.apiHeader)
         .catchError(handleApiError);
-    menu.value = menuFromJson(response);
+    menus.value = menuFromJson(response);
   }
 
   Future<void> getCustomers() async {
@@ -163,15 +163,15 @@ class HomeController extends GetxController with ErrorController {
     Utils.showLoading();
     List<Map> items = [{}];
     cardList.value.forEach((element) {
-      AddonsData add = element;
+      MenuData add = element;
       items.add(
         {
           "id": add.id,
-          "quantity": add.qty,
+          "quantity": add.quantity,
           "variant_id": int.parse(add.variant!),
           "addons": [
             for (var i in add.addons!.data!)
-              if (i.isChecked == true) {"id": i.id, "quantity": i.qty}
+              if (i.isChecked == true) {"id": i.id, "quantity": i.quantity}
           ],
         },
       );
@@ -200,6 +200,7 @@ class HomeController extends GetxController with ErrorController {
     withoutTable.value = false;
 
     getOrders();
+    orders.value.data.obs.refresh();
     Utils.hideLoading();
     Utils.showSnackBar("Order added successfully");
   }
@@ -209,6 +210,6 @@ class HomeController extends GetxController with ErrorController {
         .get('pos/menu/details/$id', header: Utils.apiHeader)
         .catchError(handleApiError);
     if (response == null) return;
-    addons.value = addonsFromJson(response);
+    menu.value = addonsFromJson(response);
   }
 }
