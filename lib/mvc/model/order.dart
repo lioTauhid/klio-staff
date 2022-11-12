@@ -28,6 +28,7 @@ class Order {
 
 class Data {
   Data({
+    this.id,
     this.invoice,
     this.status,
     this.type,
@@ -46,6 +47,7 @@ class Data {
     this.tables,
   });
 
+  int ?id;
   String ?invoice;
   String ?status;
   String ?type;
@@ -64,6 +66,7 @@ class Data {
   Tables? tables;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+    id: json["id"],
     invoice: json["invoice"],
     status: json["status"],
     type: json["type"],
@@ -83,6 +86,7 @@ class Data {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "invoice": invoice,
     "status": status,
     "type": type,

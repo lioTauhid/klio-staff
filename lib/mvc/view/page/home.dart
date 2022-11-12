@@ -266,7 +266,8 @@ class _HomeState extends State<Home> {
                                 childAspectRatio: 2.5,
                               ),
                               scrollDirection: Axis.vertical,
-                              itemCount: homeController.menus.value.data!.length,
+                              itemCount:
+                                  homeController.menus.value.data!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
                                   decoration: BoxDecoration(
@@ -276,13 +277,20 @@ class _HomeState extends State<Home> {
                                   child: GestureDetector(
                                     onTap: () async {
                                       Utils.showLoading();
-                                      await homeController.getAddons(homeController
-                                          .menus.value.data![index].id!
-                                          .toInt());
-                                      Utils.hideLoading();
-                                      print(homeController.menu.value.data!.name);
-                                      showCustomDialog(context, "Addons",
-                                          foodMenuBody(context,homeController.menu.value.data!), 200, 400);
+                                      await homeController.getAddons(
+                                          homeController
+                                              .menus.value.data![index].id!
+                                              .toInt());
+                                      Utils.hidePopup();
+                                      print(
+                                          homeController.menu.value.data!.name);
+                                      showCustomDialog(
+                                          context,
+                                          "Addons",
+                                          foodMenuBody(context,
+                                              homeController.menu.value.data!),
+                                          200,
+                                          400);
                                     },
                                     child: Padding(
                                       padding:
@@ -473,8 +481,8 @@ class _HomeState extends State<Home> {
                                   return ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     padding: EdgeInsets.zero,
-                                    itemCount:
-                                        homeController.orders.value.data!.length,
+                                    itemCount: homeController
+                                        .orders.value.data!.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return Card(
@@ -542,59 +550,68 @@ class _HomeState extends State<Home> {
                                         'Order Detail',
                                         primaryColor, onPressed: () async {
                                       Utils.showLoading();
-                                      await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
-                                      Utils.hideLoading();
-                                      print(homeController.order.value.toJson());
-                                      showCustomDialog(
-                                          context,
-                                          "Order Details",
-                                          orderDetail(context),
-                                          50,
-                                          400);
+                                      await homeController.getOrder(
+                                          homeController.orders.value
+                                              .data![selectedOrder].id!
+                                              .toInt());
+                                      Utils.hidePopup();
+                                      print(
+                                          homeController.order.value.toJson());
+                                      showCustomDialog(context, "Order Details",
+                                          orderDetail(context), 50, 400);
                                     }),
                                     SizedBox(width: 8),
-                                    bottomIconTextBtn('assets/circle-error.png',
-                                        'Cancel Order', primaryColor,
-                                        onPressed: () {
-                                          showWarningDialog('Are you sure to cancel this order?', onAccept: () async {
-                                            Utils.showLoading();
-                                            await homeController.cancelOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
-                                            await homeController.getOrders();
-                                            Utils.hideLoading();
-                                            Utils.hideLoading();
-                                            Utils.showSnackBar("Order canceled successfully");
-                                          });
-                                        }),
+                                    bottomIconTextBtn(
+                                        'assets/circle-error.png',
+                                        'Cancel Order',
+                                        primaryColor, onPressed: () {
+                                      showWarningDialog(
+                                          'Are you sure to cancel this order?',
+                                          onAccept: () async {
+                                        Utils.showLoading();
+                                        await homeController.cancelOrder(
+                                            homeController.orders.value
+                                                .data![selectedOrder].id!
+                                                .toInt());
+                                        await homeController.getOrders();
+                                        Utils.hidePopup();
+                                        Utils.hidePopup();
+                                        Utils.showSnackBar(
+                                            "Order canceled successfully");
+                                      });
+                                    }),
                                     SizedBox(width: 8),
-                                    bottomIconTextBtn('assets/edit-alt.png',
-                                        'Edit Order', primaryColor,
-                                        onPressed: () {
-                                          showWarningDialog('Are you sure to edit this order?', onAccept: () async {
-                                            Utils.showLoading();
-                                            homeController.cardList.clear();
-                                            await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
-                                            // update cart data from api
-                                            for (OrderDetailsDatum order in homeController.order.value.data!.orderDetails!.data!.toList()){
-                                              order.addons!.data!.forEach((element) {
-                                                element.isChecked =true;
-                                              });
-                                              MenuData menuData =await  MenuData(id: order.id,name: order.food!.name,taxVat: order.vat , quantity: order.quantity, variant: order.variantId.toString(),variants: Variants(data: [VariantsDatum(id: order.variantId, name: order.variant!.name, price: order.price)]), addons: order.addons);
-                                              print(order.addons!.toJson());
-                                              print(menuData.addons!.toJson());
-                                              // List<VariantsDatum> vv = [VariantsDatum(id: order.variantId, name: order.variant!.name, price: order.price)];
-                                              print(menuData.toJson());
-                                              for (int i=0; i<menuData.addons!.data!.length; i++){
-                                                menuData.addons!.data![i].isChecked = true;
-                                              }
-                                              homeController.cardList.add(menuData);
-                                              homeController.cardList.refresh();
-                                            }
-                                            Utils.hideLoading();
-                                            Utils.hideLoading();
-                                            // homeController.getOrders();
-                                            // Utils.hideLoading();
-                                          });
-                                        }),
+                                    bottomIconTextBtn(
+                                        'assets/edit-alt.png',
+                                        'Edit Order',
+                                        primaryColor, onPressed: () {
+                                      showWarningDialog(
+                                          'Are you sure to edit this order?',
+                                          onAccept: () async {
+                                        Utils.showLoading();
+                                        homeController.cardList.clear();
+                                        await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
+                                        for (OrderDetailsDatum order in homeController.order.value.data!.orderDetails!.data!.toList()) {
+                                          MenuData menuData = await MenuData(
+                                              id: order.foodId,
+                                              name: order.food!.name,
+                                              taxVat: order.vat,
+                                              quantity: order.quantity,
+                                              variant: order.variantId.toString(),
+                                              addons: order.addons,
+                                              variants: Variants(data: [
+                                                VariantsDatum(
+                                                    id: order.variantId,
+                                                    name: order.variant!.name,
+                                                    price: order.price)
+                                              ]));
+                                          homeController.cardList.add(menuData);
+                                          homeController.cardList.refresh();
+                                        }
+                                        Utils.hidePopup();
+                                        Utils.hidePopup();
+                                      });
+                                    }),
                                     SizedBox(width: 8),
                                     bottomIconTextBtn('assets/delivery.png',
                                         'Kitchen Status', primaryColor,

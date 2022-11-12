@@ -1,6 +1,7 @@
 # This is a generated file; do not edit or check into version control.
 path_provider_linux=/home/liotauhid/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.7/
 path_provider_windows=/home/liotauhid/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.3/
+printing=/home/liotauhid/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/printing-5.9.3/
 shared_preferences=/home/liotauhid/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.15/
 shared_preferences_android=/home/liotauhid/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.13/
 shared_preferences_ios=/home/liotauhid/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.1/

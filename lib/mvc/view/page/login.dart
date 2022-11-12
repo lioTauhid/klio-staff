@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                          }).catchError((e){
                            Utils.showSnackBar("Invalid Username or Password");
                          });
-                         Utils.hideLoading();
+                         Utils.hidePopup();
                          if (response == null) return;
                          Utils.showSnackBar(jsonDecode(response)["message"]);
                          await SharedPref().saveValue('token', jsonDecode(response)["token"]);

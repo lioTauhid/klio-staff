@@ -7,21 +7,21 @@ class ErrorController {
   void handleApiError(error) {
     switch (error) {
       case BadRequestException:
-        Utils.hideLoading();
+        Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
       case ApiNotRespondingException:
-        Utils.hideLoading();
+        Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
       // show error dialog
       case ProcessDataException:
-        Utils.hideLoading();
+        Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
       // show error dialog
       default:
-        Utils.hideLoading();
+        Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
       // show error dialog

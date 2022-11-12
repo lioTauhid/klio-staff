@@ -167,6 +167,23 @@ Widget textMixer(
   );
 }
 
+Widget textMixer2(
+    String boldText, String normalText, MainAxisAlignment alignment) {
+  return Row(
+    mainAxisAlignment: alignment,
+    children: [
+      Text(
+        boldText,
+        style: TextStyle(fontSize: fontVerySmall, color: primaryText),
+      ),
+      Text(
+        normalText,
+        style: TextStyle(fontSize: fontVerySmall, color: primaryText),
+      ),
+    ],
+  );
+}
+
 Widget textRow1(String text1, String text2) {
   return Row(
     children: [

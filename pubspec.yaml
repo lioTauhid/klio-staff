@@ -35,7 +35,7 @@ dependencies:
   shared_preferences: ^2.0.15
   http: ^0.13.5
   get: ^4.6.5
-
+  printing: ^5.9.3
 
 dev_dependencies:
   flutter_test:

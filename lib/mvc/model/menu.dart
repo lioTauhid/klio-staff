@@ -94,14 +94,14 @@ class AddonsDatum {
     this.name,
     this.price,
     this.quantity,
-    this.isChecked,
+    this.isChecked = true,
   });
 
   int? id;
   String? name;
   String? price;
   int? quantity;
-  bool? isChecked;
+  bool isChecked;
 
   factory AddonsDatum.fromJson(Map<String, dynamic> json) => AddonsDatum(
     id: json["id"],

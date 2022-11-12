@@ -37,7 +37,7 @@ class Utils {
     );
   }
 
-  static void hideLoading() {
+  static void hidePopup() {
     if (Get.isDialogOpen!) Get.back();
   }
 

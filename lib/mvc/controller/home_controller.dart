@@ -41,6 +41,7 @@ class HomeController extends GetxController with ErrorController {
   RxDouble variantPrice = 0.0.obs;
   RxDouble discount = 0.0.obs;
   RxString discType = 'In Flat Amount'.obs;
+  int orderUpdateId = 0;
 
   // ui variables
   RxInt topBtnPosition = 1.obs;
@@ -53,7 +54,7 @@ class HomeController extends GetxController with ErrorController {
     await getOrders();
     await getMenuByCategory();
     await getCategory();
-    Utils.hideLoading();
+    Utils.hidePopup();
   }
 
   Future<void> getCategory() async {
@@ -151,11 +152,11 @@ class HomeController extends GetxController with ErrorController {
     }
     if (response == null) return;
     getCustomers();
-    Utils.hideLoading();
+    Utils.hidePopup();
     Utils.showSnackBar("Customer added successfully");
   }
 
-  void addNewOrder() {
+  void addUpdateOrder([bool update = false]) {
     if (withoutTable.isFalse) {
       Utils.showSnackBar("No table selected for new order");
       return;
@@ -190,9 +191,16 @@ class HomeController extends GetxController with ErrorController {
       ]
     });
     print(body);
-    var response = ApiClient()
-        .post('pos/order', body, header: Utils.apiHeader)
-        .catchError(handleApiError);
+    var response;
+    if (update) {
+      response = ApiClient()
+          .put('pos/order/${order.value.data!.id!.toInt()}', body, header: Utils.apiHeader)
+          .catchError(handleApiError);
+    } else {
+      response = ApiClient()
+          .post('pos/order', body, header: Utils.apiHeader)
+          .catchError(handleApiError);
+    }
     if (response == null) return;
     cardList.clear();
     tables.value.data!.clear();
@@ -201,7 +209,7 @@ class HomeController extends GetxController with ErrorController {
 
     getOrders();
     orders.value.data.obs.refresh();
-    Utils.hideLoading();
+    Utils.hidePopup();
     Utils.showSnackBar("Order added successfully");
   }
 

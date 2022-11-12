@@ -51,15 +51,18 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                               case 1:
                                 Utils.showLoading();
                                 await homeController.getTables();
-                                Utils.hideLoading();
+                                Utils.hidePopup();
                                 showCustomDialog(context, "Table Reservation",
                                     tableBody(context, false), 50, 200);
                                 break;
                               case 2:
+                                homeController.withoutTable.value = true;
                                 break;
                               case 3:
+                                homeController.withoutTable.value = true;
                                 break;
                               default:
+                                homeController.withoutTable.value = false;
                                 homeController.getTables();
                                 showCustomDialog(context, "Table Reservation",
                                     tableBody(context, true), 50, 200);
@@ -483,7 +486,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                     iconTextBtnWide(
                         "assets/check.png", 'ORDER', primaryColor, white,
                         onPressed: () {
-                      homeController.addNewOrder();
+                      homeController.addUpdateOrder(true);
                     }),
                     iconTextBtnWide(
                         "assets/credit-card.png", 'Pay', alternate, primaryText,
@@ -512,7 +515,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                           Utils.showSnackBar('No cart item to discount');
                           return;
                         }
-                        if (homeController.discType.value == types[0]) {
+                        if (homeController.discType.value == discType[0]) {
                           homeController.discount.value =
                               double.parse(controller.text);
                         } else {

@@ -18,4 +18,5 @@ const List<Map<String, String>> leftTopBtnTxt = [
   {'Delivery': 'assets/delivery.png'},
   {'Table': 'assets/table.png'}
 ];
-const List<String> types = ['In Flat Amount', 'In percentage'];
+const List<String> discType = ['In Flat Amount', 'In percentage'];
+const List<String> paymentType = ['Cash', 'Card'];
