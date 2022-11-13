@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:klio_staff/mvc/model/Tables.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../controller/home_controller.dart';
 import '../widget/custom_widget.dart';
+import '../widget/print_page.dart';
 
 HomeController homeController = Get.find();
 
@@ -1275,6 +1278,7 @@ Widget orderDetail(BuildContext context) {
 }
 
 Widget finalizeOrder(BuildContext context) {
+  String method = paymentType[0];
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -1286,7 +1290,7 @@ Widget finalizeOrder(BuildContext context) {
         SizedBox(height: 20),
         Center(
           child: Text(
-            'Reward: £${homeController.order.value.data!.grandTotal}',
+            'Reward: £${12}',
             style: TextStyle(fontSize: fontSmall, color: primaryText),
           ),
         ),
@@ -1295,7 +1299,7 @@ Widget finalizeOrder(BuildContext context) {
           children: [
             Checkbox(value: true, onChanged: (checked) {}),
             Text(
-              'Use Rewards: £${homeController.order.value.data!.grandTotal}',
+              'Use Rewards: £${12}',
               style: TextStyle(fontSize: fontSmall, color: primaryText),
             ),
             Expanded(child: SizedBox(width: Size.infinite.width)),
@@ -1331,7 +1335,7 @@ Widget finalizeOrder(BuildContext context) {
               isExpanded: true,
               dropdownColor: primaryBackground,
               value: 'Card',
-              onChanged: (value) {},
+              onChanged: (value) => method = value!,
             )),
         SizedBox(height: 15),
         Text(
@@ -1342,6 +1346,8 @@ Widget finalizeOrder(BuildContext context) {
           height: 40,
           child: TextFormField(
               keyboardType: TextInputType.number,
+              onChanged: (text) =>
+                  homeController.giveAmount.value = int.parse(text),
               style: TextStyle(fontSize: fontVerySmall, color: primaryText),
               decoration: InputDecoration(
                   fillColor: secondaryBackground,
@@ -1365,10 +1371,15 @@ Widget finalizeOrder(BuildContext context) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: primaryText, width: 1)),
-            child: Text(
-              "-89",
-              style: TextStyle(fontSize: fontSmall, color: primaryText),
-            )),
+            child: Obx(() {
+              return Text(
+                (homeController.giveAmount.value -
+                        double.parse(
+                            homeController.order.value.data!.grandTotal!))
+                    .toString(),
+                style: TextStyle(fontSize: fontSmall, color: primaryText),
+              );
+            })),
         SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -1377,9 +1388,15 @@ Widget finalizeOrder(BuildContext context) {
               Get.back();
             }),
             SizedBox(width: 20),
-            normalButton('Submit', primaryColor, white, onPressed: () {
-              Utils.hidePopup();
-              showCustomDialog(context, "", orderInvoice(context), 50, 800);
+            normalButton('Submit', primaryColor, white, onPressed: () async {
+              showCustomDialog(
+                  context, "", orderInvoice(context, method), 0, 800);
+              bool done = await homeController.orderPayment(method);
+              if (done) {
+                showCustomDialog(
+                    context, "", orderInvoice(context, method), 50, 800);
+              } else
+                Utils.showSnackBar("Something wrong, try again");
             }),
           ],
         )
@@ -1388,302 +1405,398 @@ Widget finalizeOrder(BuildContext context) {
   );
 }
 
-Widget orderInvoice(BuildContext context) {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
-    child: GetBuilder(builder: (HomeController homeController) {
-      return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-        Center(
-          child: Text(
-            'klio: £${homeController.order.value.data!.grandTotal}',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSmall,
-                color: textSecondary),
-          ),
-        ),
-        Center(
-          child: Text(
-            'Lorem ipson......................................................',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSmall,
-                color: textSecondary),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            textMixer("boldText", "normalText", MainAxisAlignment.start),
-            textMixer("boldText", "normalText", MainAxisAlignment.start),
-          ],
-        ),
-        Center(
-          child: Text(
-            'klio: £${homeController.order.value.data!.grandTotal}',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSmall,
-                color: textSecondary),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                "NO",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text(
-                "Name",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text(
-                "Variant Name",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "Price",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "Qty",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "Vat",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "Total",
-                style: TextStyle(
-                    fontSize: fontVerySmall,
-                    color: primaryText,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-        Divider(color: textSecondary, thickness: 0.1, height: 0.1),
-        Expanded(
-            child: ListView.builder(
-                itemCount:
-                    homeController.order.value.data!.orderDetails!.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                (index + 1).toString(),
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: primaryText,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                homeController.order.value.data!.orderDetails!
-                                    .data![index].food!.name
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: textSecondary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                homeController.order.value.data!.orderDetails!
-                                    .data![index].variant!.name
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: textSecondary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "£${homeController.order.value.data!.orderDetails!.data![index].price}",
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: textSecondary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                homeController.order.value.data!.orderDetails!
-                                    .data![index].quantity
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: textSecondary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                homeController.order.value.data!.orderDetails!
-                                    .data![index].vat
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: textSecondary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "£${homeController.order.value.data!.orderDetails!.data![index].totalPrice}",
-                                style: TextStyle(
-                                    fontSize: fontVerySmall,
-                                    color: textSecondary,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
+Widget orderInvoice(BuildContext context, String method) {
+  return Column(
+    children: [
+      Expanded(
+          flex: 18,
+          child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Column(children: [
+                Center(
+                  child: Text(
+                    'klio',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                        color: textSecondary),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'We are just preparing your food, and will bring it to \nyour table as soon as possible',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontVerySmall,
+                        color: textSecondary),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    textMixer(
+                        "Table: ",
+                        Utils.getTables(homeController
+                            .order.value.data!.tables!.data!
+                            .toList()),
+                        MainAxisAlignment.start),
+                    textMixer(
+                        "Order Number: ",
+                        homeController.order.value.data!.invoice.toString(),
+                        MainAxisAlignment.start),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'Order Summary',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontVeryBig,
+                        color: primaryText),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "SL",
+                        style: TextStyle(
+                          fontSize: fontVerySmall,
+                          color: primaryText,
                         ),
                       ),
-                      Divider(
-                          color: textSecondary, thickness: 0.1, height: 0.1),
-                      homeController.order.value.data!.orderDetails!
-                                  .data![index].addons!.data!.length >
-                              0
-                          ? Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      for (var addons in homeController
-                                          .order
-                                          .value
-                                          .data!
-                                          .orderDetails!
-                                          .data![index]
-                                          .addons!
-                                          .data!
-                                          .toList())
-                                        Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 2),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                            decoration: BoxDecoration(
-                                                color: alternate,
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            child: Text(
-                                                '${addons.name}  ${addons.quantity}x${addons.quantity}',
-                                                style: TextStyle(
-                                                    fontSize: fontVerySmall,
-                                                    color: textSecondary)))
-                                    ],
-                                  ),
-                                  Divider(
-                                      color: textSecondary,
-                                      thickness: 0.1,
-                                      height: 0.1),
-                                ],
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        "Name",
+                        style: TextStyle(
+                            fontSize: fontVerySmall, color: primaryText),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        "Variant Name",
+                        style: TextStyle(
+                            fontSize: fontVerySmall, color: primaryText),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "Price",
+                        style: TextStyle(
+                            fontSize: fontVerySmall, color: primaryText),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "Qty",
+                        style: TextStyle(
+                            fontSize: fontVerySmall, color: primaryText),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "Vat",
+                        style: TextStyle(
+                            fontSize: fontVerySmall, color: primaryText),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "Total",
+                        style: TextStyle(
+                            fontSize: fontVerySmall, color: primaryText),
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(color: textSecondary, thickness: 1, height: 1),
+                Expanded(
+                    child: ListView.builder(
+                        itemCount: homeController
+                            .order.value.data!.orderDetails!.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        (index + 1).toString(),
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: primaryText,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        homeController
+                                            .order
+                                            .value
+                                            .data!
+                                            .orderDetails!
+                                            .data![index]
+                                            .food!
+                                            .name
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: textSecondary,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        homeController
+                                            .order
+                                            .value
+                                            .data!
+                                            .orderDetails!
+                                            .data![index]
+                                            .variant!
+                                            .name
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: textSecondary,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "£${homeController.order.value.data!.orderDetails!.data![index].price}",
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: textSecondary,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        homeController.order.value.data!
+                                            .orderDetails!.data![index].quantity
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: textSecondary,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        homeController.order.value.data!
+                                            .orderDetails!.data![index].vat
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: textSecondary,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "£${homeController.order.value.data!.orderDetails!.data![index].totalPrice}",
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: textSecondary,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            )
-                          : SizedBox(),
-                    ],
-                  );
-                })),
-        SizedBox(height: 10),
-        Divider(color: textSecondary, thickness: 0.1, height: 0.1),
-        textMixer2("Order", "Dine In", MainAxisAlignment.spaceBetween),
-        textMixer2("Order", "Dine In", MainAxisAlignment.spaceBetween),
-        textMixer2("Order", "Dine In", MainAxisAlignment.spaceBetween),
-        textMixer2("Order", "Dine In", MainAxisAlignment.spaceBetween),
-        textMixer2("Order", "Dine In", MainAxisAlignment.spaceBetween),
-        textMixer2("Order", "Dine In", MainAxisAlignment.spaceBetween),
-        Divider(color: textSecondary, thickness: 0.1, height: 0.1),
-        SizedBox(height: 10),
-        Center(
-          child: Text(
-            'Paid Amount',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSmall,
-                color: textSecondary),
-          ),
-        ),
-        Center(
-          child: Text(
-            '189.00',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSmall,
-                color: textSecondary),
-          ),
-        ),
-        Center(
-          child: Text(
-            'Thanks for ordering with klio',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontSmall,
-                color: textSecondary),
-          ),
-        ),
-        SizedBox(height: 10),
-        normalButton('print', primaryColor, white, onPressed: () {}),
-      ]);
-    }),
+                              Divider(
+                                  color: textSecondary,
+                                  thickness: 0.1,
+                                  height: 0.1),
+                              homeController.order.value.data!.orderDetails!
+                                          .data![index].addons!.data!.length >
+                                      0
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              for (var addons in homeController
+                                                  .order
+                                                  .value
+                                                  .data!
+                                                  .orderDetails!
+                                                  .data![index]
+                                                  .addons!
+                                                  .data!
+                                                  .toList())
+                                                Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 2),
+                                                    margin: EdgeInsets.symmetric(
+                                                        horizontal: 5),
+                                                    decoration: BoxDecoration(
+                                                        color: alternate,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10)),
+                                                    child: Text(
+                                                        '${addons.name}  ${addons.quantity}x${addons.quantity}',
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                fontVerySmall,
+                                                            color:
+                                                                textSecondary)))
+                                            ],
+                                          ),
+                                          Divider(
+                                              color: textSecondary,
+                                              thickness: 0.1,
+                                              height: 0.1),
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox(),
+                            ],
+                          );
+                        })),
+                SizedBox(height: 10),
+                Divider(color: textSecondary, thickness: 0.1, height: 0.1),
+                textMixer2(
+                    "Order Type",
+                    homeController.order.value.data!.type.toString(),
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Subtotal",
+                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Discount",
+                    '£' + homeController.order.value.data!.discount.toString(),
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Vat",
+                    Utils.vatTotal2(homeController
+                            .order.value.data!.orderDetails!.data!
+                            .toList())
+                        .toString(),
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Service",
+                    '£' +
+                        homeController.order.value.data!.serviceCharge
+                            .toString(),
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Give Amount",
+                    homeController.giveAmount.value.toString(),
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Change Amount",
+                    (homeController.giveAmount.value -
+                            double.parse(
+                                homeController.order.value.data!.grandTotal!))
+                        .toString(),
+                    MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Payment Method", method, MainAxisAlignment.spaceBetween),
+                textMixer2(
+                    "Delivery Charge",
+                    '£' +
+                        homeController.order.value.data!.deliveryCharge
+                            .toString(),
+                    MainAxisAlignment.spaceBetween),
+                Divider(color: textSecondary, thickness: 0.1, height: 0.1),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'Paid Amount',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSmall,
+                        color: primaryText),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSmall,
+                        color: primaryText),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'Thanks for ordering with klio',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSmall,
+                        color: primaryText),
+                  ),
+                ),
+                SizedBox(height: 10),
+              ]))),
+      Expanded(
+        flex: 1,
+        child: MaterialButton(
+            elevation: 0,
+            color: primaryColor,
+            minWidth: 130,
+            onPressed: () async {
+              final doc = pw.Document();
+
+              doc.addPage(pw.Page(
+                  pageFormat: PdfPageFormat.a4,
+                  build: (pw.Context context) {
+                    return invoicePrint(method);
+                  }));
+              await Printing.layoutPdf(
+                  onLayout: (PdfPageFormat format) async => doc.save());
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/print.png',
+                  color: white,
+                  height: 15,
+                  width: 15,
+                ),
+                SizedBox(width: 5),
+                Text("Print",
+                    style: TextStyle(color: white, fontSize: fontSmall)),
+              ],
+            )),
+      ),
+    ],
   );
 }
 

@@ -45,6 +45,8 @@ class HomeController extends GetxController with ErrorController {
 
   // ui variables
   RxInt topBtnPosition = 1.obs;
+  RxInt giveAmount = 1.obs;
+  RxBool isUpdate = false.obs;
 
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
@@ -156,7 +158,7 @@ class HomeController extends GetxController with ErrorController {
     Utils.showSnackBar("Customer added successfully");
   }
 
-  void addUpdateOrder([bool update = false]) {
+  void addUpdateOrder() {
     if (withoutTable.isFalse) {
       Utils.showSnackBar("No table selected for new order");
       return;
@@ -186,15 +188,16 @@ class HomeController extends GetxController with ErrorController {
       "discount": discount.value ?? 0,
       "tables": [
         for (var i in tables.value.data!.toList())
-          if (i.person != '')
+          if (i.person != 0)
             {"id": i.id, "person": int.parse(i.person.toString())}
       ]
     });
     print(body);
     var response;
-    if (update) {
+    if (isUpdate.value) {
       response = ApiClient()
-          .put('pos/order/${order.value.data!.id!.toInt()}', body, header: Utils.apiHeader)
+          .put('pos/order/${order.value.data!.id!.toInt()}', body,
+              header: Utils.apiHeader)
           .catchError(handleApiError);
     } else {
       response = ApiClient()
@@ -211,6 +214,20 @@ class HomeController extends GetxController with ErrorController {
     orders.value.data.obs.refresh();
     Utils.hidePopup();
     Utils.showSnackBar("Order added successfully");
+  }
+
+  Future<bool> orderPayment(String method) async {
+    var body = jsonEncode({
+      "order_id": order.value.data!.id,
+      "payment_method": method,
+      "give_amount": giveAmount.value
+    });
+    var response = await ApiClient()
+        .post('pos/payment', body, header: Utils.apiHeader)
+        .catchError(handleApiError);
+    if (response == null) false;
+    Utils.showSnackBar("Order placed successfully");
+    return true;
   }
 
   Future<void> getAddons(int id) async {

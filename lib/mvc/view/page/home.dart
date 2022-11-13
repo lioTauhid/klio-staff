@@ -608,6 +608,7 @@ class _HomeState extends State<Home> {
                                           homeController.cardList.add(menuData);
                                           homeController.cardList.refresh();
                                         }
+                                        homeController.isUpdate.value = true;
                                         Utils.hidePopup();
                                         Utils.hidePopup();
                                       });

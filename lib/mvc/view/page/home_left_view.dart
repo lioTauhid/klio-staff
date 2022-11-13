@@ -476,26 +476,30 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    iconTextBtnWide(
-                        "assets/check.png", 'ORDER', primaryColor, white,
-                        onPressed: () {
-                      homeController.addUpdateOrder(true);
-                    }),
-                    iconTextBtnWide(
-                        "assets/credit-card.png", 'Pay', alternate, primaryText,
-                        onPressed: () {}),
-                    iconTextBtnWide(
-                        "assets/print.png", 'Print', alternate, primaryText,
-                        onPressed: () {}),
-                  ],
-                ),
+              Obx(() {
+                  return Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        iconTextBtnWide(
+                            "assets/check.png", homeController.isUpdate.value? 'UPDATE':'ORDER', primaryColor, white,
+                            onPressed: () {
+                              homeController.addUpdateOrder();
+                              homeController.getOrders().then((value) => null);
+                            }),
+                        iconTextBtnWide(
+                            "assets/credit-card.png", 'Pay', alternate, primaryText,
+                            onPressed: () {}),
+                        iconTextBtnWide(
+                            "assets/print.png", 'Print', alternate, primaryText,
+                            onPressed: () {}),
+                      ],
+                    ),
+                  );
+                }
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
@@ -541,7 +545,10 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                     }),
                     iconTextBtnWide(
                         "assets/delete.png", 'Delete', alternate, primaryText,
-                        onPressed: () {}),
+                        onPressed: () {
+                          homeController.isUpdate.value = false;
+                          homeController.cardList.clear();
+                        }),
                   ],
                 ),
               ),

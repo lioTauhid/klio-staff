@@ -174,11 +174,11 @@ Widget textMixer2(
     children: [
       Text(
         boldText,
-        style: TextStyle(fontSize: fontVerySmall, color: primaryText),
+        style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
       ),
       Text(
         normalText,
-        style: TextStyle(fontSize: fontVerySmall, color: primaryText),
+        style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
       ),
     ],
   );
