@@ -149,6 +149,19 @@ class _HomeState extends State<Home> {
                                                     EdgeInsets.zero))),
                                     SizedBox(width: 12),
                                     topBarIconBtn(
+                                        Image.asset('assets/reload.png',
+                                            color: primaryText),
+                                        secondaryBackground,
+                                        8,
+                                        15,
+                                        40,
+                                        onPressed: () {
+                                          homeController.loadHomeData();
+                                          Utils.hidePopup();
+                                          Utils.hidePopup();
+                                        }),
+                                    SizedBox(width: 12),
+                                    topBarIconBtn(
                                         Image.asset('assets/notification.png',
                                             color: primaryText),
                                         secondaryBackground,
@@ -590,14 +603,21 @@ class _HomeState extends State<Home> {
                                           onAccept: () async {
                                         Utils.showLoading();
                                         homeController.cardList.clear();
-                                        await homeController.getOrder(homeController.orders.value.data![selectedOrder].id!.toInt());
-                                        for (OrderDetailsDatum order in homeController.order.value.data!.orderDetails!.data!.toList()) {
+                                        await homeController.getOrder(
+                                            homeController.orders.value
+                                                .data![selectedOrder].id!
+                                                .toInt());
+                                        for (OrderDetailsDatum order
+                                            in homeController.order.value.data!
+                                                .orderDetails!.data!
+                                                .toList()) {
                                           MenuData menuData = await MenuData(
                                               id: order.foodId,
                                               name: order.food!.name,
                                               taxVat: order.vat,
                                               quantity: order.quantity,
-                                              variant: order.variantId.toString(),
+                                              variant:
+                                                  order.variantId.toString(),
                                               addons: order.addons,
                                               variants: Variants(data: [
                                                 VariantsDatum(
@@ -614,9 +634,21 @@ class _HomeState extends State<Home> {
                                       });
                                     }),
                                     SizedBox(width: 8),
-                                    bottomIconTextBtn('assets/delivery.png',
-                                        'Kitchen Status', primaryColor,
-                                        onPressed: () {}),
+                                    bottomIconTextBtn(
+                                        'assets/delivery.png',
+                                        'Kitchen Status',
+                                        primaryColor, onPressed: () async {
+                                      Utils.showLoading();
+                                      await homeController.getOrder(
+                                          homeController.orders.value
+                                              .data![selectedOrder].id!
+                                              .toInt());
+                                      Utils.hidePopup();
+                                      print(
+                                          homeController.order.value.toJson());
+                                      showCustomDialog(context, "Order Status",
+                                          orderDetail(context, true), 250, 400);
+                                    }),
                                   ],
                                 ),
                               ),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:klio_staff/mvc/model/Customer.dart';
 import 'package:klio_staff/mvc/model/settings.dart';
 import 'package:klio_staff/utils/utils.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import '../../constant/value.dart';
 import '../../service/api/api_client.dart';
 import '../../service/local/shared_pref.dart';
@@ -50,12 +51,18 @@ class HomeController extends GetxController with ErrorController {
 
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
+    try{
+      await SunmiPrinter.bindingPrinter(); // must bind the printer first. for more exmaple.. pls refer to example tab.
+    }catch(e){
+      Utils.showSnackBar(e.toString());
+    }
     Utils.showLoading();
     await getCurrentUserData();
     await getCustomers();
     await getOrders();
     await getMenuByCategory();
     await getCategory();
+    Utils.hidePopup();
     Utils.hidePopup();
   }
 

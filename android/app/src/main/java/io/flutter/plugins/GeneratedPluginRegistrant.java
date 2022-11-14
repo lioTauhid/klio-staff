@@ -25,5 +25,10 @@ public final class GeneratedPluginRegistrant {
     } catch(Exception e) {
       Log.e(TAG, "Error registering plugin shared_preferences_android, io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin", e);
     }
+    try {
+      flutterEngine.getPlugins().add(new br.com.brasizza.sunmi_printer_plus.SunmiPrinterPlugin());
+    } catch(Exception e) {
+      Log.e(TAG, "Error registering plugin sunmi_printer_plus, br.com.brasizza.sunmi_printer_plus.SunmiPrinterPlugin", e);
+    }
   }
 }

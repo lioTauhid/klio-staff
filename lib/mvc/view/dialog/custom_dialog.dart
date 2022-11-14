@@ -5,6 +5,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
+import 'package:sunmi_printer_plus/enums.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../controller/home_controller.dart';
@@ -917,9 +919,9 @@ Widget tableBody(BuildContext context, bool showOnly) {
   );
 }
 
-Widget orderDetail(BuildContext context) {
+Widget orderDetail(BuildContext context, [bool kitchen = false]) {
   return Padding(
-    padding: const EdgeInsets.all(30.0),
+    padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
     child: GetBuilder(builder: (HomeController homeController) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
@@ -1260,7 +1262,7 @@ Widget orderDetail(BuildContext context) {
           ),
         ),
         Expanded(child: SizedBox(height: 500)),
-        Row(
+        kitchen? SizedBox():Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             normalButton('Create Invoice', primaryColor, white, onPressed: () {
@@ -1389,8 +1391,8 @@ Widget finalizeOrder(BuildContext context) {
             }),
             SizedBox(width: 20),
             normalButton('Submit', primaryColor, white, onPressed: () async {
-              showCustomDialog(
-                  context, "", orderInvoice(context, method), 0, 800);
+              // showCustomDialog(
+              //     context, "", orderInvoice(context, method), 0, 800);
               bool done = await homeController.orderPayment(method);
               if (done) {
                 showCustomDialog(
@@ -1768,6 +1770,32 @@ Widget orderInvoice(BuildContext context, String method) {
             color: primaryColor,
             minWidth: 130,
             onPressed: () async {
+              await SunmiPrinter.startTransactionPrint(true);
+
+              await SunmiPrinter.setAlignment(SunmiPrintAlign.RIGHT); // Right align
+              await SunmiPrinter.printText('Align right');
+
+              await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);// Left align
+              await SunmiPrinter.printText('Align left');
+
+              await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);// Center align
+              await SunmiPrinter.printText('Align center');
+
+              await SunmiPrinter.lineWrap(2); // Jump 2 lines
+
+              await SunmiPrinter.setFontSize(SunmiFontSize.XL); // Set font to very large
+              await SunmiPrinter.printText('Very Large font!');
+              await SunmiPrinter.resetFontSize(); // Reset font to medium size
+
+              await SunmiPrinter.setCustomFontSize(12); // SET CUSTOM FONT 12
+              await SunmiPrinter.printText('Custom font size!!!');
+              await SunmiPrinter.resetFontSize(); // Reset font to medium size
+
+              await SunmiPrinter.printQRCode('https://github.com/brasizza/sunmi_printer'); // PRINT A QRCODE
+              await SunmiPrinter.submitTransactionPrint(); // SUBMIT and cut paper
+              await SunmiPrinter.exitTransactionPrint(true); // Close the transaction
+
+
               final doc = pw.Document();
 
               doc.addPage(pw.Page(

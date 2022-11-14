@@ -153,14 +153,14 @@ class _LoginState extends State<Login> {
                      ),
                      SizedBox(height: 30),
                      normalButton('Login', primaryColor, white, onPressed: () async {
-                       if(!formKey.currentState!.validate()){
+                       if(formKey.currentState!.validate()){
                          Utils.showLoading();
                          formKey.currentState!.save();
                          var response = await ApiClient().post('login', {
-                           "email": "admin@gmail.com",
-                           "password": "12345678",
-                           // "email": controllerEmail.text,
-                           // "password": controllerPass.text
+                           // "email": "admin@gmail.com",
+                           // "password": "12345678",
+                           "email": controllerEmail.text,
+                           "password": controllerPass.text
                          }).catchError((e){
                            Utils.showSnackBar("Invalid Username or Password");
                          });
