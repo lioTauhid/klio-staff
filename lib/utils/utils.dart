@@ -51,7 +51,7 @@ class Utils {
       borderRadius: 20,
       margin: EdgeInsets.all(15),
       colorText: white,
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: 4),
       isDismissible: true,
     );
   }
@@ -117,7 +117,8 @@ class Utils {
               double.parse(Utils.findPriceByListId(
                   element.variants!.data!, element.variant!)));
       element.addons!.data!.forEach((addon) {
-        adTotal = adTotal + (addon.quantity! * double.parse(addon.price.toString()));
+        adTotal =
+            adTotal + (addon.quantity! * double.parse(addon.price.toString()));
       });
     });
     return itemTotal + adTotal;
@@ -135,7 +136,8 @@ class Utils {
                   element.variants!.data!, element.variant!)));
       vatTotal = vatTotal + percentage(itemTotal, vat);
       element!.addons!.data!.forEach((addon) {
-        adTotal = adTotal + (addon.quantity! * double.parse(addon.price.toString()));
+        adTotal =
+            adTotal + (addon.quantity! * double.parse(addon.price.toString()));
       });
       vatTotal = vatTotal + percentage(adTotal, vat);
     });
@@ -148,11 +150,12 @@ class Utils {
     double vatTotal = 0;
     list.forEach((element) {
       double vat = double.parse(element.vat.toString());
-      itemTotal = itemTotal +
-          (element.quantity! * double.parse(element.price!));
+      itemTotal =
+          itemTotal + (element.quantity! * double.parse(element.price!));
       vatTotal = vatTotal + percentage(itemTotal, vat);
       element!.addons!.data!.forEach((addon) {
-        adTotal = adTotal + (addon.quantity! * double.parse(addon.price.toString()));
+        adTotal =
+            adTotal + (addon.quantity! * double.parse(addon.price.toString()));
       });
       vatTotal = vatTotal + percentage(adTotal, vat);
     });

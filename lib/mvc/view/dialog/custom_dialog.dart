@@ -1,17 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
 import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../service/printer/print_service.dart';
 import '../../controller/home_controller.dart';
 import '../widget/custom_widget.dart';
-import '../widget/print_page.dart';
 
 HomeController homeController = Get.find();
 
@@ -1769,42 +1769,10 @@ Widget orderInvoice(BuildContext context, String method) {
             elevation: 0,
             color: primaryColor,
             minWidth: 130,
-            onPressed: () async {
-              await SunmiPrinter.startTransactionPrint(true);
-
-              await SunmiPrinter.setAlignment(SunmiPrintAlign.RIGHT); // Right align
-              await SunmiPrinter.printText('Align right');
-
-              await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);// Left align
-              await SunmiPrinter.printText('Align left');
-
-              await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);// Center align
-              await SunmiPrinter.printText('Align center');
-
-              await SunmiPrinter.lineWrap(2); // Jump 2 lines
-
-              await SunmiPrinter.setFontSize(SunmiFontSize.XL); // Set font to very large
-              await SunmiPrinter.printText('Very Large font!');
-              await SunmiPrinter.resetFontSize(); // Reset font to medium size
-
-              await SunmiPrinter.setCustomFontSize(12); // SET CUSTOM FONT 12
-              await SunmiPrinter.printText('Custom font size!!!');
-              await SunmiPrinter.resetFontSize(); // Reset font to medium size
-
-              await SunmiPrinter.printQRCode('https://github.com/brasizza/sunmi_printer'); // PRINT A QRCODE
-              await SunmiPrinter.submitTransactionPrint(); // SUBMIT and cut paper
-              await SunmiPrinter.exitTransactionPrint(true); // Close the transaction
+            onPressed: () {
+              DefaultPrinter.startPrinting();
 
 
-              final doc = pw.Document();
-
-              doc.addPage(pw.Page(
-                  pageFormat: PdfPageFormat.a4,
-                  build: (pw.Context context) {
-                    return invoicePrint(method);
-                  }));
-              await Printing.layoutPdf(
-                  onLayout: (PdfPageFormat format) async => doc.save());
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),

@@ -4,6 +4,7 @@ import 'package:klio_staff/mvc/model/Customer.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../service/printer/print_service.dart';
 import '../../../utils/utils.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
@@ -495,7 +496,10 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             onPressed: () {}),
                         iconTextBtnWide(
                             "assets/print.png", 'Print', alternate, primaryText,
-                            onPressed: () {}),
+                            onPressed: () async {
+                              await SumniPrinter.printText();
+                              await SumniPrinter.printImage();
+                            }),
                       ],
                     ),
                   );
