@@ -28,8 +28,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<Order> order = Order().obs;
   Rx<Menu> menu = Menu().obs;
   Rx<Settings> settings = Settings().obs;
-  Rx<TableList> tables = TableList().obs;
-  RxString customerName = ''.obs;
+  Rx<TableList> tables = TableList(data: []).obs;
   Rx<TextEditingController> controllerName = TextEditingController().obs;
   Rx<TextEditingController> controllerEmail = TextEditingController().obs;
   Rx<TextEditingController> controllerPhone = TextEditingController().obs;
@@ -37,11 +36,13 @@ class HomeController extends GetxController with ErrorController {
   RxBool withoutTable = false.obs;
 
   // temp variables
+  RxString customerName = ''.obs;
   Rx<MenuData> menuData = MenuData().obs;
   RxList cardList = [].obs;
   RxDouble variantPrice = 0.0.obs;
   RxDouble discount = 0.0.obs;
   RxString discType = 'In Flat Amount'.obs;
+  RxString payMethod = 'Cash'.obs;
   int orderUpdateId = 0;
 
   // ui variables
@@ -62,6 +63,7 @@ class HomeController extends GetxController with ErrorController {
     await getOrders();
     await getMenuByCategory();
     await getCategory();
+    Utils.hidePopup();
     Utils.hidePopup();
     Utils.hidePopup();
   }
@@ -194,7 +196,7 @@ class HomeController extends GetxController with ErrorController {
       "items": items,
       "discount": discount.value ?? 0,
       "tables": [
-        for (var i in tables.value.data!.toList())
+        for (var i in tables.value!.data!.toList())
           if (i.person != 0)
             {"id": i.id, "person": int.parse(i.person.toString())}
       ]
@@ -223,10 +225,10 @@ class HomeController extends GetxController with ErrorController {
     Utils.showSnackBar("Order added successfully");
   }
 
-  Future<bool> orderPayment(String method) async {
+  Future<bool> orderPayment() async {
     var body = jsonEncode({
       "order_id": order.value.data!.id,
-      "payment_method": method,
+      "payment_method": payMethod.value,
       "give_amount": giveAmount.value
     });
     var response = await ApiClient()

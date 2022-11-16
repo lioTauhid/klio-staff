@@ -1,12 +1,8 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
-import 'package:sunmi_printer_plus/enums.dart';
-import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../../service/printer/print_service.dart';
@@ -285,6 +281,7 @@ Widget addCustomer(BuildContext context, {Function()? onPressed}) {
 }
 
 Widget foodMenuBody(BuildContext context, MenuData data) {
+  homeController.tables.value.data = [];
   homeController.menuData.value = data;
   homeController.menuData.value.quantity = 0;
   for (int i = 0; i < homeController.menuData.value.addons!.data!.length; i++) {
@@ -921,7 +918,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
 
 Widget orderDetail(BuildContext context, [bool kitchen = false]) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
+    padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
     child: GetBuilder(builder: (HomeController homeController) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
@@ -939,13 +936,13 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                 child: textMixer(
                     'Customer Name: ',
                     homeController.order.value.data!.customer!.name.toString(),
-                    MainAxisAlignment.start)),
+                    MainAxisAlignment.center)),
             Expanded(
                 flex: 1,
                 child: textMixer(
                     'Invoice: ',
                     homeController.order.value.data!.invoice.toString(),
-                    MainAxisAlignment.center)),
+                    MainAxisAlignment.end)),
           ],
         ),
         SizedBox(height: 10),
@@ -966,14 +963,14 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                 child: textMixer(
                     'Processing Time: ',
                     homeController.order.value.data!.processingTime.toString(),
-                    MainAxisAlignment.start)),
+                    MainAxisAlignment.center)),
             Expanded(
                 flex: 1,
                 child: textMixer(
                     'Price: ',
                     '£' +
                         homeController.order.value.data!.grandTotal.toString(),
-                    MainAxisAlignment.center)),
+                    MainAxisAlignment.end)),
           ],
         ),
         SizedBox(height: 20),
@@ -1176,7 +1173,7 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             child: Text(
-                                                '${addons.name}  ${addons.quantity}x${addons.quantity}',
+                                                '${addons.name}  ${addons.quantity}x${addons.price}',
                                                 style: TextStyle(
                                                     fontSize: fontVerySmall,
                                                     color: textSecondary)))
@@ -1208,8 +1205,9 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                 flex: 1,
                 child: textMixer(
                     'Sub Total: ',
-                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
-                    MainAxisAlignment.start)),
+                    Utils.orderSubTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString(),
+                    // '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
+                    MainAxisAlignment.center)),
             Expanded(
                 flex: 1,
                 child: textMixer(
@@ -1217,7 +1215,7 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                     '£' +
                         homeController.order.value.data!.serviceCharge
                             .toString(),
-                    MainAxisAlignment.center)),
+                    MainAxisAlignment.end)),
           ],
         ),
         SizedBox(height: 10),
@@ -1236,22 +1234,16 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
             Expanded(
                 flex: 1,
                 child: textMixer(
-                    'VAT: ',
-                    Utils.vatTotal2(homeController
-                            .order.value.data!.orderDetails!.data!
-                            .toList())
-                        .toString(),
-                    MainAxisAlignment.start)),
-            // child: textMixer('VAT: ', Utils.vatTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString(), MainAxisAlignment.start)),
+                    '', '', MainAxisAlignment.center)),
             Expanded(
                 flex: 1,
                 child: textMixer(
                     'Discount: ',
                     '£' + homeController.order.value.data!.discount.toString(),
-                    MainAxisAlignment.center)),
+                    MainAxisAlignment.end)),
           ],
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
         Center(
           child: Text(
             'Grand Total: £${homeController.order.value.data!.grandTotal}',
@@ -1280,7 +1272,6 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
 }
 
 Widget finalizeOrder(BuildContext context) {
-  String method = paymentType[0];
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -1299,7 +1290,7 @@ Widget finalizeOrder(BuildContext context) {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Checkbox(value: true, onChanged: (checked) {}),
+            Checkbox(value: false, onChanged: (checked) {}),
             Text(
               'Use Rewards: £${12}',
               style: TextStyle(fontSize: fontSmall, color: primaryText),
@@ -1322,22 +1313,25 @@ Widget finalizeOrder(BuildContext context) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: primaryText, width: 1)),
-            child: DropdownButton<String>(
-              items: paymentType.map((dynamic val) {
-                return DropdownMenuItem<String>(
-                  value: val,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(val, style: TextStyle(color: primaryText)),
-                  ),
+            child: Obx(() {
+                return DropdownButton<String>(
+                  items: paymentType.map((dynamic val) {
+                    return DropdownMenuItem<String>(
+                      value: val,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(val, style: TextStyle(color: primaryText)),
+                      ),
+                    );
+                  }).toList(),
+                  borderRadius: BorderRadius.circular(8),
+                  underline: SizedBox(),
+                  isExpanded: true,
+                  dropdownColor: primaryBackground,
+                  value: homeController.payMethod.value,
+                  onChanged: (value) => homeController.payMethod.value = value!,
                 );
-              }).toList(),
-              borderRadius: BorderRadius.circular(8),
-              underline: SizedBox(),
-              isExpanded: true,
-              dropdownColor: primaryBackground,
-              value: 'Card',
-              onChanged: (value) => method = value!,
+              }
             )),
         SizedBox(height: 15),
         Text(
@@ -1393,10 +1387,10 @@ Widget finalizeOrder(BuildContext context) {
             normalButton('Submit', primaryColor, white, onPressed: () async {
               // showCustomDialog(
               //     context, "", orderInvoice(context, method), 0, 800);
-              bool done = await homeController.orderPayment(method);
+              bool done = await homeController.orderPayment();
               if (done) {
                 showCustomDialog(
-                    context, "", orderInvoice(context, method), 50, 800);
+                    context, "", orderInvoice(context, homeController.payMethod.value), 50, 800);
               } else
                 Utils.showSnackBar("Something wrong, try again");
             }),
@@ -1408,12 +1402,13 @@ Widget finalizeOrder(BuildContext context) {
 }
 
 Widget orderInvoice(BuildContext context, String method) {
+  homeController.giveAmount.value = 0;
   return Column(
     children: [
       Expanded(
           flex: 18,
           child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: Column(children: [
                 Center(
                   child: Text(
@@ -1667,7 +1662,7 @@ Widget orderInvoice(BuildContext context, String method) {
                                                             BorderRadius.circular(
                                                                 10)),
                                                     child: Text(
-                                                        '${addons.name}  ${addons.quantity}x${addons.quantity}',
+                                                        '${addons.name}  ${addons.quantity}x${addons.price}',
                                                         style: TextStyle(
                                                             fontSize:
                                                                 fontVerySmall,
@@ -1694,11 +1689,11 @@ Widget orderInvoice(BuildContext context, String method) {
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
                     "Subtotal",
-                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
+                    '£${Utils.orderSubTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString()}',
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
                     "Discount",
-                    '£' + homeController.order.value.data!.discount.toString(),
+                    '£'+homeController.order.value.data!.discount.toString(),
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
                     "Vat",
@@ -1718,7 +1713,7 @@ Widget orderInvoice(BuildContext context, String method) {
                     homeController.giveAmount.value.toString(),
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
-                    "Change Amount",
+                    "Due Amount",
                     (homeController.giveAmount.value -
                             double.parse(
                                 homeController.order.value.data!.grandTotal!))
@@ -1736,7 +1731,7 @@ Widget orderInvoice(BuildContext context, String method) {
                 SizedBox(height: 10),
                 Center(
                   child: Text(
-                    'Paid Amount',
+                    'Total Payable Amount',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontSmall,
@@ -1745,7 +1740,7 @@ Widget orderInvoice(BuildContext context, String method) {
                 ),
                 Center(
                   child: Text(
-                    '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
+                    '£${homeController.order.value.data!.grandTotal.toString()}',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontSmall,
@@ -1769,10 +1764,10 @@ Widget orderInvoice(BuildContext context, String method) {
             elevation: 0,
             color: primaryColor,
             minWidth: 130,
-            onPressed: () {
-              DefaultPrinter.startPrinting();
-
-
+            onPressed: () async {
+              // DefaultPrinter.startPrinting();
+              Utils.showSnackBar("Printing, wait!");
+              await SumniPrinter.printText();
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),

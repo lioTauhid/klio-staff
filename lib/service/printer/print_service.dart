@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/order.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:sunmi_printer_plus/enums.dart';
@@ -358,16 +359,68 @@ class SumniPrinter {
   static Future<void> printText() async {
     await SunmiPrinter.startTransactionPrint(true);
 
-    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER); // Center align
-    await SunmiPrinter.printText('Align center');
+    await SunmiPrinter.setFontSize(SunmiFontSize.XL);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText('klio');
 
-    await SunmiPrinter.lineWrap(2); // Jump 2 lines
+    await SunmiPrinter.setFontSize(SunmiFontSize.SM);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText(
+        'We are just preparing your food, and will bring it to \nyour table as soon as possible');
 
-    await SunmiPrinter.line(); // draw line
-    await SunmiPrinter.setCustomFontSize(20); // SET CUSTOM FONT 12
-    await SunmiPrinter.printText('Custom font size 20!!!');
-    await SunmiPrinter.resetFontSize(); // Reset font to medium size
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText(
+        'Table: ${Utils.getTables(homeController.order.value.data!.tables!.data!.toList())}                Order Number: ${homeController.order.value.data!.invoice.toString()}');
+    await SunmiPrinter.lineWrap(2);
 
+    await SunmiPrinter.setFontSize(SunmiFontSize.LG);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText('Order Summary');
+
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    await SunmiPrinter.printText(
+        'SL - Name - Variant Name - Price - Qty - Vat - Total');
+    await SunmiPrinter.line();
+    await SunmiPrinter.setFontSize(SunmiFontSize.SM);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+    for (OrderDetailsDatum item
+        in homeController.order.value.data!.orderDetails!.data!) {
+      await SunmiPrinter.printText(
+          '${item.id} - ${item.food!.name} - ${item.variant!.name} - ${item.variant!.price} - ${item.quantity!} - ${item.vat!} - ${item.price!}');
+    }
+
+    await SunmiPrinter.line();
+    await SunmiPrinter.setFontSize(SunmiFontSize.SM);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
+    await SunmiPrinter.printText(
+        'Order Type: ${homeController.order.value.data!.type.toString()}');
+    await SunmiPrinter.printText(
+        'Subtotal: £${Utils.orderSubTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString()}');
+    await SunmiPrinter.printText(
+        'Discount: ${homeController.order.value.data!.discount.toString()}');
+    await SunmiPrinter.printText(
+        'Charges (Vat+Service+Delivery): ${Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()).toString()}+${homeController.order.value.data!.serviceCharge.toString()}+${homeController.order.value.data!.deliveryCharge.toString()}');
+    await SunmiPrinter.printText(
+        'Payment Method: ${homeController.payMethod.value}');
+    await SunmiPrinter.line();
+
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
+    await SunmiPrinter.printText(
+        'Grand Total: ${homeController.order.value.data!.grandTotal}');
+    await SunmiPrinter.printText(
+        'Paid Amount: ${homeController.giveAmount.value}');
+    await SunmiPrinter.printText(
+        'Due: ${(homeController.giveAmount.value - double.parse(homeController.order.value.data!.grandTotal!))}');
+
+    await SunmiPrinter.lineWrap(2);
+    await SunmiPrinter.setFontSize(SunmiFontSize.LG);
+    await SunmiPrinter.printText('Thanks for ordering with kli');
+
+    // await SunmiPrinter.setCustomFontSize(20); // SET CUSTOM FONT 12
+    // await SunmiPrinter.printText('Custom font size 20!!!');
+    // await SunmiPrinter.resetFontSize(); // Reset font to medium size
     await SunmiPrinter.submitTransactionPrint(); // SUBMIT and cut paper
     await SunmiPrinter.cut(); // cut paper
     await SunmiPrinter.exitTransactionPrint(true); // Close the transaction
@@ -376,8 +429,11 @@ class SumniPrinter {
   static Future<void> printImage() async {
     await SunmiPrinter.startTransactionPrint(true);
 
-    String url = 'https://raw.githubusercontent.com/andrey-ushakov/esc_pos_printer/master/example/receipt2.jpg';
-    Uint8List byte = (await NetworkAssetBundle(Uri.parse(url)).load(url)).buffer.asUint8List();
+    String url =
+        'https://raw.githubusercontent.com/andrey-ushakov/esc_pos_printer/master/example/receipt2.jpg';
+    Uint8List byte = (await NetworkAssetBundle(Uri.parse(url)).load(url))
+        .buffer
+        .asUint8List();
     await SunmiPrinter.printImage(byte);
 
     await SunmiPrinter.submitTransactionPrint(); // SUBMIT and cut paper

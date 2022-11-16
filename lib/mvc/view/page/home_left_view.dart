@@ -263,7 +263,8 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                             0,
                                             2,
                                             16, onPressed: () {
-                                          homeController.cardList[index].quantity =
+                                          homeController
+                                                  .cardList[index].quantity =
                                               Utils.incrementDecrement(
                                                   false,
                                                   homeController
@@ -273,7 +274,8 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                         }),
                                         SizedBox(width: 6),
                                         Text(
-                                            homeController.cardList[index].quantity
+                                            homeController
+                                                .cardList[index].quantity
                                                 .toString(),
                                             style: TextStyle(
                                                 color: primaryText,
@@ -286,7 +288,8 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                             0,
                                             2,
                                             16, onPressed: () {
-                                          homeController.cardList[index].quantity =
+                                          homeController
+                                                  .cardList[index].quantity =
                                               Utils.incrementDecrement(
                                                   true,
                                                   homeController
@@ -303,8 +306,8 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                         Utils.findPriceByListId(
                                             homeController.cardList[index]
                                                 .variants!.data!,
-                                            homeController.cardList[index]
-                                                .variant!),
+                                            homeController
+                                                .cardList[index].variant!),
                                         style: TextStyle(
                                             color: primaryText,
                                             fontSize: fontVerySmall)),
@@ -443,7 +446,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '${homeController.settings.value.data![14].value}% + £${Utils.vatTotal(homeController.cardList).toStringAsFixed(2)}',
+                                '${homeController.settings.value.data![14].value}£ + £${Utils.vatTotal(homeController.cardList).toStringAsFixed(2)}',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: fontVerySmall,
@@ -463,7 +466,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '£${((Utils.calcSubTotal(homeController.cardList) + Utils.percentage(Utils.calcSubTotal(homeController.cardList), double.parse(homeController.settings.value.data![14].value.toString())) + Utils.vatTotal(homeController.cardList)) - homeController.discount.value).toStringAsFixed(2)}',
+                                '£${((Utils.calcSubTotal(homeController.cardList) + double.parse(homeController.settings.value.data![14].value.toString()) + Utils.vatTotal(homeController.cardList)) - homeController.discount.value).toStringAsFixed(2)}',
                                 style: TextStyle(
                                     fontSize: fontMedium,
                                     color: primaryColor,
@@ -478,33 +481,34 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                 ),
               ),
               Obx(() {
-                  return Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        iconTextBtnWide(
-                            "assets/check.png", homeController.isUpdate.value? 'UPDATE':'ORDER', primaryColor, white,
-                            onPressed: () {
-                              homeController.addUpdateOrder();
-                              homeController.getOrders().then((value) => null);
-                            }),
-                        iconTextBtnWide(
-                            "assets/credit-card.png", 'Pay', alternate, primaryText,
-                            onPressed: () {}),
-                        iconTextBtnWide(
-                            "assets/print.png", 'Print', alternate, primaryText,
-                            onPressed: () async {
-                              await SumniPrinter.printText();
-                              await SumniPrinter.printImage();
-                            }),
-                      ],
-                    ),
-                  );
-                }
-              ),
+                return Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      iconTextBtnWide(
+                          "assets/check.png",
+                          homeController.isUpdate.value ? 'UPDATE' : 'ORDER',
+                          primaryColor,
+                          white, onPressed: () {
+                        homeController.addUpdateOrder();
+                        homeController.getOrders().then((value) => null);
+                      }),
+                      iconTextBtnWide("assets/credit-card.png", 'Pay',
+                          alternate, primaryText,
+                          onPressed: () {}),
+                      iconTextBtnWide(
+                          "assets/print.png", 'Print', alternate, primaryText,
+                          onPressed: () async {
+                        await SumniPrinter.printText();
+                        // await SumniPrinter.printImage();
+                      }),
+                    ],
+                  ),
+                );
+              }),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                 child: Row(
@@ -512,7 +516,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    iconTextBtnWide("assets/percentage.png", 'Discout',
+                    iconTextBtnWide("assets/percentage.png", 'Discount',
                         alternate, primaryText, onPressed: () {
                       TextEditingController controller =
                           TextEditingController();
@@ -550,9 +554,9 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                     iconTextBtnWide(
                         "assets/delete.png", 'Delete', alternate, primaryText,
                         onPressed: () {
-                          homeController.isUpdate.value = false;
-                          homeController.cardList.clear();
-                        }),
+                      homeController.isUpdate.value = false;
+                      homeController.cardList.clear();
+                    }),
                   ],
                 ),
               ),
