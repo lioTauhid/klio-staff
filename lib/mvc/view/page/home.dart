@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
     super.initState();
     applyThem(darkMode);
     homeController.loadHomeData();
+    Utils.hidePopup();
   }
 
   @override

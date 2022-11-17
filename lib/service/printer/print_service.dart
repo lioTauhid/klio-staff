@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/mvc/model/order.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:sunmi_printer_plus/column_maker.dart';
 import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import '../../../constant/value.dart';
@@ -363,36 +365,58 @@ class SumniPrinter {
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText('klio');
 
-    await SunmiPrinter.setFontSize(SunmiFontSize.SM);
+    await SunmiPrinter.setFontSize(SunmiFontSize.LG);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText(
-        'We are just preparing your food, and will bring it to \nyour table as soon as possible');
+        'We are just preparing your food, and will bring \nit to your table as soon as possible');
 
-    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText(
         'Table: ${Utils.getTables(homeController.order.value.data!.tables!.data!.toList())}                Order Number: ${homeController.order.value.data!.invoice.toString()}');
     await SunmiPrinter.lineWrap(2);
 
-    await SunmiPrinter.setFontSize(SunmiFontSize.LG);
+    await SunmiPrinter.setFontSize(SunmiFontSize.XL);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText('Order Summary');
 
     await SunmiPrinter.setFontSize(SunmiFontSize.MD);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-    await SunmiPrinter.printText(
-        'SL - Name - Variant Name - Price - Qty - Vat - Total');
+    // await SunmiPrinter.printText('SL - Name - V. Name - Price - Qty - Total');
+    await SunmiPrinter.printRow(cols: [
+      ColumnMaker(text: 'SL', width: 1, align: SunmiPrintAlign.LEFT),
+      ColumnMaker(text: 'Name', width: 3, align: SunmiPrintAlign.LEFT),
+      ColumnMaker(text: 'V. Name', width: 2, align: SunmiPrintAlign.LEFT),
+      ColumnMaker(text: 'Price', width: 2, align: SunmiPrintAlign.LEFT),
+      ColumnMaker(text: 'Qty', width: 1, align: SunmiPrintAlign.LEFT),
+      ColumnMaker(text: 'Total', width: 2, align: SunmiPrintAlign.LEFT),
+    ]);
     await SunmiPrinter.line();
-    await SunmiPrinter.setFontSize(SunmiFontSize.SM);
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-    for (OrderDetailsDatum item
-        in homeController.order.value.data!.orderDetails!.data!) {
-      await SunmiPrinter.printText(
-          '${item.id} - ${item.food!.name} - ${item.variant!.name} - ${item.variant!.price} - ${item.quantity!} - ${item.vat!} - ${item.price!}');
+    for (int i = 0;
+        i < homeController.order.value.data!.orderDetails!.data!.length;
+        i++) {
+      OrderDetailsDatum item =
+          await homeController.order.value.data!.orderDetails!.data![i];
+      await SunmiPrinter.printRow(cols: [
+        ColumnMaker(text: (i+1).toString(), width: 1, align: SunmiPrintAlign.LEFT),
+        ColumnMaker(text: item.food!.name!, width: 3, align: SunmiPrintAlign.LEFT),
+        ColumnMaker(text: item.variant!.name!, width: 2, align: SunmiPrintAlign.LEFT),
+        ColumnMaker(text: '${item.variant!.price}', width: 2, align: SunmiPrintAlign.LEFT),
+        ColumnMaker(text: item.quantity!.toString(), width: 1, align: SunmiPrintAlign.LEFT),
+        ColumnMaker(text: '${item.price!}', width: 2, align: SunmiPrintAlign.LEFT),
+      ]);
+      // await SunmiPrinter.printText(
+      //     '${item.id} - ${item.food!.name} - ${item.variant!.name} - ${item.variant!.price} - ${item.quantity!} - ${item.price!}');
+      for (AddonsDatum addons in homeController
+          .order.value.data!.orderDetails!.data![i].addons!.data!
+          .toList()) {
+        await SunmiPrinter.printText('  *${addons.name}');
+      }
     }
 
     await SunmiPrinter.line();
-    await SunmiPrinter.setFontSize(SunmiFontSize.SM);
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
     await SunmiPrinter.printText(
         'Order Type: ${homeController.order.value.data!.type.toString()}');
@@ -401,22 +425,23 @@ class SumniPrinter {
     await SunmiPrinter.printText(
         'Discount: ${homeController.order.value.data!.discount.toString()}');
     await SunmiPrinter.printText(
+        'Total Vat: ${Utils.vatCount(homeController.order.value.data!.orderDetails!.data!.toList()).toString()}%');
+    await SunmiPrinter.printText(
         'Charges (Vat+Service+Delivery): ${Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()).toString()}+${homeController.order.value.data!.serviceCharge.toString()}+${homeController.order.value.data!.deliveryCharge.toString()}');
     await SunmiPrinter.printText(
         'Payment Method: ${homeController.payMethod.value}');
     await SunmiPrinter.line();
 
-    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
     await SunmiPrinter.printText(
         'Grand Total: ${homeController.order.value.data!.grandTotal}');
     await SunmiPrinter.printText(
-        'Paid Amount: ${homeController.giveAmount.value}');
+        'Give Amount: ${homeController.giveAmount.value}');
     await SunmiPrinter.printText(
         'Due: ${(homeController.giveAmount.value - double.parse(homeController.order.value.data!.grandTotal!))}');
 
     await SunmiPrinter.lineWrap(2);
     await SunmiPrinter.setFontSize(SunmiFontSize.LG);
-    await SunmiPrinter.printText('Thanks for ordering with kli');
+    await SunmiPrinter.printText('Thanks for ordering with klio');
 
     // await SunmiPrinter.setCustomFontSize(20); // SET CUSTOM FONT 12
     // await SunmiPrinter.printText('Custom font size 20!!!');

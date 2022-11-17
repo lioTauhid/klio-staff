@@ -46,10 +46,10 @@ class Utils {
       "Information!",
       message,
       icon: Icon(Icons.error, color: Colors.indigo),
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
       backgroundColor: Colors.lightBlue,
       borderRadius: 20,
-      margin: EdgeInsets.all(15),
+      margin: EdgeInsets.only(right: 700),
       colorText: white,
       duration: Duration(seconds: 4),
       isDismissible: true,
@@ -159,6 +159,15 @@ class Utils {
       itemTotal =
           itemTotal + (element.quantity! * double.parse(element.price!));
       vatTotal = vatTotal + percentage(itemTotal, vat);
+    });
+    return vatTotal;
+  }
+
+  static vatCount(List<dynamic> list) {
+    double vatTotal = 0;
+    list.forEach((element) {
+      double vat = double.parse(element.vat.toString());
+      vatTotal = vatTotal + vat;
     });
     return vatTotal;
   }

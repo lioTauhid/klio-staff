@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
@@ -1205,7 +1204,10 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                 flex: 1,
                 child: textMixer(
                     'Sub Total: ',
-                    Utils.orderSubTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString(),
+                    Utils.orderSubTotal(homeController
+                            .order.value.data!.orderDetails!.data!
+                            .toList())
+                        .toString(),
                     // '£${double.parse(homeController.order.value.data!.grandTotal.toString()) + double.parse(homeController.order.value.data!.discount.toString()) - (double.parse(homeController.order.value.data!.deliveryCharge.toString()) + Utils.vatTotal2(homeController.order.value.data!.orderDetails!.data!.toList()) + double.parse(homeController.order.value.data!.serviceCharge.toString()))}',
                     MainAxisAlignment.center)),
             Expanded(
@@ -1232,9 +1234,7 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                             .toString(),
                     MainAxisAlignment.start)),
             Expanded(
-                flex: 1,
-                child: textMixer(
-                    '', '', MainAxisAlignment.center)),
+                flex: 1, child: textMixer('', '', MainAxisAlignment.center)),
             Expanded(
                 flex: 1,
                 child: textMixer(
@@ -1254,24 +1254,28 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
           ),
         ),
         Expanded(child: SizedBox(height: 500)),
-        kitchen? SizedBox():Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            normalButton('Create Invoice', primaryColor, white, onPressed: () {
-              Utils.hidePopup();
-              showCustomDialog(
-                  context, "Finalize Order", finalizeOrder(context), 200, 600);
-            }),
-            normalButton('Close', textSecondary, white,
-                onPressed: () => Get.back()),
-          ],
-        )
+        kitchen
+            ? SizedBox()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  normalButton('Create Invoice', primaryColor, white,
+                      onPressed: () {
+                    Utils.hidePopup();
+                    showCustomDialog(context, "Finalize Order",
+                        finalizeOrder(context), 200, 600);
+                  }),
+                  normalButton('Close', textSecondary, white,
+                      onPressed: () => Get.back()),
+                ],
+              )
       ]);
     }),
   );
 }
 
 Widget finalizeOrder(BuildContext context) {
+  homeController.giveAmount.value = 0;
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -1314,25 +1318,24 @@ Widget finalizeOrder(BuildContext context) {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: primaryText, width: 1)),
             child: Obx(() {
-                return DropdownButton<String>(
-                  items: paymentType.map((dynamic val) {
-                    return DropdownMenuItem<String>(
-                      value: val,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(val, style: TextStyle(color: primaryText)),
-                      ),
-                    );
-                  }).toList(),
-                  borderRadius: BorderRadius.circular(8),
-                  underline: SizedBox(),
-                  isExpanded: true,
-                  dropdownColor: primaryBackground,
-                  value: homeController.payMethod.value,
-                  onChanged: (value) => homeController.payMethod.value = value!,
-                );
-              }
-            )),
+              return DropdownButton<String>(
+                items: paymentType.map((dynamic val) {
+                  return DropdownMenuItem<String>(
+                    value: val,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(val, style: TextStyle(color: primaryText)),
+                    ),
+                  );
+                }).toList(),
+                borderRadius: BorderRadius.circular(8),
+                underline: SizedBox(),
+                isExpanded: true,
+                dropdownColor: primaryBackground,
+                value: homeController.payMethod.value,
+                onChanged: (value) => homeController.payMethod.value = value!,
+              );
+            })),
         SizedBox(height: 15),
         Text(
           'Give Amount',
@@ -1386,13 +1389,16 @@ Widget finalizeOrder(BuildContext context) {
             SizedBox(width: 20),
             normalButton('Submit', primaryColor, white, onPressed: () async {
               // showCustomDialog(
-              //     context, "", orderInvoice(context, method), 0, 800);
+              //     context, "", orderInvoice(context, homeController.payMethod.value), 0, 800);
               bool done = await homeController.orderPayment();
               if (done) {
                 showCustomDialog(
-                    context, "", orderInvoice(context, homeController.payMethod.value), 50, 800);
-              } else
-                Utils.showSnackBar("Something wrong, try again");
+                    context,
+                    "",
+                    orderInvoice(context, homeController.payMethod.value),
+                    50,
+                    800);
+              } else Utils.showSnackBar("Something wrong, try again");
             }),
           ],
         )
@@ -1402,13 +1408,12 @@ Widget finalizeOrder(BuildContext context) {
 }
 
 Widget orderInvoice(BuildContext context, String method) {
-  homeController.giveAmount.value = 0;
   return Column(
     children: [
       Expanded(
           flex: 18,
           child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: Column(children: [
                 Center(
                   child: Text(
@@ -1693,7 +1698,7 @@ Widget orderInvoice(BuildContext context, String method) {
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
                     "Discount",
-                    '£'+homeController.order.value.data!.discount.toString(),
+                    '£' + homeController.order.value.data!.discount.toString(),
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
                     "Vat",
@@ -1759,33 +1764,36 @@ Widget orderInvoice(BuildContext context, String method) {
                 SizedBox(height: 10),
               ]))),
       Expanded(
-        flex: 1,
-        child: MaterialButton(
-            elevation: 0,
-            color: primaryColor,
-            minWidth: 130,
-            onPressed: () async {
-              // DefaultPrinter.startPrinting();
-              Utils.showSnackBar("Printing, wait!");
-              await SumniPrinter.printText();
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/print.png',
-                  color: white,
-                  height: 15,
-                  width: 15,
-                ),
-                SizedBox(width: 5),
-                Text("Print",
-                    style: TextStyle(color: white, fontSize: fontSmall)),
-              ],
-            )),
+        flex: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: MaterialButton(
+              elevation: 0,
+              color: primaryColor,
+              minWidth: 130,
+              onPressed: () async {
+                // DefaultPrinter.startPrinting();
+                Utils.showSnackBar("Printing... wait!");
+                await SumniPrinter.printText();
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/print.png',
+                    color: white,
+                    height: 15,
+                    width: 15,
+                  ),
+                  SizedBox(width: 5),
+                  Text("Print",
+                      style: TextStyle(color: white, fontSize: fontSmall)),
+                ],
+              )),
+        ),
       ),
     ],
   );
