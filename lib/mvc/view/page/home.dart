@@ -155,12 +155,11 @@ class _HomeState extends State<Home> {
                                         secondaryBackground,
                                         8,
                                         15,
-                                        40,
-                                        onPressed: () {
-                                          homeController.loadHomeData();
-                                          Utils.hidePopup();
-                                          Utils.hidePopup();
-                                        }),
+                                        40, onPressed: () {
+                                      homeController.loadHomeData();
+                                      Utils.hidePopup();
+                                      Utils.hidePopup();
+                                    }),
                                     SizedBox(width: 12),
                                     topBarIconBtn(
                                         Image.asset('assets/notification.png',
@@ -523,7 +522,9 @@ class _HomeState extends State<Home> {
                                               });
                                             },
                                             leading: Image.asset(
-                                              "assets/takeway.png",
+                                              orderTypes[homeController.orders
+                                                  .value.data![index].type
+                                                  .toString()],
                                               color: primaryColor,
                                             ),
                                             title: Text(

@@ -68,7 +68,7 @@ Widget iconTextBtn(
     String imagePath, String text, Color background, Color iconColor,
     {Function()? onPressed}) {
   return SizedBox(
-    width: 80,
+    width: 78,
     child: Column(
       children: [
         MaterialButton(
@@ -84,7 +84,7 @@ Widget iconTextBtn(
         ),
         SizedBox(height: 5),
         Text(text,
-            style: TextStyle(color: primaryText, fontSize: fontVerySmall)),
+            style: TextStyle(color: white, fontSize: fontVerySmall)),
       ],
     ),
   );

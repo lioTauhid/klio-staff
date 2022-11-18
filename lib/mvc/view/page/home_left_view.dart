@@ -32,45 +32,58 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Obx(() {
-                    return Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        for (int i = 1; i < 5; i++)
-                          iconTextBtn(
-                              leftTopBtnTxt[i - 1].values.first,
-                              leftTopBtnTxt[i - 1].keys.first,
-                              homeController.topBtnPosition.value == i
-                                  ? primaryColor
-                                  : primaryBackground,
-                              homeController.topBtnPosition.value == i
-                                  ? white
-                                  : primaryText, onPressed: () async {
-                            homeController.topBtnPosition.value = i;
-                            switch (i) {
-                              case 1:
-                                Utils.showLoading();
-                                await homeController.getTables();
-                                Utils.hidePopup();
-                                showCustomDialog(context, "Table Reservation",
-                                    tableBody(context, false), 50, 200);
-                                break;
-                              case 2:
-                                homeController.withoutTable.value = true;
-                                break;
-                              case 3:
-                                homeController.withoutTable.value = true;
-                                break;
-                              default:
-                                homeController.withoutTable.value = false;
-                                homeController.getTables();
-                                showCustomDialog(context, "Table Reservation",
-                                    tableBody(context, true), 50, 200);
-                                break;
-                            }
-                          })
-                      ],
+                    return Container(
+                      decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(20)),
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(' Place New Order',
+                              style: TextStyle(
+                                  fontSize: fontVerySmall, color: white)),
+                          SizedBox(height: 8),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              for (int i = 1; i < 5; i++)
+                                iconTextBtn(
+                                    orderTypes.entries.elementAt(i-1).value,
+                                    orderTypes.entries.elementAt(i-1).key,
+                                    homeController.topBtnPosition.value == i
+                                        ? textSecondary
+                                        : primaryBackground,
+                                    homeController.topBtnPosition.value == i
+                                        ? white
+                                        : primaryText, onPressed: () async {
+                                  homeController.topBtnPosition.value = i;
+                                  switch (i) {
+                                    case 1:
+                                      Utils.showLoading();
+                                      await homeController.getTables();
+                                      Utils.hidePopup();
+                                      showCustomDialog(context, "Table Reservation",
+                                          tableBody(context, false), 50, 200);
+                                      break;
+                                    case 2:
+                                      homeController.withoutTable.value = true;
+                                      break;
+                                    case 3:
+                                      homeController.withoutTable.value = true;
+                                      break;
+                                    default:
+                                      homeController.withoutTable.value = false;
+                                      homeController.getTables();
+                                      showCustomDialog(context, "Table Reservation",
+                                          tableBody(context, true), 50, 200);
+                                      break;
+                                  }
+                                })
+                            ],
+                          ),
+                        ],
+                      ),
                     );
                   }),
                   Container(

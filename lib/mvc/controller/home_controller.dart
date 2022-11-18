@@ -190,7 +190,7 @@ class HomeController extends GetxController with ErrorController {
     });
     items.removeAt(0);
     var body = jsonEncode({
-      "order_type": leftTopBtnTxt[topBtnPosition.value - 1].keys.first,
+      "order_type": orderTypes.entries.elementAt(topBtnPosition.value - 1).key,
       "customer": Utils.findIdByListNearValue(
           customers.value.data!.toList(), customerName.value),
       "items": items,
