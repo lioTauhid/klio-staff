@@ -307,7 +307,7 @@ class _HomeState extends State<Home> {
                                     },
                                     child: Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 6),
+                                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -322,6 +322,9 @@ class _HomeState extends State<Home> {
                                                       homeController.menus.value
                                                           .data![index].image
                                                           .toString(),
+                                                      height: Size.infinite.height,
+                                                      width: Size.infinite.width,
+                                                      fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 )
@@ -332,11 +335,8 @@ class _HomeState extends State<Home> {
                                           Expanded(
                                             flex: 5,
                                             child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Row(
                                                   mainAxisSize:
@@ -407,35 +407,23 @@ class _HomeState extends State<Home> {
                                                     ),
                                                     gridImage
                                                         ? SizedBox()
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    0,
-                                                                    0,
-                                                                    10,
-                                                                    0),
-                                                            child: Text(
-                                                              homeController
-                                                                  .menus
-                                                                  .value
-                                                                  .data![index]
-                                                                  .price
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      fontMediumExtra,
-                                                                  color:
-                                                                      primaryColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ),
+                                                        : Text(
+                                                          homeController
+                                                              .menus
+                                                              .value
+                                                              .data![index]
+                                                              .price
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  fontMediumExtra,
+                                                              color:
+                                                                  primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
                                                   ],
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
                                                 ),
                                                 Row(
                                                   mainAxisSize:

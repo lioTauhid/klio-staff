@@ -282,7 +282,7 @@ Widget addCustomer(BuildContext context, {Function()? onPressed}) {
 Widget foodMenuBody(BuildContext context, MenuData data) {
   homeController.tables.value.data = [];
   homeController.menuData.value = data;
-  homeController.menuData.value.quantity = 0;
+  homeController.menuData.value.quantity = 1;
   for (int i = 0; i < homeController.menuData.value.addons!.data!.length; i++) {
     homeController.menuData.value.addons!.data![i].quantity = 0;
     homeController.menuData.value.addons!.data![i].isChecked = false;
@@ -293,196 +293,134 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
   homeController.menuData.value.variant = data.variants!.data![0].id.toString();
   return Padding(
     padding: const EdgeInsets.all(20.0),
-    child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 3,
-            child: Text(
-              "Name",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              "Size",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              "Qty",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              "Price",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            ),
-          ),
-        ],
-      ),
-      Obx(() {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: Text(data.name.toString(),
+    child: Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data.name.toString(),
                   style: TextStyle(
-                      fontSize: fontMedium,
+                      fontSize: fontMediumExtra,
                       color: primaryText,
-                      fontWeight: FontWeight.bold)),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                  height: 35,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: textSecondary, width: 1)),
-                  child: DropdownButton<String>(
-                    items: data.variants!.data!.map((dynamic val) {
-                      return DropdownMenuItem<String>(
-                        value: val.name.toString(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(val.name,
-                              style: TextStyle(
-                                  color: primaryText, fontSize: fontVerySmall)),
-                        ),
-                      );
-                    }).toList(),
-                    borderRadius: BorderRadius.circular(10),
-                    underline: SizedBox(),
-                    isExpanded: true,
-                    dropdownColor: primaryBackground,
-                    value: data.variants!.data![0].name,
-                    onChanged: (value) {
-                      unitPrice = double.parse(Utils.findPriceByListNearValue(
-                          data.variants!.data!, value!));
-                      // homeController.menuData.value.variant = unitPrice.toString();
-                      // for store variant as id
-                      homeController.menuData.value.variant =
-                          Utils.findIdByListNearValue(
-                              data.variants!.data!, value);
-                      print(homeController.menuData.value.variant);
-                    },
-                  )),
-            ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  topBarIconBtn(Image.asset('assets/remove.png', color: white),
-                      primaryColor, 0, 2, 14, onPressed: () {
-                    homeController.menuData.value.quantity =
-                        Utils.incrementDecrement(false,
-                            homeController.menuData.value.quantity!.toInt());
-                    homeController.menuData.refresh();
-                  }),
-                  SizedBox(width: 6),
-                  Text(homeController.menuData.value.quantity.toString(),
-                      style:
-                          TextStyle(color: primaryText, fontSize: fontMedium)),
-                  SizedBox(width: 6),
-                  topBarIconBtn(Image.asset('assets/add.png', color: white),
-                      primaryColor, 0, 2, 14, onPressed: () {
-                    homeController.menuData.value.quantity =
-                        Utils.incrementDecrement(true,
-                            homeController.menuData.value.quantity!.toInt());
-                    homeController.menuData.refresh();
-                  }),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                  "£${(homeController.menuData.value.quantity! * unitPrice)}",
-                  style: TextStyle(
-                      fontSize: fontMedium,
-                      color: primaryText,
-                      fontWeight: FontWeight.bold)),
-            ),
-          ],
-        );
-      }),
-      Divider(color: textSecondary, thickness: 1),
-      const SizedBox(height: 20),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              "Selection",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "This long descriptions..........",
+                  style:
+                      TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                ),
+                SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(data.image.toString(),
+                      height: 242, width: 242, fit: BoxFit.cover),
+                ),
+              ],
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              "Addon Name",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+        ),
+        Expanded(
+          flex: 5,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    "Name",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Size",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Qty",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Price",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              "Qty",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              "Price",
-              style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            ),
-          ),
-        ],
-      ),
-      Expanded(child: Obx(() {
-        return ListView.builder(
-            itemCount: homeController.menuData.value.addons!.data!.length,
-            itemBuilder: (BuildContext context, int index) {
+            Obx(() {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
-                      flex: 1,
-                      child: Padding(
-                          padding: const EdgeInsets.only(right: 60.0),
-                          child: Checkbox(
-                              value: homeController.menuData.value.addons!
-                                  .data![index].isChecked,
-                              onChanged: (checked) {
-                                homeController.menuData.value.addons!
-                                    .data![index].isChecked = checked!;
-                                homeController.menuData.refresh();
-                              }))),
-                  Expanded(
                     flex: 3,
-                    child: Text(
-                        homeController.menuData.value.addons!.data![index].name
-                            .toString(),
+                    child: Text(data.name.toString(),
                         style: TextStyle(
-                            fontSize: fontSmall,
+                            fontSize: fontMedium,
                             color: primaryText,
                             fontWeight: FontWeight.bold)),
                   ),
                   Expanded(
                     flex: 2,
+                    child: Container(
+                        height: 35,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: textSecondary, width: 1)),
+                        child: DropdownButton<String>(
+                          items: data.variants!.data!.map((dynamic val) {
+                            return DropdownMenuItem<String>(
+                              value: val.name.toString(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(val.name,
+                                    style: TextStyle(
+                                        color: primaryText,
+                                        fontSize: fontVerySmall)),
+                              ),
+                            );
+                          }).toList(),
+                          borderRadius: BorderRadius.circular(30),
+                          underline: SizedBox(),
+                          isExpanded: true,
+                          dropdownColor: primaryBackground,
+                          value: data.variants!.data![0].name,
+                          onChanged: (value) {
+                            unitPrice = double.parse(
+                                Utils.findPriceByListNearValue(
+                                    data.variants!.data!, value!));
+                            // homeController.menuData.value.variant = unitPrice.toString();
+                            // for store variant as id
+                            homeController.menuData.value.variant =
+                                Utils.findIdByListNearValue(
+                                    data.variants!.data!, value);
+                            print(homeController.menuData.value.variant);
+                          },
+                        )),
+                  ),
+                  Expanded(
+                    flex: 2,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         topBarIconBtn(
                             Image.asset('assets/remove.png', color: white),
@@ -490,24 +428,17 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                             0,
                             2,
                             14, onPressed: () {
-                          homeController.menuData.value.addons!.data![index]
-                                  .quantity =
+                          homeController.menuData.value.quantity =
                               Utils.incrementDecrement(
                                   false,
-                                  homeController.menuData.value.addons!
-                                      .data![index].quantity!
+                                  homeController.menuData.value.quantity!
                                       .toInt());
                           homeController.menuData.refresh();
                         }),
                         SizedBox(width: 6),
-                        Text(
-                            homeController
-                                .menuData.value.addons!.data![index].quantity
-                                .toString(),
+                        Text(homeController.menuData.value.quantity.toString(),
                             style: TextStyle(
-                                color: primaryText,
-                                fontSize: fontSmall,
-                                fontWeight: FontWeight.bold)),
+                                color: primaryText, fontSize: fontMedium)),
                         SizedBox(width: 6),
                         topBarIconBtn(
                             Image.asset('assets/add.png', color: white),
@@ -515,12 +446,10 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                             0,
                             2,
                             14, onPressed: () {
-                          homeController.menuData.value.addons!.data![index]
-                                  .quantity =
+                          homeController.menuData.value.quantity =
                               Utils.incrementDecrement(
                                   true,
-                                  homeController.menuData.value.addons!
-                                      .data![index].quantity!
+                                  homeController.menuData.value.quantity!
                                       .toInt());
                           homeController.menuData.refresh();
                         }),
@@ -530,50 +459,198 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                   Expanded(
                     flex: 1,
                     child: Text(
-                        "£${homeController.menuData.value.addons!.data![index].quantity! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
+                        "£${(homeController.menuData.value.quantity! * unitPrice)}",
                         style: TextStyle(
-                            fontSize: fontSmall,
+                            fontSize: fontMedium,
                             color: primaryText,
                             fontWeight: FontWeight.bold)),
                   ),
                 ],
               );
-            });
-      })),
-      MaterialButton(
-          elevation: 0,
-          color: primaryColor,
-          height: 40,
-          minWidth: 160,
-          // padding: EdgeInsets.all(20),
-          onPressed: () {
-            homeController.cardList.add(homeController.menuData.value);
-            Get.back();
-            print(homeController.menuData.value.toJson());
-            // print(homeController.menuData.value.qty);
-            // print(homeController.menuData.value.addons!.data);
-            // print(homeController.menuData.value.addons!.data![0].qty);
-            // print(homeController.menuData.value.addons!.data![1].qty);
-            // print(homeController.menuData.value.addons!.data![1].isChecked);
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/shopping-cart.png',
-                color: white,
-                height: 15,
-                width: 15,
-              ),
-              SizedBox(width: 5),
-              Text("Add to cart",
-                  style: TextStyle(color: white, fontSize: fontSmall)),
-            ],
-          )),
-    ]),
+            }),
+            Divider(color: textSecondary, thickness: 1),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Selection",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    "Addon Name",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Qty",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Price",
+                    style: TextStyle(
+                        fontSize: fontVerySmall, color: textSecondary),
+                  ),
+                ),
+              ],
+            ),
+            Expanded(child: Obx(() {
+              return ListView.builder(
+                  itemCount: homeController.menuData.value.addons!.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Padding(
+                                padding: const EdgeInsets.only(right: 60.0),
+                                child: Checkbox(
+                                    value: homeController.menuData.value.addons!
+                                        .data![index].isChecked,
+                                    onChanged: (checked) {
+                                      // homeController.menuData.value.addons!
+                                      //     .data![index].isChecked = checked!;
+                                      // homeController.menuData.refresh();
+                                    }))),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                              homeController
+                                  .menuData.value.addons!.data![index].name
+                                  .toString(),
+                              style: TextStyle(
+                                  fontSize: fontSmall,
+                                  color: primaryText,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+                              topBarIconBtn(
+                                  Image.asset('assets/remove.png',
+                                      color: white),
+                                  primaryColor,
+                                  0,
+                                  2,
+                                  14, onPressed: () {
+                                homeController.menuData.value.addons!
+                                        .data![index].quantity =
+                                    Utils.incrementDecrement(
+                                        false,
+                                        homeController.menuData.value.addons!
+                                            .data![index].quantity!
+                                            .toInt());
+                                if (homeController.menuData.value.addons!
+                                        .data![index].quantity! >
+                                    0) {
+                                  homeController.menuData.value.addons!
+                                      .data![index].isChecked = true;
+                                } else
+                                  homeController.menuData.value.addons!
+                                      .data![index].isChecked = false;
+                                homeController.menuData.refresh();
+                              }),
+                              SizedBox(width: 6),
+                              Text(
+                                  homeController.menuData.value.addons!
+                                      .data![index].quantity
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: primaryText,
+                                      fontSize: fontSmall,
+                                      fontWeight: FontWeight.bold)),
+                              SizedBox(width: 6),
+                              topBarIconBtn(
+                                  Image.asset('assets/add.png', color: white),
+                                  primaryColor,
+                                  0,
+                                  2,
+                                  14, onPressed: () {
+                                homeController.menuData.value.addons!
+                                        .data![index].quantity =
+                                    Utils.incrementDecrement(
+                                        true,
+                                        homeController.menuData.value.addons!
+                                            .data![index].quantity!
+                                            .toInt());
+                                if (homeController.menuData.value.addons!
+                                        .data![index].quantity! >
+                                    0) {
+                                  homeController.menuData.value.addons!
+                                      .data![index].isChecked = true;
+                                } else
+                                  homeController.menuData.value.addons!
+                                      .data![index].isChecked = false;
+                                homeController.menuData.refresh();
+                              }),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                              "£${homeController.menuData.value.addons!.data![index].quantity! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
+                              style: TextStyle(
+                                  fontSize: fontSmall,
+                                  color: primaryText,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    );
+                  });
+            })),
+            MaterialButton(
+                elevation: 0,
+                color: primaryColor,
+                height: 40,
+                minWidth: 160,
+                // padding: EdgeInsets.all(20),
+                onPressed: () {
+                  homeController.cardList.add(homeController.menuData.value);
+                  Get.back();
+                  print(homeController.menuData.value.toJson());
+                  // print(homeController.menuData.value.qty);
+                  // print(homeController.menuData.value.addons!.data);
+                  // print(homeController.menuData.value.addons!.data![0].qty);
+                  // print(homeController.menuData.value.addons!.data![1].qty);
+                  // print(homeController.menuData.value.addons!.data![1].isChecked);
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/shopping-cart.png',
+                      color: white,
+                      height: 15,
+                      width: 15,
+                    ),
+                    SizedBox(width: 5),
+                    Text("Add to cart",
+                        style: TextStyle(color: white, fontSize: fontSmall)),
+                  ],
+                )),
+          ]),
+        ),
+      ],
+    ),
   );
 }
 
@@ -641,9 +718,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                               ],
                             ),
                             Image.network(
-                              // "assets/table2.png",
-                              homeController.tables.value.data![index].image
-                                  .toString(),
+                              "assets/table2.png",
                               height: 60,
                               width: 60,
                               fit: BoxFit.fill,
@@ -762,7 +837,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                         showOnly
                             ? SizedBox()
                             : SizedBox(
-                                height: 45,
+                                height: 30,
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -819,28 +894,28 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                                   color: primaryText),
                                               hintText: 'Person')),
                                     ),
-                                    // SizedBox(
-                                    //   width: 10,
-                                    // ),
-                                    // Expanded(
-                                    //   flex: 2,
-                                    //   child: MaterialButton(
-                                    //       elevation: 0,
-                                    //       color: primaryColor,
-                                    //       height: 45,
-                                    //       // minWidth: 180,
-                                    //       // padding: EdgeInsets.all(20),
-                                    //       onPressed: () {},
-                                    //       shape: RoundedRectangleBorder(
-                                    //         borderRadius: BorderRadius.circular(40),
-                                    //       ),
-                                    //       child: Text(
-                                    //         "Add",
-                                    //         style: TextStyle(
-                                    //             color: white,
-                                    //             fontSize: fontVerySmall),
-                                    //       )),
-                                    // ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: MaterialButton(
+                                          elevation: 0,
+                                          color: primaryColor,
+                                          height: 45,
+                                          // minWidth: 180,
+                                          // padding: EdgeInsets.all(20),
+                                          onPressed: () {},
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(40),
+                                          ),
+                                          child: Text(
+                                            "Add",
+                                            style: TextStyle(
+                                                color: white,
+                                                fontSize: fontVerySmall),
+                                          )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1398,7 +1473,8 @@ Widget finalizeOrder(BuildContext context) {
                     orderInvoice(context, homeController.payMethod.value),
                     50,
                     800);
-              } else Utils.showSnackBar("Something wrong, try again");
+              } else
+                Utils.showSnackBar("Something wrong, try again");
             }),
           ],
         )

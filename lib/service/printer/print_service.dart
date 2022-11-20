@@ -365,14 +365,13 @@ class SumniPrinter {
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText('klio');
 
-    await SunmiPrinter.setFontSize(SunmiFontSize.LG);
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
     await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText(
-        'We are just preparing your food, and will bring \nit to your table as soon as possible');
+        'We are just preparing your food, will \nbring it table as soon as possible');
 
-    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText(
-        'Table: ${Utils.getTables(homeController.order.value.data!.tables!.data!.toList())}                Order Number: ${homeController.order.value.data!.invoice.toString()}');
+        'Table: ${Utils.getTables(homeController.order.value.data!.tables!.data!.toList())}              Order Number: ${homeController.order.value.data!.invoice.toString()}');
     await SunmiPrinter.lineWrap(2);
 
     await SunmiPrinter.setFontSize(SunmiFontSize.XL);
@@ -380,38 +379,35 @@ class SumniPrinter {
     await SunmiPrinter.printText('Order Summary');
 
     await SunmiPrinter.setFontSize(SunmiFontSize.MD);
-    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-    // await SunmiPrinter.printText('SL - Name - V. Name - Price - Qty - Total');
-    await SunmiPrinter.printRow(cols: [
-      ColumnMaker(text: 'SL', width: 1, align: SunmiPrintAlign.LEFT),
-      ColumnMaker(text: 'Name', width: 3, align: SunmiPrintAlign.LEFT),
-      ColumnMaker(text: 'V. Name', width: 2, align: SunmiPrintAlign.LEFT),
-      ColumnMaker(text: 'Price', width: 2, align: SunmiPrintAlign.LEFT),
-      ColumnMaker(text: 'Qty', width: 1, align: SunmiPrintAlign.LEFT),
-      ColumnMaker(text: 'Total', width: 2, align: SunmiPrintAlign.LEFT),
-    ]);
+    await SunmiPrinter.printText('SL - Name - V. Name - Qty - Total');
+    // await SunmiPrinter.printRow(cols: [
+    //   ColumnMaker(text: 'SL', width: 1, align: SunmiPrintAlign.LEFT),
+    //   ColumnMaker(text: 'Name', width: 3, align: SunmiPrintAlign.LEFT),
+    //   ColumnMaker(text: 'V. Name', width: 2, align: SunmiPrintAlign.LEFT),
+    //   ColumnMaker(text: 'Price', width: 2, align: SunmiPrintAlign.LEFT),
+    //   ColumnMaker(text: 'Qty', width: 1, align: SunmiPrintAlign.LEFT),
+    //   ColumnMaker(text: 'Total', width: 2, align: SunmiPrintAlign.LEFT),
+    // ]);
     await SunmiPrinter.line();
-    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
-    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     for (int i = 0;
         i < homeController.order.value.data!.orderDetails!.data!.length;
         i++) {
       OrderDetailsDatum item =
           await homeController.order.value.data!.orderDetails!.data![i];
-      await SunmiPrinter.printRow(cols: [
-        ColumnMaker(text: (i+1).toString(), width: 1, align: SunmiPrintAlign.LEFT),
-        ColumnMaker(text: item.food!.name!, width: 3, align: SunmiPrintAlign.LEFT),
-        ColumnMaker(text: item.variant!.name!, width: 2, align: SunmiPrintAlign.LEFT),
-        ColumnMaker(text: '${item.variant!.price}', width: 2, align: SunmiPrintAlign.LEFT),
-        ColumnMaker(text: item.quantity!.toString(), width: 1, align: SunmiPrintAlign.LEFT),
-        ColumnMaker(text: '${item.price!}', width: 2, align: SunmiPrintAlign.LEFT),
-      ]);
-      // await SunmiPrinter.printText(
-      //     '${item.id} - ${item.food!.name} - ${item.variant!.name} - ${item.variant!.price} - ${item.quantity!} - ${item.price!}');
+      // await SunmiPrinter.printRow(cols: [
+      //   ColumnMaker(text: (i+1).toString(), width: 1, align: SunmiPrintAlign.LEFT),
+      //   ColumnMaker(text: item.food!.name!, width: 3, align: SunmiPrintAlign.LEFT),
+      //   ColumnMaker(text: item.variant!.name!, width: 2, align: SunmiPrintAlign.LEFT),
+      //   ColumnMaker(text: '${item.variant!.price}', width: 2, align: SunmiPrintAlign.LEFT),
+      //   ColumnMaker(text: item.quantity!.toString(), width: 1, align: SunmiPrintAlign.LEFT),
+      //   ColumnMaker(text: '${item.price!}', width: 2, align: SunmiPrintAlign.LEFT),
+      // ]);
+      await SunmiPrinter.printText(
+          '${(i+1).toString()} - ${item.food!.name} - ${item.variant!.name} - ${item.quantity!} - ${item.totalPrice!}');
       for (AddonsDatum addons in homeController
           .order.value.data!.orderDetails!.data![i].addons!.data!
           .toList()) {
-        await SunmiPrinter.printText('  *${addons.name}');
+        await SunmiPrinter.printText('  ${addons.name}  ${addons.quantity}x${addons.price}');
       }
     }
 
@@ -440,7 +436,8 @@ class SumniPrinter {
         'Due: ${(homeController.giveAmount.value - double.parse(homeController.order.value.data!.grandTotal!))}');
 
     await SunmiPrinter.lineWrap(2);
-    await SunmiPrinter.setFontSize(SunmiFontSize.LG);
+    await SunmiPrinter.setFontSize(SunmiFontSize.MD);
+    await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
     await SunmiPrinter.printText('Thanks for ordering with klio');
 
     // await SunmiPrinter.setCustomFontSize(20); // SET CUSTOM FONT 12

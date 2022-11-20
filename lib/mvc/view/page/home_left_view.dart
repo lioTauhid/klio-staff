@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:klio_staff/mvc/model/Customer.dart';
+import 'package:sunmi_printer_plus/column_maker.dart';
+import 'package:sunmi_printer_plus/enums.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
@@ -19,7 +22,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
     child: Container(
       height: double.infinity,
       color: secondaryBackground,
-      padding: EdgeInsetsDirectional.fromSTEB(15, 15, 15, 15),
+      padding: EdgeInsetsDirectional.fromSTEB(15, 5, 15, 15),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,55 +36,48 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                 children: [
                   Obx(() {
                     return Container(
-                      decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(20)),
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(20)),
+                      padding: EdgeInsets.fromLTRB(6, 10, 6, 5),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(' Place New Order',
-                              style: TextStyle(
-                                  fontSize: fontVerySmall, color: white)),
-                          SizedBox(height: 8),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              for (int i = 1; i < 5; i++)
-                                iconTextBtn(
-                                    orderTypes.entries.elementAt(i-1).value,
-                                    orderTypes.entries.elementAt(i-1).key,
-                                    homeController.topBtnPosition.value == i
-                                        ? textSecondary
-                                        : primaryBackground,
-                                    homeController.topBtnPosition.value == i
-                                        ? white
-                                        : primaryText, onPressed: () async {
-                                  homeController.topBtnPosition.value = i;
-                                  switch (i) {
-                                    case 1:
-                                      Utils.showLoading();
-                                      await homeController.getTables();
-                                      Utils.hidePopup();
-                                      showCustomDialog(context, "Table Reservation",
-                                          tableBody(context, false), 50, 200);
-                                      break;
-                                    case 2:
-                                      homeController.withoutTable.value = true;
-                                      break;
-                                    case 3:
-                                      homeController.withoutTable.value = true;
-                                      break;
-                                    default:
-                                      homeController.withoutTable.value = false;
-                                      homeController.getTables();
-                                      showCustomDialog(context, "Table Reservation",
-                                          tableBody(context, true), 50, 200);
-                                      break;
-                                  }
-                                })
-                            ],
-                          ),
+                          for (int i = 1; i < 5; i++)
+                            iconTextBtn(
+                                orderTypes.entries.elementAt(i - 1).value,
+                                orderTypes.entries.elementAt(i - 1).key,
+                                homeController.topBtnPosition.value == i
+                                    ? textSecondary
+                                    : primaryBackground,
+                                homeController.topBtnPosition.value == i
+                                    ? white
+                                    : primaryText, onPressed: () async {
+                              homeController.topBtnPosition.value = i;
+                              switch (i) {
+                                case 1:
+                                  Utils.showLoading();
+                                  await homeController.getTables();
+                                  Utils.hidePopup();
+                                  showCustomDialog(context, "Table Reservation",
+                                      tableBody(context, false), 50, 200);
+                                  break;
+                                case 2:
+                                  homeController.withoutTable.value = true;
+                                  break;
+                                case 3:
+                                  homeController.withoutTable.value = true;
+                                  break;
+                                default:
+                                  homeController.withoutTable.value = false;
+                                  homeController.getTables();
+                                  showCustomDialog(context, "Table Reservation",
+                                      tableBody(context, true), 50, 200);
+                                  break;
+                              }
+                            })
                         ],
                       ),
                     );
@@ -515,8 +511,34 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                       iconTextBtnWide(
                           "assets/print.png", 'Print', alternate, primaryText,
                           onPressed: () async {
-                        await SumniPrinter.printText();
+                        // await SumniPrinter.printText();
                         // await SumniPrinter.printImage();
+                        await SunmiPrinter.startTransactionPrint(true);
+
+                        await SunmiPrinter.setFontSize(SunmiFontSize.XL);
+                        await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+                        await SunmiPrinter.printText('klio');
+                        await SunmiPrinter.lineWrap(2);
+
+                        await SunmiPrinter.printRow(cols: [
+                          ColumnMaker(text: 'SL', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Name', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'V. Name', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Price', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Qty', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Total', align: SunmiPrintAlign.LEFT),
+                        ]);
+                        await SunmiPrinter.printRow(cols: [
+                          ColumnMaker(text: 'SL', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Name', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'V. Name', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Price', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Qty', align: SunmiPrintAlign.LEFT),
+                          ColumnMaker(text: 'Total', align: SunmiPrintAlign.LEFT),
+                        ]);
+                        await SunmiPrinter.submitTransactionPrint(); // SUBMIT and cut paper
+                        await SunmiPrinter.cut(); // cut paper
+                        await SunmiPrinter.exitTransactionPrint(true); // Close the transaction
                       }),
                     ],
                   ),
