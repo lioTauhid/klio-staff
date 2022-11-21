@@ -49,6 +49,7 @@ class HomeController extends GetxController with ErrorController {
   RxInt topBtnPosition = 1.obs;
   RxInt giveAmount = 1.obs;
   RxBool isUpdate = false.obs;
+  RxInt currentPage = 0.obs;
 
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
