@@ -35,6 +35,7 @@ class MenuData {
     this.addons,
     this.variants,
     this.variant,
+    this.description,
   });
 
   int? id;
@@ -46,6 +47,7 @@ class MenuData {
   AddonsClass? addons;
   Variants? variants;
   String? variant;
+  String? description;
 
   factory MenuData.fromJson(Map<String, dynamic> json) => MenuData(
     id: json["id"],
@@ -57,6 +59,7 @@ class MenuData {
     addons: AddonsClass.fromJson(json["addons"]),
     variants: Variants.fromJson(json["variants"]),
     variant: json["variant"],
+    description: json["description"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,6 +72,7 @@ class MenuData {
     "addons": addons!.toJson(),
     "variants": variants!.toJson(),
     "variant": variant,
+    "description": description,
   };
 }
 

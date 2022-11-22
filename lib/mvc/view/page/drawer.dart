@@ -20,10 +20,7 @@ Widget sideDrawer() {
           ),
         ),
         ListTile(
-          title: Text(
-            "Home",
-            style: TextStyle(color: primaryText),
-          ),
+          title: Text("POS Home", style: TextStyle(color: primaryText)),
           onTap: () {
             homeController.currentPage.value = 0;
             Get.back();
@@ -39,33 +36,21 @@ Widget sideDrawer() {
           leading: sideBarIconBtn('assets/grid.png', primaryText),
         ),
         ListTile(
-            title: Text("Notification", style: TextStyle(color: primaryText)),
-            onTap: () {
-              homeController.currentPage.value = 2;
-              Get.back();
-            },
-            leading: sideBarIconBtn('assets/notification.png', primaryText)),
-        ListTile(
-            title: Text("Event", style: TextStyle(color: primaryText)),
+            title:
+                Text("Food Management", style: TextStyle(color: primaryText)),
             onTap: () {
               homeController.currentPage.value = 2;
               Get.back();
             },
             leading: sideBarIconBtn('assets/calendar.png', primaryText)),
         ListTile(
-            title: Text("Cart", style: TextStyle(color: primaryText)),
+            title:
+                Text("Orders Management", style: TextStyle(color: primaryText)),
             onTap: () {
               homeController.currentPage.value = 2;
               Get.back();
             },
             leading: sideBarIconBtn('assets/shopping-cart.png', primaryText)),
-        ListTile(
-            title: Text("Dine In", style: TextStyle(color: primaryText)),
-            onTap: () {
-              homeController.currentPage.value = 2;
-              Get.back();
-            },
-            leading: sideBarIconBtn('assets/table.png', primaryText)),
         ListTile(
             title: Text("Financial", style: TextStyle(color: primaryText)),
             onTap: () {
@@ -74,24 +59,21 @@ Widget sideDrawer() {
             },
             leading: sideBarIconBtn('assets/Dollar.png', primaryText)),
         ListTile(
-            title: Text("Bookmark", style: TextStyle(color: primaryText)),
-            onTap: () {
-              homeController.currentPage.value = 2;
-              Get.back();
-            },
-            leading: sideBarIconBtn('assets/book.png', primaryText)),
-        ListTile(
-            title: Text("Listing", style: TextStyle(color: primaryText)),
+            title: Text("Inventory", style: TextStyle(color: primaryText)),
             onTap: () {},
             leading: sideBarIconBtn('assets/list.png', primaryText)),
         ListTile(
-            title: Text("User", style: TextStyle(color: primaryText)),
+            title: Text("Customer", style: TextStyle(color: primaryText)),
             onTap: () {},
             leading: sideBarIconBtn('assets/users.png', primaryText)),
         ListTile(
+            title: Text("Reports", style: TextStyle(color: primaryText)),
+            onTap: () {},
+            leading: sideBarIconBtn('assets/book.png', primaryText)),
+        ListTile(
             title: Text("Setting", style: TextStyle(color: primaryText)),
             onTap: () {
-              homeController.currentPage.value = 2;
+              homeController.currentPage.value = 3;
               Get.back();
             },
             leading: sideBarIconBtn('assets/settings.png', primaryText)),

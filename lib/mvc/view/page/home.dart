@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:klio_staff/mvc/view/page/food_management.dart';
+import 'package:klio_staff/mvc/view/page/settings.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
@@ -22,7 +23,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-List pageList = [0, Dashboard(), FoodManagement()];
+List pageList = [0, Dashboard(), FoodManagement(), Settings()];
 
 class _HomeState extends State<Home> {
   HomeController homeController = Get.put(HomeController());
@@ -328,9 +329,6 @@ class _HomeState extends State<Home> {
                                                                 .data![index]
                                                                 .id!
                                                                 .toInt());
-                                                    Utils.hidePopup();
-                                                    print(homeController
-                                                        .menu.value.data!.name);
                                                     showCustomDialog(
                                                         context,
                                                         "Addons",

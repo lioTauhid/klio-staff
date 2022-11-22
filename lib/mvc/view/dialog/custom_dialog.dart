@@ -222,6 +222,8 @@ Widget dialogHeader(String title, BuildContext context) {
         IconButton(
           onPressed: () {
             Get.back();
+            Utils.hidePopup();
+            Utils.hidePopup();
           },
           icon: Icon(
             Icons.close,
@@ -296,11 +298,11 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
     child: Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Padding(
             padding: const EdgeInsets.only(right: 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   data.name.toString(),
@@ -310,7 +312,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "This long descriptions..........",
+                  data.description.toString(),
                   style:
                       TextStyle(fontSize: fontVerySmall, color: textSecondary),
                 ),
@@ -473,14 +475,14 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    "Selection",
-                    style: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary),
-                  ),
-                ),
+                // Expanded(
+                //   flex: 1,
+                //   child: Text(
+                //     "Selection",
+                //     style: TextStyle(
+                //         fontSize: fontVerySmall, color: textSecondary),
+                //   ),
+                // ),
                 Expanded(
                   flex: 3,
                   child: Text(
@@ -507,6 +509,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
             Expanded(child: Obx(() {
               return ListView.builder(
                   itemCount: homeController.menuData.value.addons!.data!.length,
@@ -514,18 +517,18 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                            flex: 1,
-                            child: Padding(
-                                padding: const EdgeInsets.only(right: 60.0),
-                                child: Checkbox(
-                                    value: homeController.menuData.value.addons!
-                                        .data![index].isChecked,
-                                    onChanged: (checked) {
-                                      // homeController.menuData.value.addons!
-                                      //     .data![index].isChecked = checked!;
-                                      // homeController.menuData.refresh();
-                                    }))),
+                        // Expanded(
+                        //     flex: 1,
+                        //     child: Padding(
+                        //         padding: const EdgeInsets.only(right: 60.0),
+                        //         child: Checkbox(
+                        //             value: homeController.menuData.value.addons!
+                        //                 .data![index].isChecked,
+                        //             onChanged: (checked) {
+                        //               // homeController.menuData.value.addons!
+                        //               //     .data![index].isChecked = checked!;
+                        //               // homeController.menuData.refresh();
+                        //             }))),
                         Expanded(
                           flex: 3,
                           child: Text(
@@ -622,8 +625,9 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                 // padding: EdgeInsets.all(20),
                 onPressed: () {
                   homeController.cardList.add(homeController.menuData.value);
-                  Get.back();
-                  print(homeController.menuData.value.toJson());
+                  Utils.hidePopup();
+                  Utils.hidePopup();
+                  // print(homeController.menuData.value.toJson());
                   // print(homeController.menuData.value.qty);
                   // print(homeController.menuData.value.addons!.data);
                   // print(homeController.menuData.value.addons!.data![0].qty);
@@ -682,7 +686,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                   crossAxisCount: size.width > size.height ? 3 : 2,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
-                  childAspectRatio: showOnly ? 2 : 1.5,
+                  childAspectRatio: showOnly ? .9 : 1.7,
                 ),
                 scrollDirection: Axis.vertical,
                 itemCount: homeController.tables.value.data!.length,
@@ -726,114 +730,119 @@ Widget tableBody(BuildContext context, bool showOnly) {
                             )
                           ],
                         ),
-                        Container(
-                          height: .4,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border:
-                                  Border.all(color: textSecondary, width: .3)),
-                        ),
-                        // SizedBox(height: 15),
-                        // Text("Running Order In Table",
-                        //     style: TextStyle(
-                        //         fontSize: fontSmall,
-                        //         color: primaryText,
-                        //         fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
+                        !showOnly
+                            ? SizedBox()
+                            : Text("Running Order In Table",
+                                style: TextStyle(
+                                    fontSize: fontSmall,
+                                    color: primaryText,
+                                    fontWeight: FontWeight.bold)),
+                        !showOnly ? SizedBox() : SizedBox(height: 10),
+                        !showOnly
+                            ? SizedBox()
+                            : Row(
+                                children: [
+                                  Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Order',
+                                        style: TextStyle(
+                                            color: textSecondary,
+                                            fontSize: fontVerySmall),
+                                      )),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        'Time',
+                                        style: TextStyle(
+                                            color: textSecondary,
+                                            fontSize: fontVerySmall),
+                                      )),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Person',
+                                        style: TextStyle(
+                                            color: textSecondary,
+                                            fontSize: fontVerySmall),
+                                      )),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        '',
+                                        style: TextStyle(
+                                            color: textSecondary,
+                                            fontSize: fontVerySmall),
+                                      )),
+                                ],
+                              ),
                         // SizedBox(height: 10),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //         flex: 2,
-                        //         child: Text(
-                        //           'Order',
-                        //           style: TextStyle(
-                        //               color: textSecondary,
-                        //               fontSize: fontVerySmall),
-                        //         )),
-                        //     Expanded(
-                        //         flex: 3,
-                        //         child: Text(
-                        //           'Time',
-                        //           style: TextStyle(
-                        //               color: textSecondary,
-                        //               fontSize: fontVerySmall),
-                        //         )),
-                        //     Expanded(
-                        //         flex: 2,
-                        //         child: Text(
-                        //           'Person',
-                        //           style: TextStyle(
-                        //               color: textSecondary,
-                        //               fontSize: fontVerySmall),
-                        //         )),
-                        //     Expanded(
-                        //         flex: 1,
-                        //         child: Text(
-                        //           '',
-                        //           style: TextStyle(
-                        //               color: textSecondary,
-                        //               fontSize: fontVerySmall),
-                        //         )),
-                        //   ],
-                        // ),
-                        // SizedBox(height: 10),
-                        // Expanded(
-                        //   child: ListView.builder(
-                        //       itemCount: 3,
-                        //       itemBuilder: (BuildContext context, int index) {
-                        //         return Column(
-                        //           children: [
-                        //             Row(
-                        //               children: [
-                        //                 Expanded(
-                        //                     flex: 2,
-                        //                     child: Text('#A002',
-                        //                         style: TextStyle(
-                        //                             fontSize: fontSmall,
-                        //                             color: primaryText,
-                        //                             fontWeight:
-                        //                                 FontWeight.bold))),
-                        //                 Expanded(
-                        //                     flex: 3,
-                        //                     child: Text('7:30AM\n2/5/2022',
-                        //                         style: TextStyle(
-                        //                             fontSize: fontSmall,
-                        //                             color: primaryText,
-                        //                             fontWeight:
-                        //                                 FontWeight.bold))),
-                        //                 Expanded(
-                        //                   flex: 2,
-                        //                   child: Text('2',
-                        //                       style: TextStyle(
-                        //                           fontSize: fontSmall,
-                        //                           color: primaryText,
-                        //                           fontWeight: FontWeight.bold)),
-                        //                 ),
-                        //                 Expanded(
-                        //                     flex: 1,
-                        //                     child: IconButton(
-                        //                       onPressed: () {},
-                        //                       icon: Image.asset(
-                        //                         "assets/delete.png",
-                        //                         color: Colors.red,
-                        //                         height: 18,
-                        //                         width: 18,
-                        //                       ),
-                        //                     )),
-                        //               ],
-                        //             ),
-                        //             Container(
-                        //               height: .5,
-                        //               decoration: BoxDecoration(
-                        //                   borderRadius: BorderRadius.circular(8),
-                        //                   border: Border.all(
-                        //                       color: textSecondary, width: .3)),
-                        //             ),
-                        //           ],
-                        //         );
-                        //       }),
-                        // ),
-                        SizedBox(height: 30),
+                        !showOnly
+                            ? SizedBox()
+                            : SizedBox(
+                          height: 180,
+                                child: ListView.builder(
+                                    itemCount: 8,
+                                    shrinkWrap: true,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 2,
+                                                  child: Text('#A002',
+                                                      style: TextStyle(
+                                                          fontSize: fontSmall,
+                                                          color: primaryText,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Text(
+                                                      '7:30AM\n2/5/2022',
+                                                      style: TextStyle(
+                                                          fontSize: fontSmall,
+                                                          color: primaryText,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Text('2',
+                                                    style: TextStyle(
+                                                        fontSize: fontSmall,
+                                                        color: primaryText,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: IconButton(
+                                                    onPressed: () {},
+                                                    icon: Image.asset(
+                                                      "assets/delete.png",
+                                                      color: Colors.red,
+                                                      height: 18,
+                                                      width: 18,
+                                                    ),
+                                                  )),
+                                            ],
+                                          ),
+                                          Container(
+                                            height: .5,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                    color: textSecondary,
+                                                    width: .3)),
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                              ),
                         showOnly
                             ? SizedBox()
                             : SizedBox(
@@ -907,7 +916,8 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                           // padding: EdgeInsets.all(20),
                                           onPressed: () {},
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(40),
+                                            borderRadius:
+                                                BorderRadius.circular(40),
                                           ),
                                           child: Text(
                                             "Add",
@@ -919,7 +929,9 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                   ],
                                 ),
                               ),
-                        Expanded(
+                        !showOnly
+                            ? SizedBox()
+                            :Expanded(
                           child: Text(
                               homeController
                                       .tables.value.data![index].message ??
@@ -933,13 +945,17 @@ Widget tableBody(BuildContext context, bool showOnly) {
           }),
         ),
       ),
-      Container(
+      !showOnly
+          ? SizedBox()
+          :Container(
         height: .4,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: textSecondary, width: .3)),
       ),
-      SizedBox(
+      !showOnly
+          ? SizedBox()
+          :SizedBox(
         height: 10,
       ),
       showOnly
@@ -1964,7 +1980,6 @@ Widget addMisc(BuildContext context) {
               borderRadius: BorderRadius.circular(6),
             ),
             hintStyle: TextStyle(
-                fontFamily: 'Poppins',
                 fontSize: fontVerySmall,
                 color: textSecondary),
           )),

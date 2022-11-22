@@ -9,6 +9,9 @@ Color textSecondary = Color(0xff7B7B7B);
 Color primaryBackground = Color(0xffF1F4F8);
 Color secondaryBackground = Color(0xffFFFFFF);
 Color alternate = Color(0xff434343);
+Color blue = Color(0xff096ADB);
+Color green = Color(0xff00A600);
+Color red = Color(0xffFB180D);
 
 const Color black = Colors.black;
 const Color white = Colors.white;
@@ -30,52 +33,3 @@ void applyThem(bool dark) {
     alternate = Color(0xffF5F5F5);
   }
 }
-
-// void showSnackBar(BuildContext context, String message) {
-//   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-//     content: Text(
-//       message,
-//     ),
-//     duration: Duration(seconds: 5),
-//     backgroundColor: accentColor,
-//     action: SnackBarAction(
-//       label: 'Ok',
-//       textColor: secondaryColor,
-//       onPressed: () {
-//         // Some code to undo the change.
-//       },
-//     ),
-//   ));
-// }
-
-// showWarningDialog(BuildContext context, String message, {Function? onAccept}) {
-//   showDialog<void>(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         title: Row(
-//           children: [
-//             Icon(
-//               Icons.warning,
-//               color: Colors.orange,
-//             ),
-//             Text(' Warning!'),
-//           ],
-//         ),
-//         content: Text(message),
-//         actions: [
-//           TextButton(
-//             onPressed: () {
-//               onAccept;
-//             },
-//             child: Text("Yes"),
-//           ),
-//           TextButton(
-//             child: Text("No"),
-//             onPressed: () => Navigator.of(context).pop(),
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }

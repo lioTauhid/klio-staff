@@ -37,6 +37,7 @@ dependencies:
   get: ^4.6.5
   printing: ^5.9.3
   sunmi_printer_plus: ^2.1.1
+  flutter_native_splash: ^2.2.15
 
 dev_dependencies:
   flutter_test:
@@ -95,3 +96,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: assets/logo.png

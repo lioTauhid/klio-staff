@@ -83,8 +83,7 @@ Widget iconTextBtn(
           child: Image.asset(imagePath, color: iconColor),
         ),
         SizedBox(height: 5),
-        Text(text,
-            style: TextStyle(color: white, fontSize: fontVerySmall)),
+        Text(text, style: TextStyle(color: white, fontSize: fontVerySmall)),
       ],
     ),
   );
@@ -193,18 +192,18 @@ Widget textRow1(String text1, String text2) {
           text1,
           style: TextStyle(
               fontSize: fontVerySmall,
-              color: textSecondary,
+              color: primaryText,
               fontWeight: FontWeight.bold),
         ),
       ),
-      SizedBox(width: 8),
+      SizedBox(width: 20),
       Expanded(
         flex: 1,
         child: Text(
           text2,
           style: TextStyle(
               fontSize: fontVerySmall,
-              color: textSecondary,
+              color: primaryText,
               fontWeight: FontWeight.bold),
         ),
       ),
@@ -219,38 +218,38 @@ Widget textFieldRow1(String text1, String text2) {
       Expanded(
           flex: 1,
           child: SizedBox(
-            height: 35,
+            height: 40,
             child: TextFormField(
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
                 keyboardType: TextInputType.text,
-                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                style: TextStyle(fontSize: fontVerySmall, color: primaryText),
                 decoration: InputDecoration(
                     fillColor: secondaryBackground,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
                     hintStyle: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary),
+                        fontSize: fontVerySmall, color: primaryText),
                     hintText: text1)),
           )),
-      SizedBox(width: 8),
+      SizedBox(width: 20),
       Expanded(
           flex: 1,
           child: SizedBox(
-            height: 35,
+            height: 40,
             child: TextFormField(
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
                 keyboardType: TextInputType.text,
-                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                style: TextStyle(fontSize: fontVerySmall, color: primaryText),
                 decoration: InputDecoration(
                     fillColor: secondaryBackground,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
                     hintStyle: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary),
+                        fontSize: fontVerySmall, color: primaryText),
                     hintText: text2)),
           )),
     ],
