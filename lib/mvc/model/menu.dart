@@ -30,36 +30,42 @@ class MenuData {
     this.name,
     this.image,
     this.price,
+    this.calorie,
     this.taxVat,
     this.quantity,
     this.addons,
     this.variants,
     this.variant,
     this.description,
+    this.allergies,
   });
 
   int? id;
   String? name;
   String? image;
   String? price;
+  String? calorie;
   String? taxVat;
   int? quantity;
   AddonsClass? addons;
   Variants? variants;
   String? variant;
   String? description;
+  Allergies? allergies;
 
   factory MenuData.fromJson(Map<String, dynamic> json) => MenuData(
     id: json["id"],
     name: json["name"],
     image: json["image"],
     price: json["price"],
+    calorie: json["calorie"],
     taxVat: json["tax_vat"],
     quantity: json["quantity"],
     addons: AddonsClass.fromJson(json["addons"]),
     variants: Variants.fromJson(json["variants"]),
     variant: json["variant"],
     description: json["description"],
+    allergies: Allergies.fromJson(json["allergies"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -67,14 +73,53 @@ class MenuData {
     "name": name,
     "image": image,
     "price": price,
+    "calorie": calorie,
     "tax_vat": taxVat,
     "quantity": quantity,
     "addons": addons!.toJson(),
     "variants": variants!.toJson(),
     "variant": variant,
     "description": description,
+    "allergies": allergies!.toJson(),
   };
 }
+
+class Allergies {
+  Allergies({
+    this.data,
+  });
+
+  List<AllergiesDatum>? data;
+
+  factory Allergies.fromJson(Map<String, dynamic> json) => Allergies(
+    data: List<AllergiesDatum>.from(json["data"].map((x) => AllergiesDatum.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+  };
+}
+
+class AllergiesDatum {
+  AllergiesDatum({
+    this.name,
+    this.image,
+  });
+
+  String? name;
+  String? image;
+
+  factory AllergiesDatum.fromJson(Map<String, dynamic> json) => AllergiesDatum(
+    name: json["name"],
+    image: json["image"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "image": image,
+  };
+}
+
 
 class AddonsClass {
   AddonsClass({

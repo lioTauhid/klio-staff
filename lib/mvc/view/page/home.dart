@@ -319,23 +319,15 @@ class _HomeState extends State<Home> {
                                                       BorderRadius.circular(20),
                                                 ),
                                                 child: GestureDetector(
-                                                  onTap: () async {
-                                                    Utils.showLoading();
-                                                    await homeController
-                                                        .getAddons(
-                                                            homeController
-                                                                .menus
-                                                                .value
-                                                                .data![index]
-                                                                .id!
-                                                                .toInt());
+                                                  onTap: () {
+                                                    MenuData data =
+                                                        homeController.menus
+                                                            .value.data![index];
                                                     showCustomDialog(
                                                         context,
                                                         "Addons",
                                                         foodMenuBody(
-                                                            context,
-                                                            homeController.menu
-                                                                .value.data!),
+                                                            context, data),
                                                         200,
                                                         400);
                                                   },
@@ -528,8 +520,7 @@ class _HomeState extends State<Home> {
                                                       .data!
                                                       .length,
                                                   itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
+                                                      (context, index) {
                                                     return Card(
                                                       clipBehavior: Clip
                                                           .antiAliasWithSaveLayer,

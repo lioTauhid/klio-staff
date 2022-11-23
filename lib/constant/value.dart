@@ -16,7 +16,8 @@ const Map orderTypes = {
   'Dine In': 'assets/dine-in.png',
   'Takeway': 'assets/takeway.png',
   'Delivery': 'assets/delivery.png',
-  'Reservation': 'assets/table.png'
+  'Reservation': 'assets/table.png',
+  'Online': 'assets/takeway.png'
 };
 const List<String> discType = ['In Flat Amount', 'In percentage'];
 const List<String> paymentType = ['Cash', 'Card'];

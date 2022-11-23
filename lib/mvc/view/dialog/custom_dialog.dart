@@ -235,7 +235,8 @@ Widget dialogHeader(String title, BuildContext context) {
   );
 }
 
-Widget addCustomer(BuildContext context, {Function()? onPressed}) {
+Widget addCustomer(BuildContext context, bool isDetail,
+    {Function()? onPressed}) {
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -271,12 +272,15 @@ Widget addCustomer(BuildContext context, {Function()? onPressed}) {
       SizedBox(height: 10),
       SizedBox(height: 10),
       SizedBox(height: 20),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          normalButton('Submit', primaryColor, white, onPressed: onPressed),
-        ],
-      ),
+      !isDetail
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                normalButton('Submit', primaryColor, white,
+                    onPressed: onPressed),
+              ],
+            )
+          : SizedBox(),
     ]),
   );
 }
@@ -294,7 +298,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
       double.parse(homeController.menuData.value.price.toString());
   homeController.menuData.value.variant = data.variants!.data![0].id.toString();
   return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
     child: Row(
       children: [
         Expanded(
@@ -326,6 +330,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
             ),
           ),
         ),
+        SizedBox(width: 20),
         Expanded(
           flex: 5,
           child:
@@ -382,7 +387,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                   Expanded(
                     flex: 2,
                     child: Container(
-                        height: 35,
+                        height: 33,
                         alignment: Alignment.center,
                         margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
                         decoration: BoxDecoration(
@@ -429,7 +434,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                             primaryColor,
                             0,
                             2,
-                            14, onPressed: () {
+                            16, onPressed: () {
                           homeController.menuData.value.quantity =
                               Utils.incrementDecrement(
                                   false,
@@ -437,17 +442,17 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                                       .toInt());
                           homeController.menuData.refresh();
                         }),
-                        SizedBox(width: 6),
+                        SizedBox(width: 8),
                         Text(homeController.menuData.value.quantity.toString(),
                             style: TextStyle(
                                 color: primaryText, fontSize: fontMedium)),
-                        SizedBox(width: 6),
+                        SizedBox(width: 8),
                         topBarIconBtn(
                             Image.asset('assets/add.png', color: white),
                             primaryColor,
                             0,
                             2,
-                            14, onPressed: () {
+                            16, onPressed: () {
                           homeController.menuData.value.quantity =
                               Utils.incrementDecrement(
                                   true,
@@ -550,7 +555,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                                   primaryColor,
                                   0,
                                   2,
-                                  14, onPressed: () {
+                                  16, onPressed: () {
                                 homeController.menuData.value.addons!
                                         .data![index].quantity =
                                     Utils.incrementDecrement(
@@ -568,7 +573,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                                       .data![index].isChecked = false;
                                 homeController.menuData.refresh();
                               }),
-                              SizedBox(width: 6),
+                              SizedBox(width: 8),
                               Text(
                                   homeController.menuData.value.addons!
                                       .data![index].quantity
@@ -577,13 +582,13 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                                       color: primaryText,
                                       fontSize: fontSmall,
                                       fontWeight: FontWeight.bold)),
-                              SizedBox(width: 6),
+                              SizedBox(width: 8),
                               topBarIconBtn(
                                   Image.asset('assets/add.png', color: white),
                                   primaryColor,
                                   0,
                                   2,
-                                  14, onPressed: () {
+                                  16, onPressed: () {
                                 homeController.menuData.value.addons!
                                         .data![index].quantity =
                                     Utils.incrementDecrement(
@@ -781,7 +786,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                         !showOnly
                             ? SizedBox()
                             : SizedBox(
-                          height: 180,
+                                height: 180,
                                 child: ListView.builder(
                                     itemCount: 8,
                                     shrinkWrap: true,
@@ -931,13 +936,13 @@ Widget tableBody(BuildContext context, bool showOnly) {
                               ),
                         !showOnly
                             ? SizedBox()
-                            :Expanded(
-                          child: Text(
-                              homeController
-                                      .tables.value.data![index].message ??
-                                  '',
-                              style: TextStyle(color: Colors.red)),
-                        )
+                            : Expanded(
+                                child: Text(
+                                    homeController.tables.value.data![index]
+                                            .message ??
+                                        '',
+                                    style: TextStyle(color: Colors.red)),
+                              )
                       ],
                     ),
                   );
@@ -947,17 +952,17 @@ Widget tableBody(BuildContext context, bool showOnly) {
       ),
       !showOnly
           ? SizedBox()
-          :Container(
-        height: .4,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: textSecondary, width: .3)),
-      ),
+          : Container(
+              height: .4,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: textSecondary, width: .3)),
+            ),
       !showOnly
           ? SizedBox()
-          :SizedBox(
-        height: 10,
-      ),
+          : SizedBox(
+              height: 10,
+            ),
       showOnly
           ? SizedBox()
           : Row(
@@ -1979,9 +1984,7 @@ Widget addMisc(BuildContext context) {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
             ),
-            hintStyle: TextStyle(
-                fontSize: fontVerySmall,
-                color: textSecondary),
+            hintStyle: TextStyle(fontSize: fontVerySmall, color: textSecondary),
           )),
       SizedBox(height: 10),
       Row(

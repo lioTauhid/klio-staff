@@ -137,8 +137,53 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             onPressed: () async {
                               showCustomDialog(
                                   context,
+                                  "Customer Details",
+                                  addCustomer(context, true, onPressed: () {
+                                    //perform validation
+                                    homeController.addUpdateCustomer(false,
+                                        id: Utils.findIdByListNearValue(
+                                            homeController.customers.value.data!
+                                                .toList(),
+                                            homeController.customerName.value));
+                                  }),
+                                  60,
+                                  400);
+                              Customer customer = await homeController
+                                  .getCustomer(Utils.findIdByListNearValue(
+                                      homeController.customers.value.data!
+                                          .toList(),
+                                      homeController.customerName.value));
+                              homeController.controllerName.value.text =
+                                  customer.data!.name!;
+                              homeController.controllerEmail.value.text =
+                                  customer.data!.email!;
+                              homeController.controllerPhone.value.text =
+                                  customer.data!.phone!;
+                              homeController.controllerAddress.value.text =
+                                  customer.data!.deliveryAddress!;
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Image.asset(
+                              "assets/user.png",
+                              color: primaryText,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          height: 26,
+                          width: 26,
+                          child: MaterialButton(
+                            elevation: 0,
+                            padding: EdgeInsets.zero,
+                            color: secondaryBackground,
+                            onPressed: () async {
+                              showCustomDialog(
+                                  context,
                                   "Update Customer",
-                                  addCustomer(context, onPressed: () {
+                                  addCustomer(context, false, onPressed: () {
                                     //perform validation
                                     homeController.addUpdateCustomer(false,
                                         id: Utils.findIdByListNearValue(
@@ -183,7 +228,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                               showCustomDialog(
                                   context,
                                   "Add Customer",
-                                  addCustomer(context, onPressed: () {
+                                  addCustomer(context, false, onPressed: () {
                                     homeController.addUpdateCustomer(true);
                                   }),
                                   60,

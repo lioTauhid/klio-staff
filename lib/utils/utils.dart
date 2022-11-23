@@ -39,7 +39,7 @@ class Utils {
   }
 
   static void hidePopup() {
-    if (Get.isDialogOpen!) Get.back();
+    Get.back();
   }
 
   static void showSnackBar(String message) {
@@ -142,7 +142,7 @@ class Utils {
     double itemTotal = 0;
     double vatTotal = 0;
     list.forEach((element) {
-      double vat = double.parse(element.taxVat.toString());
+      double vat = double.parse(element.taxVat ?? '0');
       itemTotal = itemTotal +
           (element.quantity! *
               double.parse(Utils.findPriceByListId(

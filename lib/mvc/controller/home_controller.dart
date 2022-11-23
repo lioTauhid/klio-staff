@@ -26,7 +26,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<Customers> customers = Customers().obs;
   Rx<Orders> orders = Orders().obs;
   Rx<Order> order = Order().obs;
-  Rx<Menu> menu = Menu().obs;
+  // Rx<Menu> menu = Menu().obs;
   Rx<Settings> settings = Settings().obs;
   Rx<TableList> tables = TableList(data: []).obs;
   Rx<TextEditingController> controllerName = TextEditingController().obs;
@@ -240,11 +240,11 @@ class HomeController extends GetxController with ErrorController {
     return true;
   }
 
-  Future<void> getAddons(int id) async {
-    var response = await ApiClient()
-        .get('pos/menu/details/$id', header: Utils.apiHeader)
-        .catchError(handleApiError);
-    if (response == null) return;
-    menu.value = addonsFromJson(response);
-  }
+  // Future<void> getAddons(int id) async {
+  //   var response = await ApiClient()
+  //       .get('pos/menu/details/$id', header: Utils.apiHeader)
+  //       .catchError(handleApiError);
+  //   if (response == null) return;
+  //   menu.value = addonsFromJson(response);
+  // }
 }
