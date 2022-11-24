@@ -60,8 +60,8 @@ class HomeController extends GetxController with ErrorController {
     }
     Utils.showLoading();
     await getCurrentUserData();
+    getOrders();
     await getCustomers();
-    await getOrders();
     await getMenuByCategory();
     await getCategory();
     Utils.hidePopup();
@@ -113,7 +113,7 @@ class HomeController extends GetxController with ErrorController {
     return cusFromJson(response);
   }
 
-  Future<void> getOrders() async {
+  void getOrders() async {
     var response = await ApiClient()
         .get('pos/order', header: Utils.apiHeader)
         .catchError(handleApiError);
@@ -202,7 +202,7 @@ class HomeController extends GetxController with ErrorController {
             {"id": i.id, "person": int.parse(i.person.toString())}
       ]
     });
-    print(body);
+    // print(body);
     var response;
     if (isUpdate.value) {
       response = ApiClient()
@@ -221,7 +221,7 @@ class HomeController extends GetxController with ErrorController {
     withoutTable.value = false;
 
     getOrders();
-    orders.value.data.obs.refresh();
+    orders.refresh();
     Utils.hidePopup();
     Utils.showSnackBar("Order added successfully");
   }

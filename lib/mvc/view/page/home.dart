@@ -8,7 +8,6 @@ import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
-import '../../model/menus.dart';
 import '../../model/order.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
@@ -39,7 +38,6 @@ class _HomeState extends State<Home> {
     super.initState();
     applyThem(darkMode);
     homeController.loadHomeData();
-    Utils.hidePopup();
   }
 
   @override
@@ -166,14 +164,40 @@ class _HomeState extends State<Home> {
                                       Utils.hidePopup();
                                     }),
                                     SizedBox(width: 12),
-                                    topBarIconBtn(
-                                        Image.asset('assets/notification.png',
-                                            color: primaryText),
-                                        secondaryBackground,
-                                        8,
-                                        15,
-                                        40,
-                                        onPressed: () {}),
+                                    Stack(
+                                      children: [
+                                        topBarIconBtn(
+                                            Image.asset(
+                                                'assets/notification.png',
+                                                color: primaryText),
+                                            secondaryBackground,
+                                            8,
+                                            15,
+                                            40,
+                                            onPressed: () {}),
+                                        Positioned(
+                                            top: 3,
+                                            right: 5,
+                                            child: Container(
+                                              height: 18,
+                                              width: 15,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              padding: EdgeInsets.all(1),
+                                              child: Text(
+                                                '3',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: fontVerySmall,
+                                                    color: Colors.white),
+                                              ),
+                                            ))
+                                      ],
+                                    ),
                                     SizedBox(width: 12),
                                     topBarIconBtn(
                                         Image.asset('assets/moon.png',
@@ -649,7 +673,7 @@ class _HomeState extends State<Home> {
                                                                       selectedOrder]
                                                                   .id!
                                                                   .toInt());
-                                                      await homeController
+                                                      homeController
                                                           .getOrders();
                                                       Utils.hidePopup();
                                                       Utils.hidePopup();

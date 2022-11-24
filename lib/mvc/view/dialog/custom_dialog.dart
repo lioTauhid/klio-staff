@@ -330,7 +330,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
             ),
           ),
         ),
-        SizedBox(width: 20),
+        SizedBox(width: 15),
         Expanded(
           flex: 5,
           child:
@@ -519,105 +519,111 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
               return ListView.builder(
                   itemCount: homeController.menuData.value.addons!.data!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    return Column(
                       children: [
-                        // Expanded(
-                        //     flex: 1,
-                        //     child: Padding(
-                        //         padding: const EdgeInsets.only(right: 60.0),
-                        //         child: Checkbox(
-                        //             value: homeController.menuData.value.addons!
-                        //                 .data![index].isChecked,
-                        //             onChanged: (checked) {
-                        //               // homeController.menuData.value.addons!
-                        //               //     .data![index].isChecked = checked!;
-                        //               // homeController.menuData.refresh();
-                        //             }))),
-                        Expanded(
-                          flex: 3,
-                          child: Text(
-                              homeController
-                                  .menuData.value.addons!.data![index].name
-                                  .toString(),
-                              style: TextStyle(
-                                  fontSize: fontSmall,
-                                  color: primaryText,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              topBarIconBtn(
-                                  Image.asset('assets/remove.png',
-                                      color: white),
-                                  primaryColor,
-                                  0,
-                                  2,
-                                  16, onPressed: () {
-                                homeController.menuData.value.addons!
-                                        .data![index].quantity =
-                                    Utils.incrementDecrement(
-                                        false,
-                                        homeController.menuData.value.addons!
-                                            .data![index].quantity!
-                                            .toInt());
-                                if (homeController.menuData.value.addons!
-                                        .data![index].quantity! >
-                                    0) {
-                                  homeController.menuData.value.addons!
-                                      .data![index].isChecked = true;
-                                } else
-                                  homeController.menuData.value.addons!
-                                      .data![index].isChecked = false;
-                                homeController.menuData.refresh();
-                              }),
-                              SizedBox(width: 8),
-                              Text(
-                                  homeController.menuData.value.addons!
-                                      .data![index].quantity
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // Expanded(
+                            //     flex: 1,
+                            //     child: Padding(
+                            //         padding: const EdgeInsets.only(right: 60.0),
+                            //         child: Checkbox(
+                            //             value: homeController.menuData.value.addons!
+                            //                 .data![index].isChecked,
+                            //             onChanged: (checked) {
+                            //               // homeController.menuData.value.addons!
+                            //               //     .data![index].isChecked = checked!;
+                            //               // homeController.menuData.refresh();
+                            //             }))),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                  homeController
+                                      .menuData.value.addons!.data![index].name
                                       .toString(),
                                   style: TextStyle(
-                                      color: primaryText,
                                       fontSize: fontSmall,
+                                      color: primaryText,
                                       fontWeight: FontWeight.bold)),
-                              SizedBox(width: 8),
-                              topBarIconBtn(
-                                  Image.asset('assets/add.png', color: white),
-                                  primaryColor,
-                                  0,
-                                  2,
-                                  16, onPressed: () {
-                                homeController.menuData.value.addons!
-                                        .data![index].quantity =
-                                    Utils.incrementDecrement(
-                                        true,
-                                        homeController.menuData.value.addons!
-                                            .data![index].quantity!
-                                            .toInt());
-                                if (homeController.menuData.value.addons!
-                                        .data![index].quantity! >
-                                    0) {
-                                  homeController.menuData.value.addons!
-                                      .data![index].isChecked = true;
-                                } else
-                                  homeController.menuData.value.addons!
-                                      .data![index].isChecked = false;
-                                homeController.menuData.refresh();
-                              }),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Row(
+                                children: [
+                                  topBarIconBtn(
+                                      Image.asset('assets/remove.png',
+                                          color: white),
+                                      primaryColor,
+                                      0,
+                                      2,
+                                      16, onPressed: () {
+                                    homeController.menuData.value.addons!
+                                            .data![index].quantity =
+                                        Utils.incrementDecrement(
+                                            false,
+                                            homeController.menuData.value
+                                                .addons!.data![index].quantity!
+                                                .toInt());
+                                    if (homeController.menuData.value.addons!
+                                            .data![index].quantity! >
+                                        0) {
+                                      homeController.menuData.value.addons!
+                                          .data![index].isChecked = true;
+                                    } else
+                                      homeController.menuData.value.addons!
+                                          .data![index].isChecked = false;
+                                    homeController.menuData.refresh();
+                                  }),
+                                  SizedBox(width: 8),
+                                  Text(
+                                      homeController.menuData.value.addons!
+                                          .data![index].quantity
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: primaryText,
+                                          fontSize: fontSmall,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(width: 8),
+                                  topBarIconBtn(
+                                      Image.asset('assets/add.png',
+                                          color: white),
+                                      primaryColor,
+                                      0,
+                                      2,
+                                      16, onPressed: () {
+                                    homeController.menuData.value.addons!
+                                            .data![index].quantity =
+                                        Utils.incrementDecrement(
+                                            true,
+                                            homeController.menuData.value
+                                                .addons!.data![index].quantity!
+                                                .toInt());
+                                    if (homeController.menuData.value.addons!
+                                            .data![index].quantity! >
+                                        0) {
+                                      homeController.menuData.value.addons!
+                                          .data![index].isChecked = true;
+                                    } else
+                                      homeController.menuData.value.addons!
+                                          .data![index].isChecked = false;
+                                    homeController.menuData.refresh();
+                                  }),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                  "£${homeController.menuData.value.addons!.data![index].quantity! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
+                                  style: TextStyle(
+                                      fontSize: fontSmall,
+                                      color: primaryText,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                              "£${homeController.menuData.value.addons!.data![index].quantity! * double.parse(homeController.menuData.value.addons!.data![index].price.toString())}",
-                              style: TextStyle(
-                                  fontSize: fontSmall,
-                                  color: primaryText,
-                                  fontWeight: FontWeight.bold)),
-                        ),
+                        const SizedBox(height: 10),
                       ],
                     );
                   });
@@ -691,7 +697,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                   crossAxisCount: size.width > size.height ? 3 : 2,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
-                  childAspectRatio: showOnly ? .9 : 1.7,
+                  childAspectRatio: showOnly ? .9 : 1.6,
                 ),
                 scrollDirection: Axis.vertical,
                 itemCount: homeController.tables.value.data!.length,
@@ -852,89 +858,61 @@ Widget tableBody(BuildContext context, bool showOnly) {
                             ? SizedBox()
                             : SizedBox(
                                 height: 30,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: TextFormField(
-                                          onChanged: (text) {
-                                            if (text == '') {
-                                              homeController.tables.value
-                                                  .data![index].person = 0;
-                                              homeController.tables.refresh();
-                                            }
-                                            print(text);
-                                            if (homeController.tables.value
-                                                    .data![index].available! >=
-                                                int.parse(text ?? '0')) {
-                                              homeController
-                                                  .tables
-                                                  .value
-                                                  .data![index]
-                                                  .person = int.parse(text);
-                                              homeController.tables.value
-                                                  .data![index].message = '';
-                                              homeController.tables.refresh();
-                                            } else {
-                                              homeController.tables.value
-                                                  .data![index].person = 0;
-                                              homeController.tables.value
-                                                      .data![index].message =
-                                                  'Available sit is not smaller than entered person!';
-                                              homeController.tables.refresh();
-                                            }
-                                          },
-                                          keyboardType: TextInputType.number,
-                                          style: TextStyle(
-                                              fontSize: fontVerySmall,
-                                              color: primaryText),
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(40),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(40),
-                                                borderSide: BorderSide(
-                                                    color: textSecondary,
-                                                    width: .5),
-                                              ),
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                              hintStyle: TextStyle(
-                                                  fontSize: fontVerySmall,
-                                                  color: primaryText),
-                                              hintText: 'Person')),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: MaterialButton(
-                                          elevation: 0,
-                                          color: primaryColor,
-                                          height: 45,
-                                          // minWidth: 180,
-                                          // padding: EdgeInsets.all(20),
-                                          onPressed: () {},
-                                          shape: RoundedRectangleBorder(
+                                child: Expanded(
+                                  flex: 5,
+                                  child: TextFormField(
+                                      onChanged: (text) {
+                                        if (text == '') {
+                                          homeController.tables.value
+                                              .data![index].person = 0;
+                                          homeController.tables.refresh();
+                                        }
+                                        print(text);
+                                        if (homeController.tables.value
+                                                .data![index].available! >=
+                                            int.parse(text ?? '0')) {
+                                          homeController
+                                              .tables
+                                              .value
+                                              .data![index]
+                                              .person = int.parse(text);
+                                          homeController.tables.value
+                                              .data![index].message = '';
+                                          homeController.tables.refresh();
+                                        } else {
+                                          homeController.tables.value
+                                              .data![index].person = 0;
+                                          homeController.tables.value
+                                                  .data![index].message =
+                                              'Available sit is not smaller than entered person!';
+                                          homeController.tables.refresh();
+                                        }
+                                      },
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                          fontSize: fontVerySmall,
+                                          color: primaryText),
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(40),
                                           ),
-                                          child: Text(
-                                            "Add",
-                                            style: TextStyle(
-                                                color: white,
-                                                fontSize: fontVerySmall),
-                                          )),
-                                    ),
-                                  ],
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(40),
+                                            borderSide: BorderSide(
+                                                color: textSecondary,
+                                                width: .5),
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          hintStyle: TextStyle(
+                                              fontSize: fontVerySmall,
+                                              color: primaryText),
+                                          hintText: 'Person')),
                                 ),
                               ),
-                        !showOnly
+                        showOnly
                             ? SizedBox()
                             : Expanded(
                                 child: Text(
@@ -950,14 +928,6 @@ Widget tableBody(BuildContext context, bool showOnly) {
           }),
         ),
       ),
-      !showOnly
-          ? SizedBox()
-          : Container(
-              height: .4,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: textSecondary, width: .3)),
-            ),
       !showOnly
           ? SizedBox()
           : SizedBox(
@@ -1871,6 +1841,7 @@ Widget orderInvoice(BuildContext context, String method) {
               onPressed: () async {
                 // DefaultPrinter.startPrinting();
                 Utils.showSnackBar("Printing... wait!");
+                homeController.getOrders();
                 await SumniPrinter.printText();
               },
               shape: RoundedRectangleBorder(
