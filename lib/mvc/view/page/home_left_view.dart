@@ -7,6 +7,7 @@ import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../service/printer/print_service.dart';
 import '../../../utils/utils.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
@@ -550,49 +551,30 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                         homeController.getOrders();
                       }),
                       iconTextBtnWide("assets/credit-card.png", 'Pay',
-                          alternate, primaryText,
-                          onPressed: () {}),
+                          alternate, primaryText, onPressed: () async {
+                        Utils.showLoading();
+                        await homeController.getOrder(homeController.orders
+                            .value.data![homeController.selectedOrder.value].id!
+                            .toInt());
+                        Utils.hidePopup();
+                        showCustomDialog(context, "Order Details",
+                            orderDetail(context), 50, 400);
+                      }),
                       iconTextBtnWide(
                           "assets/print.png", 'Print', alternate, primaryText,
                           onPressed: () async {
-                        // await SumniPrinter.printText();
-                        // await SumniPrinter.printImage();
-                        await SunmiPrinter.startTransactionPrint(true);
-
-                        await SunmiPrinter.setFontSize(SunmiFontSize.XL);
-                        await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-                        await SunmiPrinter.printText('klio');
-                        await SunmiPrinter.lineWrap(2);
-
-                        await SunmiPrinter.printRow(cols: [
-                          ColumnMaker(text: 'SL', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'Name', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'V. Name', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'Price', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(text: 'Qty', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'Total', align: SunmiPrintAlign.LEFT),
-                        ]);
-                        await SunmiPrinter.printRow(cols: [
-                          ColumnMaker(text: 'SL', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'Name', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'V. Name', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'Price', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(text: 'Qty', align: SunmiPrintAlign.LEFT),
-                          ColumnMaker(
-                              text: 'Total', align: SunmiPrintAlign.LEFT),
-                        ]);
-                        await SunmiPrinter
-                            .submitTransactionPrint(); // SUBMIT and cut paper
-                        await SunmiPrinter.cut(); // cut paper
-                        await SunmiPrinter.exitTransactionPrint(
-                            true); // Close the transaction
+                            Utils.showLoading();
+                            await homeController.getOrder(homeController.orders
+                            .value.data![homeController.selectedOrder.value].id!
+                            .toInt());
+                        Utils.hidePopup();
+                        showCustomDialog(
+                            context,
+                            "",
+                            orderInvoice(
+                                context, homeController.payMethod.value),
+                            50,
+                            800);
                       }),
                     ],
                   ),

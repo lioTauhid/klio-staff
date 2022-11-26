@@ -28,6 +28,7 @@ class MenuData {
   MenuData({
     this.id,
     this.name,
+    this.slug,
     this.image,
     this.price,
     this.calorie,
@@ -43,6 +44,7 @@ class MenuData {
   int? id;
   String? name;
   String? image;
+  String? slug;
   String? price;
   String? calorie;
   String? taxVat;
@@ -56,6 +58,7 @@ class MenuData {
   factory MenuData.fromJson(Map<String, dynamic> json) => MenuData(
     id: json["id"],
     name: json["name"],
+    slug: json["slug"],
     image: json["image"],
     price: json["price"],
     calorie: json["calorie"],
@@ -71,6 +74,7 @@ class MenuData {
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
+    "slug": slug,
     "image": image,
     "price": price,
     "calorie": calorie,

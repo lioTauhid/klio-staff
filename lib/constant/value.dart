@@ -20,6 +20,6 @@ const Map orderTypes = {
   'Online': 'assets/takeway.png'
 };
 const List<String> discType = ['In Flat Amount', 'In percentage'];
-const List<String> paymentType = ['Cash', 'Card'];
+const List<String> paymentType = ['Cash', 'Card', 'No Payment'];
 
 

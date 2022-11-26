@@ -211,6 +211,9 @@ Widget textRow1(String text1, String text2) {
   );
 }
 
+
+
+
 Widget textFieldRow1(String text1, String text2) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -254,4 +257,25 @@ Widget textFieldRow1(String text1, String text2) {
           )),
     ],
   );
+
 }
+
+Widget roundTextButton(Text text,{double padding=5.0,Color backgroundColor=Colors.white,Color borderSideColor=Colors.white,Color shadowColor=Colors.white,double elevation=0.0,double borderRadius=0.0,Function()? onPressed}) {
+  return TextButton(
+    child: Padding(
+      padding:EdgeInsets.all(padding),
+      child: text,
+    ),
+    style: TextButton.styleFrom(
+        backgroundColor:backgroundColor,
+        shadowColor: shadowColor,
+         elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),),
+        side: BorderSide(color: borderSideColor),
+    ),
+    onPressed:onPressed,
+  );
+
+}
+

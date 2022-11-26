@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import '../constant/color.dart';
 import '../constant/value.dart';
 import '../mvc/model/menu.dart';
+import '../mvc/model/menus.dart';
 
 class Utils {
-
   static final apiHeader = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -175,5 +175,19 @@ class Utils {
 
   static double percentage(double total, double percentage) {
     return (total / 100) * percentage;
+  }
+
+  static List<MenuData>? filterCategory(Menus menus, String slug) {
+    List<MenuData>? data = [];
+    print(slug);
+    menus.data!.forEach((element) {
+      print(element.slug);
+      if (element.slug == slug || element.slug == '') {
+        data.add(element);
+        print(element.slug);
+      }
+    });
+    print(data.length);
+    return data;
   }
 }

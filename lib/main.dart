@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:klio_staff/service/local/shared_pref.dart';
 import 'constant/value.dart';
 import 'mvc/view/page/home.dart';
+import 'mvc/view/page/kitchen.dart';
 import 'mvc/view/page/login.dart';
 
 Future<void> main() async {
@@ -17,6 +18,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+   // return
+    // GetMaterialApp(
+    //   title: 'Flutter Demo',
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData(primarySwatch: Colors.orange, fontFamily: 'Nunito'),
+    //   home: const Kitchen(),
+    // );
+    // if (token == '') {
+    //   return GetMaterialApp(
+    //     title: 'Flutter Demo',
+    //     debugShowCheckedModeBanner: false,
+    //     theme: ThemeData(primarySwatch: Colors.orange, fontFamily: 'Nunito'),
+    //     home: const Login(),
+    //   );
+    // } else {
+    //   return GetMaterialApp(
+    //     title: 'Flutter Demo',
+    //     debugShowCheckedModeBanner: false,
+    //     theme: ThemeData(primarySwatch: Colors.orange, fontFamily: 'Nunito'),
+    //     home: const Home(),
+    //   );
+    // }
     if (token == '') {
       return GetMaterialApp(
         title: 'Flutter Demo',

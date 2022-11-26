@@ -14,6 +14,7 @@ import '../model/menu.dart';
 import '../model/category.dart';
 import '../model/customers.dart';
 import '../model/menus.dart';
+import '../model/online_order.dart';
 import '../model/order.dart';
 import '../model/orders.dart';
 import '../model/user.dart';
@@ -26,6 +27,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<Customers> customers = Customers().obs;
   Rx<Orders> orders = Orders().obs;
   Rx<Order> order = Order().obs;
+  Rx<OnlineOrder> onlineOrder = OnlineOrder().obs;
   // Rx<Menu> menu = Menu().obs;
   Rx<Settings> settings = Settings().obs;
   Rx<TableList> tables = TableList(data: []).obs;
@@ -36,19 +38,21 @@ class HomeController extends GetxController with ErrorController {
   RxBool withoutTable = false.obs;
 
   // temp variables
+  RxList filteredMenu = [].obs;
   RxString customerName = ''.obs;
   Rx<MenuData> menuData = MenuData().obs;
   RxList cardList = [].obs;
   RxDouble variantPrice = 0.0.obs;
   RxDouble discount = 0.0.obs;
   RxString discType = 'In Flat Amount'.obs;
-  RxString payMethod = 'Cash'.obs;
+  RxString payMethod = 'No Payment'.obs;
   int orderUpdateId = 0;
 
   // ui variables
   RxInt topBtnPosition = 1.obs;
   RxInt giveAmount = 1.obs;
   RxBool isUpdate = false.obs;
+  RxInt selectedOrder = (-1).obs;
   RxInt currentPage = 0.obs;
 
   Future<void> loadHomeData() async {
@@ -64,6 +68,7 @@ class HomeController extends GetxController with ErrorController {
     await getCustomers();
     await getMenuByCategory();
     await getCategory();
+    getOnlineOrder(0);
     Utils.hidePopup();
     Utils.hidePopup();
     Utils.hidePopup();
@@ -141,7 +146,7 @@ class HomeController extends GetxController with ErrorController {
         .get('pos/table', header: Utils.apiHeader)
         .catchError(handleApiError);
     if (response == null) return;
-    tables.value = tablesFromJson(response);
+    tables.value = tableListFromJson(response);
   }
 
   void addUpdateCustomer(bool add, {String id = ''}) async {
@@ -240,11 +245,11 @@ class HomeController extends GetxController with ErrorController {
     return true;
   }
 
-  // Future<void> getAddons(int id) async {
-  //   var response = await ApiClient()
-  //       .get('pos/menu/details/$id', header: Utils.apiHeader)
-  //       .catchError(handleApiError);
-  //   if (response == null) return;
-  //   menu.value = addonsFromJson(response);
-  // }
+  Future<void> getOnlineOrder(int id) async {
+    var response = await ApiClient()
+        .get('pos/order/online', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    if (response == null) return;
+    onlineOrder.value = onlineOrderFromJson(response);
+  }
 }

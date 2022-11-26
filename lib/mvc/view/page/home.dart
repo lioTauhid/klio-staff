@@ -14,6 +14,7 @@ import '../widget/custom_widget.dart';
 import 'dashboard.dart';
 import 'drawer.dart';
 import 'home_left_view.dart';
+import 'kitchen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -22,14 +23,13 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-List pageList = [0, Dashboard(), FoodManagement(), Settings()];
+List pageList = [0, Dashboard(), FoodManagement(), Settings(), Kitchen()];
 
 class _HomeState extends State<Home> {
   HomeController homeController = Get.put(HomeController());
   TextEditingController? textController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedCategory = -1;
-  int selectedOrder = -1;
   bool darkMode = false;
   bool gridImage = true;
 
@@ -173,8 +173,14 @@ class _HomeState extends State<Home> {
                                             secondaryBackground,
                                             8,
                                             15,
-                                            40,
-                                            onPressed: () {}),
+                                            40, onPressed: () async {
+                                          showCustomDialog(
+                                              context,
+                                              'Accept or Cancel Online Pending Orders',
+                                              showNotification(),
+                                              160,
+                                              800);
+                                        }),
                                         Positioned(
                                             top: 3,
                                             right: 5,
@@ -188,13 +194,17 @@ class _HomeState extends State<Home> {
                                                     BorderRadius.circular(10),
                                               ),
                                               padding: EdgeInsets.all(1),
-                                              child: Text(
-                                                '3',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: fontVerySmall,
-                                                    color: Colors.white),
-                                              ),
+                                              child: Obx(() {
+                                                return Text(
+                                                  homeController.onlineOrder
+                                                      .value.data!.length
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: fontVerySmall,
+                                                      color: Colors.white),
+                                                );
+                                              }),
                                             ))
                                       ],
                                     ),
@@ -281,6 +291,7 @@ class _HomeState extends State<Home> {
                                                         selectedCategory =
                                                             index;
                                                       });
+                                                      // homeController.filteredMenu.value = Utils.filterCategory(homeController.menus.value, homeController.category.value.data![index].slug.toString())!;
                                                       homeController
                                                           .getMenuByCategory(
                                                               id: homeController
@@ -552,9 +563,10 @@ class _HomeState extends State<Home> {
                                                       elevation: 1,
                                                       shape: RoundedRectangleBorder(
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          side: selectedOrder ==
+                                                              BorderRadius.circular(
+                                                                  8),
+                                                          side: homeController
+                                                                      .selectedOrder ==
                                                                   index
                                                               ? BorderSide(
                                                                   width: 2,
@@ -570,8 +582,9 @@ class _HomeState extends State<Home> {
                                                         child: ListTile(
                                                           onTap: () {
                                                             setState(() {
-                                                              selectedOrder =
-                                                                  index;
+                                                              homeController
+                                                                  .selectedOrder
+                                                                  .value = index;
                                                             });
                                                           },
                                                           leading: Image.asset(
@@ -639,14 +652,12 @@ class _HomeState extends State<Home> {
                                                         .getOrder(homeController
                                                             .orders
                                                             .value
-                                                            .data![
-                                                                selectedOrder]
+                                                            .data![homeController
+                                                                .selectedOrder
+                                                                .value]
                                                             .id!
                                                             .toInt());
                                                     Utils.hidePopup();
-                                                    print(homeController
-                                                        .order.value
-                                                        .toJson());
                                                     showCustomDialog(
                                                         context,
                                                         "Order Details",
@@ -665,14 +676,14 @@ class _HomeState extends State<Home> {
                                                         onAccept: () async {
                                                       Utils.showLoading();
                                                       await homeController
-                                                          .cancelOrder(
-                                                              homeController
-                                                                  .orders
-                                                                  .value
-                                                                  .data![
-                                                                      selectedOrder]
-                                                                  .id!
-                                                                  .toInt());
+                                                          .cancelOrder(homeController
+                                                              .orders
+                                                              .value
+                                                              .data![homeController
+                                                                  .selectedOrder
+                                                                  .value]
+                                                              .id!
+                                                              .toInt());
                                                       homeController
                                                           .getOrders();
                                                       Utils.hidePopup();
@@ -697,8 +708,9 @@ class _HomeState extends State<Home> {
                                                           .getOrder(homeController
                                                               .orders
                                                               .value
-                                                              .data![
-                                                                  selectedOrder]
+                                                              .data![homeController
+                                                                  .selectedOrder
+                                                                  .value]
                                                               .id!
                                                               .toInt());
                                                       for (OrderDetailsDatum order
@@ -758,8 +770,9 @@ class _HomeState extends State<Home> {
                                                         .getOrder(homeController
                                                             .orders
                                                             .value
-                                                            .data![
-                                                                selectedOrder]
+                                                            .data![homeController
+                                                                .selectedOrder
+                                                                .value]
                                                             .id!
                                                             .toInt());
                                                     Utils.hidePopup();
@@ -771,7 +784,7 @@ class _HomeState extends State<Home> {
                                                         "Order Status",
                                                         orderDetail(
                                                             context, true),
-                                                        250,
+                                                        100,
                                                         400);
                                                   }),
                                                 ],

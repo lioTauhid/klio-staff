@@ -732,7 +732,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                         color: primaryText)),
                               ],
                             ),
-                            Image.network(
+                            Image.asset(
                               "assets/table2.png",
                               height: 60,
                               width: 60,
@@ -742,13 +742,6 @@ Widget tableBody(BuildContext context, bool showOnly) {
                           ],
                         ),
                         SizedBox(height: 10),
-                        !showOnly
-                            ? SizedBox()
-                            : Text("Running Order In Table",
-                                style: TextStyle(
-                                    fontSize: fontSmall,
-                                    color: primaryText,
-                                    fontWeight: FontWeight.bold)),
                         !showOnly ? SizedBox() : SizedBox(height: 10),
                         !showOnly
                             ? SizedBox()
@@ -778,14 +771,14 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                             color: textSecondary,
                                             fontSize: fontVerySmall),
                                       )),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        '',
-                                        style: TextStyle(
-                                            color: textSecondary,
-                                            fontSize: fontVerySmall),
-                                      )),
+                                  // Expanded(
+                                  //     flex: 1,
+                                  //     child: Text(
+                                  //       '',
+                                  //       style: TextStyle(
+                                  //           color: textSecondary,
+                                  //           fontSize: fontVerySmall),
+                                  //     )),
                                 ],
                               ),
                         // SizedBox(height: 10),
@@ -794,17 +787,26 @@ Widget tableBody(BuildContext context, bool showOnly) {
                             : SizedBox(
                                 height: 180,
                                 child: ListView.builder(
-                                    itemCount: 8,
+                                    itemCount: homeController.tables.value
+                                        .data![index].orders!.data!.length,
                                     shrinkWrap: true,
                                     itemBuilder:
-                                        (BuildContext context, int index) {
+                                        (BuildContext context, int index2) {
                                       return Column(
                                         children: [
                                           Row(
                                             children: [
                                               Expanded(
                                                   flex: 2,
-                                                  child: Text('#A002',
+                                                  child: Text(
+                                                      homeController
+                                                          .tables
+                                                          .value
+                                                          .data![index]
+                                                          .orders!
+                                                          .data![index2]
+                                                          .invoice
+                                                          .toString(),
                                                       style: TextStyle(
                                                           fontSize: fontSmall,
                                                           color: primaryText,
@@ -813,7 +815,14 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                               Expanded(
                                                   flex: 3,
                                                   child: Text(
-                                                      '7:30AM\n2/5/2022',
+                                                      homeController
+                                                          .tables
+                                                          .value
+                                                          .data![index]
+                                                          .orders!
+                                                          .data![index2]
+                                                          .time
+                                                          .toString(),
                                                       style: TextStyle(
                                                           fontSize: fontSmall,
                                                           color: primaryText,
@@ -821,24 +830,32 @@ Widget tableBody(BuildContext context, bool showOnly) {
                                                               .bold))),
                                               Expanded(
                                                 flex: 2,
-                                                child: Text('2',
+                                                child: Text(
+                                                    homeController
+                                                        .tables
+                                                        .value
+                                                        .data![index]
+                                                        .orders!
+                                                        .data![index2]
+                                                        .totalPerson
+                                                        .toString(),
                                                     style: TextStyle(
                                                         fontSize: fontSmall,
                                                         color: primaryText,
                                                         fontWeight:
                                                             FontWeight.bold)),
                                               ),
-                                              Expanded(
-                                                  flex: 1,
-                                                  child: IconButton(
-                                                    onPressed: () {},
-                                                    icon: Image.asset(
-                                                      "assets/delete.png",
-                                                      color: Colors.red,
-                                                      height: 18,
-                                                      width: 18,
-                                                    ),
-                                                  )),
+                                              // Expanded(
+                                              //     flex: 1,
+                                              //     child: IconButton(
+                                              //       onPressed: () {},
+                                              //       icon: Image.asset(
+                                              //         "assets/delete.png",
+                                              //         color: Colors.red,
+                                              //         height: 18,
+                                              //         width: 18,
+                                              //       ),
+                                              //     )),
                                             ],
                                           ),
                                           Container(
@@ -1052,6 +1069,18 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                     fontWeight: FontWeight.bold),
               ),
             ),
+            !kitchen
+                ? SizedBox()
+                : Expanded(
+                    flex: 1,
+                    child: Text(
+                      "Status",
+                      style: TextStyle(
+                          fontSize: fontVerySmall,
+                          color: primaryText,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
             Expanded(
               flex: 2,
               child: Text(
@@ -1137,6 +1166,28 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
+                            !kitchen
+                                ? SizedBox()
+                                : Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: primaryColor),
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.only(right: 6),
+                                      child: Text(
+                                        homeController.order.value.data!
+                                            .orderDetails!.data![index].status
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
                             Expanded(
                               flex: 2,
                               child: Text(
@@ -1457,6 +1508,7 @@ Widget finalizeOrder(BuildContext context) {
               // showCustomDialog(
               //     context, "", orderInvoice(context, homeController.payMethod.value), 0, 800);
               bool done = await homeController.orderPayment();
+              homeController.getOrders();
               if (done) {
                 showCustomDialog(
                     context,
@@ -1841,7 +1893,6 @@ Widget orderInvoice(BuildContext context, String method) {
               onPressed: () async {
                 // DefaultPrinter.startPrinting();
                 Utils.showSnackBar("Printing... wait!");
-                homeController.getOrders();
                 await SumniPrinter.printText();
               },
               shape: RoundedRectangleBorder(
@@ -1965,5 +2016,35 @@ Widget addMisc(BuildContext context) {
         ],
       ),
     ]),
+  );
+}
+
+Widget showNotification() {
+  return Container(
+    height: Size.infinite.height,
+    width: Size.infinite.width,
+    padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+    child: GetBuilder(
+      builder: (HomeController homeController) {
+        return ListView.builder(
+            itemCount: homeController.onlineOrder.value.data!.length,
+            itemBuilder: (ctx, index) {
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(homeController.onlineOrder.value.data![index].invoice!.toString()),
+                    subtitle: Text(homeController.onlineOrder.value.data![index].grandTotal!.toString()),
+                    leading: Image.asset('assets/takeway.png'),
+                    trailing: Text('1 month ago'),
+                    onTap: (){
+
+                    },
+                  ),
+                  Divider(color: textSecondary, thickness: 0.1, height: 0.1),
+                ],
+              );
+            });
+      }
+    ),
   );
 }
