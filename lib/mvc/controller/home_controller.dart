@@ -28,7 +28,6 @@ class HomeController extends GetxController with ErrorController {
   Rx<Orders> orders = Orders().obs;
   Rx<Order> order = Order().obs;
   Rx<OnlineOrder> onlineOrder = OnlineOrder().obs;
-  // Rx<Menu> menu = Menu().obs;
   Rx<Settings> settings = Settings().obs;
   Rx<TableList> tables = TableList(data: []).obs;
   Rx<TextEditingController> controllerName = TextEditingController().obs;
@@ -45,21 +44,21 @@ class HomeController extends GetxController with ErrorController {
   RxDouble variantPrice = 0.0.obs;
   RxDouble discount = 0.0.obs;
   RxString discType = 'In Flat Amount'.obs;
-  RxString payMethod = 'No Payment'.obs;
+  RxInt giveAmount = 0.obs;
+  RxString payMethod = 'Cash'.obs;
   int orderUpdateId = 0;
 
   // ui variables
   RxInt topBtnPosition = 1.obs;
-  RxInt giveAmount = 1.obs;
   RxBool isUpdate = false.obs;
   RxInt selectedOrder = (-1).obs;
   RxInt currentPage = 0.obs;
 
   Future<void> loadHomeData() async {
     token = (await SharedPref().getValue('token'))!;
-    try{
-      await SunmiPrinter.bindingPrinter(); // must bind the printer first. for more exmaple.. pls refer to example tab.
-    }catch(e){
+    try {
+      await SunmiPrinter.bindingPrinter(); // must bind the printer first
+    } catch (e) {
       Utils.showSnackBar(e.toString());
     }
     Utils.showLoading();
@@ -131,6 +130,15 @@ class HomeController extends GetxController with ErrorController {
         .post('pos/order/$id/cancel', jsonEncode({}), header: Utils.apiHeader)
         .catchError(handleApiError);
     if (response == null) return;
+  }
+
+  Future<bool> acceptOrder(int id) async {
+    var response = await ApiClient()
+        .put('pos/order/$id/accept', jsonEncode({}), header: Utils.apiHeader)
+        .catchError(handleApiError);
+    if (response == null) false;
+    Utils.showSnackBar("Order added successfully");
+    return true;
   }
 
   Future<void> getOrder(int id) async {

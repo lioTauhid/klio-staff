@@ -785,7 +785,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                         !showOnly
                             ? SizedBox()
                             : SizedBox(
-                                height: 180,
+                                height: 220,
                                 child: ListView.builder(
                                     itemCount: homeController.tables.value
                                         .data![index].orders!.data!.length,
@@ -875,59 +875,52 @@ Widget tableBody(BuildContext context, bool showOnly) {
                             ? SizedBox()
                             : SizedBox(
                                 height: 30,
-                                child: Expanded(
-                                  flex: 5,
-                                  child: TextFormField(
-                                      onChanged: (text) {
-                                        if (text == '') {
-                                          homeController.tables.value
-                                              .data![index].person = 0;
-                                          homeController.tables.refresh();
-                                        }
-                                        print(text);
-                                        if (homeController.tables.value
-                                                .data![index].available! >=
-                                            int.parse(text ?? '0')) {
-                                          homeController
-                                              .tables
-                                              .value
-                                              .data![index]
-                                              .person = int.parse(text);
-                                          homeController.tables.value
-                                              .data![index].message = '';
-                                          homeController.tables.refresh();
-                                        } else {
-                                          homeController.tables.value
-                                              .data![index].person = 0;
-                                          homeController.tables.value
-                                                  .data![index].message =
-                                              'Available sit is not smaller than entered person!';
-                                          homeController.tables.refresh();
-                                        }
-                                      },
-                                      keyboardType: TextInputType.number,
-                                      style: TextStyle(
-                                          fontSize: fontVerySmall,
-                                          color: primaryText),
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                            borderSide: BorderSide(
-                                                color: textSecondary,
-                                                width: .5),
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          hintStyle: TextStyle(
-                                              fontSize: fontVerySmall,
-                                              color: primaryText),
-                                          hintText: 'Person')),
-                                ),
+                                child: TextFormField(
+                                    onChanged: (text) {
+                                      if (text == '') {
+                                        homeController.tables.value.data![index]
+                                            .person = 0;
+                                        homeController.tables.refresh();
+                                      }
+                                      print(text);
+                                      if (homeController.tables.value
+                                              .data![index].available! >=
+                                          int.parse(text ?? '0')) {
+                                        homeController.tables.value.data![index]
+                                            .person = int.parse(text);
+                                        homeController.tables.value.data![index]
+                                            .message = '';
+                                        homeController.tables.refresh();
+                                      } else {
+                                        homeController.tables.value.data![index]
+                                            .person = 0;
+                                        homeController.tables.value.data![index]
+                                                .message =
+                                            'Available sit is not smaller than entered person!';
+                                        homeController.tables.refresh();
+                                      }
+                                    },
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                        fontSize: fontVerySmall,
+                                        color: primaryText),
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          borderSide: BorderSide(
+                                              color: textSecondary, width: .5),
+                                        ),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        hintStyle: TextStyle(
+                                            fontSize: fontVerySmall,
+                                            color: primaryText),
+                                        hintText: 'Person')),
                               ),
                         showOnly
                             ? SizedBox()
@@ -2024,27 +2017,52 @@ Widget showNotification() {
     height: Size.infinite.height,
     width: Size.infinite.width,
     padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
-    child: GetBuilder(
-      builder: (HomeController homeController) {
-        return ListView.builder(
-            itemCount: homeController.onlineOrder.value.data!.length,
-            itemBuilder: (ctx, index) {
-              return Column(
-                children: [
-                  ListTile(
-                    title: Text(homeController.onlineOrder.value.data![index].invoice!.toString()),
-                    subtitle: Text(homeController.onlineOrder.value.data![index].grandTotal!.toString()),
-                    leading: Image.asset('assets/takeway.png'),
-                    trailing: Text('1 month ago'),
-                    onTap: (){
-
-                    },
+    child: GetBuilder(builder: (HomeController homeController) {
+      return ListView.builder(
+          itemCount: homeController.onlineOrder.value.data!.length,
+          itemBuilder: (ctx, index) {
+            return Column(
+              children: [
+                ListTile(
+                  title: Text(
+                      homeController.onlineOrder.value.data![index].invoice!
+                          .toString(),
+                      style: TextStyle(color: primaryText)),
+                  subtitle: Text(
+                      homeController.onlineOrder.value.data![index].grandTotal!
+                          .toString(),
+                      style: TextStyle(color: primaryText)),
+                  leading: Image.asset(
+                    'assets/takeway.png',
+                    color: primaryColor,
                   ),
-                  Divider(color: textSecondary, thickness: 0.1, height: 0.1),
-                ],
-              );
-            });
-      }
-    ),
+                  trailing:
+                      Text('1 month ago', style: TextStyle(color: primaryText)),
+                  onTap: () {
+                    showWarningDialog(
+                        'Are you sure? \nYou want accept this order...!',
+                        onAccept: () async {
+                      Utils.showLoading();
+                      bool done = await homeController.acceptOrder(
+                          homeController.onlineOrder.value.data![index].id!
+                              .toInt());
+                      if (done) {
+                        Utils.hidePopup();
+                        Utils.hidePopup();
+                        Utils.hidePopup();
+                        homeController.getOrders();
+                        homeController.getOnlineOrder(0);
+                        homeController.orders.refresh();
+                      } else
+                        Utils.showSnackBar("Failed! Try again");
+                      Utils.hidePopup();
+                    });
+                  },
+                ),
+                Divider(color: textSecondary, thickness: 0.1, height: 0.1),
+              ],
+            );
+          });
+    }),
   );
 }

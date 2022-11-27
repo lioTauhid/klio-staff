@@ -72,7 +72,9 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                   break;
                                 default:
                                   homeController.withoutTable.value = false;
+                                  // Utils.showLoading();
                                   homeController.getTables();
+                                  // Utils.hidePopup();
                                   showCustomDialog(context, "Table Reservation",
                                       tableBody(context, true), 50, 200);
                                   break;
@@ -564,6 +566,8 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                           "assets/print.png", 'Print', alternate, primaryText,
                           onPressed: () async {
                             Utils.showLoading();
+                            homeController.giveAmount.value = 0;
+                            homeController.payMethod.value = 'No Payment';
                             await homeController.getOrder(homeController.orders
                             .value.data![homeController.selectedOrder.value].id!
                             .toInt());
