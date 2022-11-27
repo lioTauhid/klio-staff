@@ -99,7 +99,8 @@ class HomeController extends GetxController with ErrorController {
     var response = await ApiClient()
         .get(endPoint, header: Utils.apiHeader)
         .catchError(handleApiError);
-    menus.value = menuFromJson(response);
+    menus.value = await menuFromJson(response);
+    filteredMenu.value = Utils.filterCategory(menus.value, -1)!;
   }
 
   Future<void> getCustomers() async {

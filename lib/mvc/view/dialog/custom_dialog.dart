@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:klio_staff/mvc/model/Customer.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
@@ -236,7 +237,7 @@ Widget dialogHeader(String title, BuildContext context) {
 }
 
 Widget addCustomer(BuildContext context, bool isDetail,
-    {Function()? onPressed}) {
+    {Customer? customer, Function()? onPressed}) {
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -269,18 +270,30 @@ Widget addCustomer(BuildContext context, bool isDetail,
       ),
       SizedBox(height: 10),
       normalTextField(homeController.controllerAddress.value),
-      SizedBox(height: 10),
-      SizedBox(height: 10),
+      if (isDetail)
+        for (int i = 5; i < customer!.data!.toJson().entries.length; i++)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10),
+              Text(
+                customer.data!.toJson().keys.toList()[i].toUpperCase(),
+                style: TextStyle(fontSize: fontMediumExtra, color: primaryText),
+              ),
+              SizedBox(height: 10),
+              normalTextField(TextEditingController(
+                  text: customer.data!.toJson().values.toList()[i].toString())),
+              SizedBox(height: 10)
+            ],
+          ),
       SizedBox(height: 20),
-      !isDetail
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                normalButton('Submit', primaryColor, white,
-                    onPressed: onPressed),
-              ],
-            )
-          : SizedBox(),
+      if (!isDetail)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            normalButton('Submit', primaryColor, white, onPressed: onPressed),
+          ],
+        )
     ]),
   );
 }

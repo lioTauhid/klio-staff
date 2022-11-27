@@ -265,66 +265,129 @@ class _HomeState extends State<Home> {
                                         height: 40,
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             15, 0, 15, 5),
-                                        child: Obx(() {
-                                          return ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: homeController
-                                                .category.value.data!.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 0, 15, 0),
-                                                child: MaterialButton(
-                                                    elevation: 0,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 25),
-                                                    color: selectedCategory ==
-                                                            index
-                                                        ? primaryColor
-                                                        : secondaryBackground,
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        selectedCategory =
-                                                            index;
-                                                      });
-                                                      // homeController.filteredMenu.value = Utils.filterCategory(homeController.menus.value, homeController.category.value.data![index].slug.toString())!;
-                                                      homeController
-                                                          .getMenuByCategory(
-                                                              id: homeController
-                                                                  .category
-                                                                  .value
-                                                                  .data![index]
-                                                                  .id!);
-                                                    },
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                    ),
-                                                    child: Text(
-                                                      homeController
-                                                          .category
-                                                          .value
-                                                          .data![index]
-                                                          .name
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          color:
-                                                              selectedCategory ==
-                                                                      index
-                                                                  ? white
-                                                                  : primaryText,
-                                                          fontSize: fontMedium),
-                                                    )),
-                                              );
-                                            },
-                                          );
-                                        }),
+                                        child: Row(
+                                          children: [
+                                            MaterialButton(
+                                                elevation: 0,
+                                                height: 60,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 25),
+                                                color: selectedCategory == -1
+                                                    ? primaryColor
+                                                    : secondaryBackground,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    selectedCategory = -1;
+                                                  });
+                                                  homeController
+                                                          .filteredMenu.value =
+                                                      Utils.filterCategory(
+                                                          homeController
+                                                              .menus.value,
+                                                          selectedCategory)!;
+                                                },
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                child: Text(
+                                                  'All',
+                                                  style: TextStyle(
+                                                      color:
+                                                          selectedCategory == -1
+                                                              ? white
+                                                              : primaryText,
+                                                      fontSize: fontMedium),
+                                                )),
+                                            SizedBox(width: 15),
+                                            Expanded(
+                                              child: Obx(() {
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: homeController
+                                                      .category
+                                                      .value
+                                                      .data!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0, 0, 15, 0),
+                                                      child: MaterialButton(
+                                                          elevation: 0,
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      25),
+                                                          color: selectedCategory ==
+                                                                  index
+                                                              ? primaryColor
+                                                              : secondaryBackground,
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              selectedCategory =
+                                                                  index;
+                                                            });
+                                                            homeController
+                                                                    .filteredMenu
+                                                                    .value =
+                                                                Utils.filterCategory(
+                                                                    homeController
+                                                                        .menus
+                                                                        .value,
+                                                                    homeController
+                                                                        .category
+                                                                        .value
+                                                                        .data![
+                                                                            index]
+                                                                        .id!
+                                                                        .toInt())!;
+                                                            // homeController
+                                                            //     .getMenuByCategory(
+                                                            //         id: homeController
+                                                            //             .category
+                                                            //             .value
+                                                            //             .data![
+                                                            //                 index]
+                                                            //             .id!);
+                                                          },
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                          child: Text(
+                                                            homeController
+                                                                .category
+                                                                .value
+                                                                .data![index]
+                                                                .name
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: selectedCategory ==
+                                                                        index
+                                                                    ? white
+                                                                    : primaryText,
+                                                                fontSize:
+                                                                    fontMedium),
+                                                          )),
+                                                    );
+                                                  },
+                                                );
+                                              }),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Expanded(
                                         child: Obx(() {
@@ -344,7 +407,7 @@ class _HomeState extends State<Home> {
                                             ),
                                             scrollDirection: Axis.vertical,
                                             itemCount: homeController
-                                                .menus.value.data!.length,
+                                                .filteredMenu.length,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               return Container(
@@ -356,8 +419,9 @@ class _HomeState extends State<Home> {
                                                 child: GestureDetector(
                                                   onTap: () {
                                                     MenuData data =
-                                                        homeController.menus
-                                                            .value.data![index];
+                                                        homeController
+                                                                .filteredMenu[
+                                                            index];
                                                     showCustomDialog(
                                                         context,
                                                         "Addons",
@@ -387,9 +451,7 @@ class _HomeState extends State<Home> {
                                                                   child: Image
                                                                       .network(
                                                                     homeController
-                                                                        .menus
-                                                                        .value
-                                                                        .data![
+                                                                        .filteredMenu[
                                                                             index]
                                                                         .image
                                                                         .toString(),
@@ -456,14 +518,14 @@ class _HomeState extends State<Home> {
                                                                             CrossAxisAlignment.start,
                                                                         children: [
                                                                           Text(
-                                                                            homeController.menus.value.data![index].name.toString(),
+                                                                            homeController.filteredMenu[index].name.toString(),
                                                                             style: TextStyle(
                                                                                 fontSize: fontMediumExtra,
                                                                                 color: primaryText,
                                                                                 fontWeight: FontWeight.bold),
                                                                           ),
                                                                           Text(
-                                                                              homeController.menus.value.data![index].calorie.toString() + ' kcal | v',
+                                                                              homeController.filteredMenu[index].calorie.toString() + ' kcal | v',
                                                                               style: TextStyle(color: primaryText, fontSize: fontVerySmall)),
                                                                         ],
                                                                       ),
@@ -473,9 +535,7 @@ class _HomeState extends State<Home> {
                                                                       ? SizedBox()
                                                                       : Text(
                                                                           homeController
-                                                                              .menus
-                                                                              .value
-                                                                              .data![index]
+                                                                              .filteredMenu[index]
                                                                               .price
                                                                               .toString(),
                                                                           style: TextStyle(
@@ -491,9 +551,7 @@ class _HomeState extends State<Home> {
                                                                         .min,
                                                                 children: [
                                                                   for (AllergiesDatum item in homeController
-                                                                      .menus
-                                                                      .value
-                                                                      .data![
+                                                                      .filteredMenu[
                                                                           index]
                                                                       .allergies!
                                                                       .data!

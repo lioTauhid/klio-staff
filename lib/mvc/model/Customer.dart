@@ -31,13 +31,21 @@ class Data {
     this.email,
     this.phone,
     this.deliveryAddress,
+    this.noOfVisit,
+    this.lastVisit,
+    this.pointsAcquired,
+    this.usedPoints,
   });
 
-  int? id;
+  int ?id;
   String? name;
-  String? email;
+  String ?email;
   String? phone;
-  String? deliveryAddress;
+  String ?deliveryAddress;
+  int? noOfVisit;
+  String ?lastVisit;
+  int? pointsAcquired;
+  dynamic usedPoints;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
@@ -45,6 +53,10 @@ class Data {
     email: json["email"],
     phone: json["phone"],
     deliveryAddress: json["delivery_address"],
+    noOfVisit: json["no_of_visit"],
+    lastVisit: json["last_visit"],
+    pointsAcquired: json["points_acquired"],
+    usedPoints: json["used_points"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +65,9 @@ class Data {
     "email": email,
     "phone": phone,
     "delivery_address": deliveryAddress,
+    "no_of_visit": noOfVisit,
+    "last_visit": lastVisit,
+    "points_acquired": pointsAcquired,
+    "used_points": usedPoints,
   };
 }

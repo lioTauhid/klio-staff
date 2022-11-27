@@ -137,19 +137,6 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             padding: EdgeInsets.zero,
                             color: secondaryBackground,
                             onPressed: () async {
-                              showCustomDialog(
-                                  context,
-                                  "Customer Details",
-                                  addCustomer(context, true, onPressed: () {
-                                    //perform validation
-                                    homeController.addUpdateCustomer(false,
-                                        id: Utils.findIdByListNearValue(
-                                            homeController.customers.value.data!
-                                                .toList(),
-                                            homeController.customerName.value));
-                                  }),
-                                  60,
-                                  400);
                               Customer customer = await homeController
                                   .getCustomer(Utils.findIdByListNearValue(
                                       homeController.customers.value.data!
@@ -163,6 +150,12 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                   customer.data!.phone!;
                               homeController.controllerAddress.value.text =
                                   customer.data!.deliveryAddress!;
+                              showCustomDialog(
+                                  context,
+                                  "Customer Details",
+                                  addCustomer(context, true, customer: customer),
+                                  60,
+                                  400);
                             },
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6.0),

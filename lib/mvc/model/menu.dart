@@ -16,12 +16,12 @@ class Menu {
   MenuData? data;
 
   factory Menu.fromJson(Map<String, dynamic> json) => Menu(
-    data: MenuData.fromJson(json["data"]),
-  );
+        data: MenuData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": data!.toJson(),
-  };
+        "data": data!.toJson(),
+      };
 }
 
 class MenuData {
@@ -39,6 +39,7 @@ class MenuData {
     this.variant,
     this.description,
     this.allergies,
+    this.categories,
   });
 
   int? id;
@@ -54,38 +55,41 @@ class MenuData {
   String? variant;
   String? description;
   Allergies? allergies;
+  List<int>? categories;
 
   factory MenuData.fromJson(Map<String, dynamic> json) => MenuData(
-    id: json["id"],
-    name: json["name"],
-    slug: json["slug"],
-    image: json["image"],
-    price: json["price"],
-    calorie: json["calorie"],
-    taxVat: json["tax_vat"],
-    quantity: json["quantity"],
-    addons: AddonsClass.fromJson(json["addons"]),
-    variants: Variants.fromJson(json["variants"]),
-    variant: json["variant"],
-    description: json["description"],
-    allergies: Allergies.fromJson(json["allergies"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        slug: json["slug"],
+        image: json["image"],
+        price: json["price"],
+        calorie: json["calorie"],
+        taxVat: json["tax_vat"],
+        quantity: json["quantity"],
+        addons: AddonsClass.fromJson(json["addons"]),
+        variants: Variants.fromJson(json["variants"]),
+        variant: json["variant"],
+        description: json["description"],
+        allergies: Allergies.fromJson(json["allergies"]),
+        categories: List<int>.from(json["categories"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "slug": slug,
-    "image": image,
-    "price": price,
-    "calorie": calorie,
-    "tax_vat": taxVat,
-    "quantity": quantity,
-    "addons": addons!.toJson(),
-    "variants": variants!.toJson(),
-    "variant": variant,
-    "description": description,
-    "allergies": allergies!.toJson(),
-  };
+        "id": id,
+        "name": name,
+        "slug": slug,
+        "image": image,
+        "price": price,
+        "calorie": calorie,
+        "tax_vat": taxVat,
+        "quantity": quantity,
+        "addons": addons!.toJson(),
+        "variants": variants!.toJson(),
+        "variant": variant,
+        "description": description,
+        "allergies": allergies!.toJson(),
+        "categories": List<dynamic>.from(categories!.map((x) => x)),
+      };
 }
 
 class Allergies {
@@ -96,12 +100,13 @@ class Allergies {
   List<AllergiesDatum>? data;
 
   factory Allergies.fromJson(Map<String, dynamic> json) => Allergies(
-    data: List<AllergiesDatum>.from(json["data"].map((x) => AllergiesDatum.fromJson(x))),
-  );
+        data: List<AllergiesDatum>.from(
+            json["data"].map((x) => AllergiesDatum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class AllergiesDatum {
@@ -114,16 +119,15 @@ class AllergiesDatum {
   String? image;
 
   factory AllergiesDatum.fromJson(Map<String, dynamic> json) => AllergiesDatum(
-    name: json["name"],
-    image: json["image"],
-  );
+        name: json["name"],
+        image: json["image"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "image": image,
-  };
+        "name": name,
+        "image": image,
+      };
 }
-
 
 class AddonsClass {
   AddonsClass({
@@ -133,12 +137,13 @@ class AddonsClass {
   List<AddonsDatum>? data;
 
   factory AddonsClass.fromJson(Map<String, dynamic> json) => AddonsClass(
-    data: List<AddonsDatum>.from(json["data"].map((x) => AddonsDatum.fromJson(x))),
-  );
+        data: List<AddonsDatum>.from(
+            json["data"].map((x) => AddonsDatum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class AddonsDatum {
@@ -157,18 +162,18 @@ class AddonsDatum {
   bool isChecked;
 
   factory AddonsDatum.fromJson(Map<String, dynamic> json) => AddonsDatum(
-    id: json["id"],
-    name: json["name"],
-    price: json["price"],
-    quantity: json["quantity"],
-  );
+        id: json["id"],
+        name: json["name"],
+        price: json["price"],
+        quantity: json["quantity"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "price": price,
-    "quantity": quantity,
-  };
+        "id": id,
+        "name": name,
+        "price": price,
+        "quantity": quantity,
+      };
 }
 
 class Variants {
@@ -179,12 +184,13 @@ class Variants {
   List<VariantsDatum>? data;
 
   factory Variants.fromJson(Map<String, dynamic> json) => Variants(
-    data: List<VariantsDatum>.from(json["data"].map((x) => VariantsDatum.fromJson(x))),
-  );
+        data: List<VariantsDatum>.from(
+            json["data"].map((x) => VariantsDatum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class VariantsDatum {
@@ -199,14 +205,14 @@ class VariantsDatum {
   String? price;
 
   factory VariantsDatum.fromJson(Map<String, dynamic> json) => VariantsDatum(
-    id: json["id"],
-    name: json["name"],
-    price: json["price"],
-  );
+        id: json["id"],
+        name: json["name"],
+        price: json["price"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "price": price,
-  };
+        "id": id,
+        "name": name,
+        "price": price,
+      };
 }

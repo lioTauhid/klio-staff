@@ -177,17 +177,19 @@ class Utils {
     return (total / 100) * percentage;
   }
 
-  static List<MenuData>? filterCategory(Menus menus, String slug) {
+  static List<MenuData>? filterCategory(Menus menus, int id) {
     List<MenuData>? data = [];
-    print(slug);
-    menus.data!.forEach((element) {
-      print(element.slug);
-      if (element.slug == slug || element.slug == '') {
-        data.add(element);
-        print(element.slug);
-      }
-    });
-    print(data.length);
+    if (id == -1) {
+      data = menus.data;
+    } else {
+      menus.data!.forEach((element) {
+        element.categories!.forEach((catId) {
+          if (catId == id) {
+            data!.add(element);
+          }
+        });
+      });
+    }
     return data;
   }
 }
