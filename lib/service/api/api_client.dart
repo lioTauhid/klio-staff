@@ -9,10 +9,11 @@ import '../../constant/value.dart';
 
 class ApiClient {
   //GET
-  Future<dynamic> get(String endPoint, {dynamic header}) async {
-    var uri = Uri.parse(baseUrl + endPoint);
+  Future<dynamic> get(String endPoint, {dynamic header, dynamic query}) async {
+    var uri = Uri.parse(baseUrl + endPoint).replace(queryParameters: query);
     try {
-      var response = await http.get(uri, headers: header).timeout(Duration(seconds: 20));
+      var response =
+          await http.get(uri, headers: header).timeout(Duration(seconds: 20));
       return _processResponse(response);
     } on SocketException {
       throw ProcessDataException("No internet connection", uri.toString());
@@ -22,11 +23,13 @@ class ApiClient {
   }
 
   //POST
-  Future<dynamic> post(String endPoint, dynamic payloadObj, {dynamic header}) async {
+  Future<dynamic> post(String endPoint, dynamic payloadObj,
+      {dynamic header}) async {
     var uri = Uri.parse(baseUrl + endPoint);
     try {
-      var response =
-          await http.post(uri, body: payloadObj, headers: header).timeout(Duration(seconds: 20));
+      var response = await http
+          .post(uri, body: payloadObj, headers: header)
+          .timeout(Duration(seconds: 20));
       return _processResponse(response);
     } on SocketException {
       throw ProcessDataException("No internet connection", uri.toString());
@@ -36,11 +39,13 @@ class ApiClient {
   }
 
   //PUT
-  Future<dynamic> put(String endPoint, dynamic payloadObj, {dynamic header}) async {
+  Future<dynamic> put(String endPoint, dynamic payloadObj,
+      {dynamic header}) async {
     var uri = Uri.parse(baseUrl + endPoint);
     try {
-      var response =
-      await http.put(uri, body: payloadObj, headers: header).timeout(Duration(seconds: 20));
+      var response = await http
+          .put(uri, body: payloadObj, headers: header)
+          .timeout(Duration(seconds: 20));
       return _processResponse(response);
     } on SocketException {
       throw ProcessDataException("No internet connection", uri.toString());
@@ -50,12 +55,11 @@ class ApiClient {
   }
   //DELETE
 
-
   dynamic _processResponse(http.Response response) {
     var jsonResponse = utf8.decode(response.bodyBytes);
-    // print(response.body);
-    // print(response.statusCode);
-    // print(response.request!.url);
+    print(response.body);
+    print(response.statusCode);
+    print(response.request!.url);
     switch (response.statusCode) {
       case 200:
         return jsonResponse;

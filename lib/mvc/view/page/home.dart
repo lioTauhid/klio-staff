@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:klio_staff/mvc/view/page/food_management.dart';
+import 'package:klio_staff/mvc/view/page/login.dart';
 import 'package:klio_staff/mvc/view/page/settings.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../service/local/shared_pref.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
 import '../../model/order.dart';
@@ -27,7 +29,7 @@ List pageList = [0, Dashboard(), FoodManagement(), Settings(), Kitchen()];
 
 class _HomeState extends State<Home> {
   HomeController homeController = Get.put(HomeController());
-  TextEditingController? textController = TextEditingController();
+  // TextEditingController? textController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedCategory = -1;
   bool darkMode = false;
@@ -121,9 +123,15 @@ class _HomeState extends State<Home> {
                                         width: 280,
                                         height: 40,
                                         child: TextFormField(
-                                            onChanged: (text) async {},
-                                            onEditingComplete: () async {},
+                                            // onChanged: (text) async {print(text);},
+                                            // onEditingComplete: (){print("text");},
+                                            onFieldSubmitted: (text) {
+                                              homeController.getMenuByKeyword(
+                                                  keyword: text);
+                                            },
                                             keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.search,
                                             style:
                                                 TextStyle(fontSize: fontSmall),
                                             decoration: InputDecoration(
@@ -242,12 +250,14 @@ class _HomeState extends State<Home> {
                                         primaryColor,
                                         8,
                                         15,
-                                        40, onPressed: () async {
-                                      homeController.loadHomeData();
-
-                                      // final token =
-                                      //     await SharedPref().getValue('token');
-                                      // print(token);
+                                        40, onPressed: () {
+                                      showWarningDialog(
+                                          "Do you want to Logout from app",
+                                          onAccept: () async {
+                                        await SharedPref()
+                                            .saveValue('token', '');
+                                        Get.off(Login());
+                                      });
                                     }),
                                   ],
                                 ),
@@ -897,11 +907,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    textController?.dispose();
-    super.dispose();
   }
 }

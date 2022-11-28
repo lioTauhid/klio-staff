@@ -65,19 +65,12 @@ class HomeController extends GetxController with ErrorController {
     await getCurrentUserData();
     getOrders();
     await getCustomers();
-    await getMenuByCategory();
     await getCategory();
+    await getMenuByKeyword();
     getOnlineOrder(0);
     Utils.hidePopup();
     Utils.hidePopup();
     Utils.hidePopup();
-  }
-
-  Future<void> getCategory() async {
-    var response = await ApiClient()
-        .get('pos/category', header: Utils.apiHeader)
-        .catchError(handleApiError);
-    category.value = categoryFromJson(response);
   }
 
   Future<void> getCurrentUserData() async {
@@ -94,11 +87,21 @@ class HomeController extends GetxController with ErrorController {
     settings.value = settingsFromJson(response);
   }
 
-  Future<void> getMenuByCategory({dynamic id = ''}) async {
-    String endPoint = id == '' ? 'pos/menu' : 'pos/menu/$id';
+  Future<void> getCategory() async {
     var response = await ApiClient()
-        .get(endPoint, header: Utils.apiHeader)
+        .get('pos/category', header: Utils.apiHeader)
         .catchError(handleApiError);
+    category.value = categoryFromJson(response);
+  }
+
+  Future<void> getMenuByKeyword({String keyword = ''}) async {
+    Map<String, String> qParams = {'keyword': keyword};
+    String endPoint = "pos/menu";
+    print(endPoint);
+    var response = await ApiClient()
+        .get(endPoint, header: Utils.apiHeader, query: qParams)
+        .catchError(handleApiError);
+    print(response);
     menus.value = await menuFromJson(response);
     filteredMenu.value = Utils.filterCategory(menus.value, -1)!;
   }
