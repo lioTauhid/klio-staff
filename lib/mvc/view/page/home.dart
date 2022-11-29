@@ -29,7 +29,7 @@ List pageList = [0, Dashboard(), FoodManagement(), Settings(), Kitchen()];
 
 class _HomeState extends State<Home> {
   HomeController homeController = Get.put(HomeController());
-  // TextEditingController? textController = TextEditingController();
+  TextEditingController? textController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedCategory = -1;
   bool darkMode = false;
@@ -122,14 +122,18 @@ class _HomeState extends State<Home> {
                                     SizedBox(
                                         width: 280,
                                         height: 40,
-                                        child: TextFormField(
-                                            // onChanged: (text) async {print(text);},
-                                            // onEditingComplete: (){print("text");},
-                                            onFieldSubmitted: (text) {
+                                        child: TextField(
+                                            onChanged: (text) async {
                                               homeController.getMenuByKeyword(
                                                   keyword: text);
                                             },
+                                            // onEditingComplete: (){print("text");},
+                                            // onFieldSubmitted: (text) {
+                                            //   homeController.getMenuByKeyword(
+                                            //       keyword: text);
+                                            // },
                                             keyboardType: TextInputType.text,
+                                            controller: textController,
                                             textInputAction:
                                                 TextInputAction.search,
                                             style:
@@ -145,7 +149,12 @@ class _HomeState extends State<Home> {
                                                     Icons.close,
                                                     color: textSecondary,
                                                   ),
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      textController!.text = '';
+                                                      homeController.getMenuByKeyword();
+                                                    });
+                                                  },
                                                 ),
                                                 hintText: 'Search item',
                                                 hintStyle: TextStyle(
@@ -187,7 +196,7 @@ class _HomeState extends State<Home> {
                                               'Accept or Cancel Online Pending Orders',
                                               showNotification(),
                                               160,
-                                              800);
+                                              750);
                                         }),
                                         Positioned(
                                             top: 3,

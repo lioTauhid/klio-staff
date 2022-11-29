@@ -99,8 +99,8 @@ class HomeController extends GetxController with ErrorController {
     String endPoint = "pos/menu";
     print(endPoint);
     var response = await ApiClient()
-        .get(endPoint, header: Utils.apiHeader, query: qParams)
-        .catchError(handleApiError);
+        .get(endPoint, header: Utils.apiHeader, query: qParams);
+        // .catchError(handleApiError);
     print(response);
     menus.value = await menuFromJson(response);
     filteredMenu.value = Utils.filterCategory(menus.value, -1)!;
@@ -141,7 +141,6 @@ class HomeController extends GetxController with ErrorController {
         .put('pos/order/$id/accept', jsonEncode({}), header: Utils.apiHeader)
         .catchError(handleApiError);
     if (response == null) false;
-    Utils.showSnackBar("Order added successfully");
     return true;
   }
 

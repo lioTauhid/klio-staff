@@ -2059,16 +2059,17 @@ Widget showNotification() {
                       bool done = await homeController.acceptOrder(
                           homeController.onlineOrder.value.data![index].id!
                               .toInt());
+                      Utils.hidePopup();
                       if (done) {
-                        Utils.hidePopup();
-                        Utils.hidePopup();
-                        Utils.hidePopup();
                         homeController.getOrders();
                         homeController.getOnlineOrder(0);
                         homeController.orders.refresh();
-                      } else
+                        Utils.hidePopup();
+                        Utils.hidePopup();
+                        Utils.showSnackBar("Order added successfully");
+                      } else {
                         Utils.showSnackBar("Failed! Try again");
-                      Utils.hidePopup();
+                      }
                     });
                   },
                 ),

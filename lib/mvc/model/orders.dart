@@ -79,11 +79,11 @@ class TablesDatum {
 
   factory TablesDatum.fromJson(Map<String, dynamic> json) => TablesDatum(
     id: json["id"],
-    number: json["number"],
+    number: json["table_number"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "number": number,
+    "table_number": number,
   };
 }
