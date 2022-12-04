@@ -1,11 +1,33 @@
 import 'package:flutter/material.dart';
-
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
 
-class Settings extends StatelessWidget {
-  const Settings({Key? key}) : super(key: key);
+class Settings extends StatefulWidget {
+  Settings({Key? key}) : super(key: key);
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  TextEditingController contResName =
+      TextEditingController(text: homeController.settings.value.data![0].value);
+  TextEditingController contEmail =
+      TextEditingController(text: homeController.settings.value.data![2].value);
+  TextEditingController contTimezone =
+      TextEditingController(text: homeController.settings.value.data![9].value);
+  TextEditingController contDateFormat = TextEditingController(
+      text: homeController.settings.value.data![10].value);
+  TextEditingController contPhone =
+      TextEditingController(text: homeController.settings.value.data![3].value);
+  TextEditingController contRight = TextEditingController(
+      text: homeController.settings.value.data![17].value);
+  TextEditingController contAddress = TextEditingController(
+      text: homeController.settings.value.data![16].value);
+  TextEditingController contDescription =
+      TextEditingController(text: homeController.settings.value.data![1].value);
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +50,16 @@ class Settings extends StatelessWidget {
             height: 10,
           ),
           textRow1('Restaurant Name', 'Email'),
-          textFieldRow1('Klio', 'info@deepgreen.studio'),
+          textFieldRow1('Klio', 'info@deepgreen.studio',
+              controller1: contResName, controller2: contEmail),
           SizedBox(height: 15),
           textRow1('Timezone', 'Date Format'),
-          textFieldRow1('Asia/Dhaka', 'd-m-Y'),
+          textFieldRow1('Asia/Dhaka', 'd-m-Y',
+              controller1: contTimezone, controller2: contDateFormat),
           SizedBox(height: 15),
           textRow1('Phone', 'Copyright'),
-          textFieldRow1('++880176456455', 'All rights reserved'),
+          textFieldRow1('+880176456455', 'All rights reserved',
+              controller1: contPhone, controller2: contRight),
           SizedBox(height: 15),
           textRow1('Address', ''),
           SizedBox(
@@ -42,16 +67,15 @@ class Settings extends StatelessWidget {
             child: TextFormField(
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
+                controller: contAddress,
                 keyboardType: TextInputType.text,
                 maxLines: 3,
-                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                style: TextStyle(fontSize: fontVerySmall, color: primaryText),
                 decoration: InputDecoration(
                     fillColor: secondaryBackground,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                    ),
-                    hintStyle: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary))),
+                    ))),
           ),
           SizedBox(height: 15),
           textRow1('Restaurant Descriptions', ''),
@@ -60,22 +84,44 @@ class Settings extends StatelessWidget {
             child: TextFormField(
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
+                controller: contDescription,
                 keyboardType: TextInputType.text,
                 maxLines: 3,
-                style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+                style: TextStyle(fontSize: fontVerySmall, color: primaryText),
                 decoration: InputDecoration(
                     fillColor: secondaryBackground,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                    ),
-                    hintStyle: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary))),
+                    ))),
           ),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              normalButton('Submit', primaryColor, white, onPressed: () {}),
+              normalButton('Submit', primaryColor, white, onPressed: () async {
+                setState(() {});
+                // Utils.showLoading();
+                // var response = await ApiClient().put(
+                //     'setting',
+                //     jsonEncode({
+                //       "email": contEmail.text,
+                //       "phone": contPhone.text,
+                //       "timezone": contTimezone.text,
+                //       "date_format": contDateFormat.text,
+                //       "address": contAddress.text,
+                //       "copyright": contRight.text,
+                //       "restaurant_name": contResName.text,
+                //       "restaurant_description": contDescription.text,
+                //     }),
+                //     header: Utils.apiHeader);
+                // if (response == null) {
+                //   Utils.hidePopup();
+                //   Utils.showSnackBar("Failed to save setting, Try again!");
+                // } else {
+                //   Utils.hidePopup();
+                //   Utils.showSnackBar("Setting saved successfully!");
+                // }
+              }),
             ],
           ),
         ]),

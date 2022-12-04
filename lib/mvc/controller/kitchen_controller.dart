@@ -1,0 +1,22 @@
+import 'package:get/get.dart';
+import '../../constant/value.dart';
+import '../../service/api/api_client.dart';
+import '../../service/local/shared_pref.dart';
+import '../../utils/utils.dart';
+import '../model/kitchen_order.dart';
+import 'error_controller.dart';
+
+class KitchenController extends GetxController with ErrorController {
+  Rx<KitchenOrder> kitchenOrder = KitchenOrder().obs;
+
+  Future<void> getKitchenOrder() async {
+    token = (await SharedPref().getValue('token'))!;
+    Utils.showLoading();
+    var response = await ApiClient()
+        .get('kitchen/order', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    kitchenOrder.value = kitchenOrderFromJson(response);
+    await Future.delayed(Duration(seconds: 4));
+    Utils.hidePopup();
+  }
+}

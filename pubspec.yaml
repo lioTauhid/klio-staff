@@ -38,6 +38,7 @@ dependencies:
   printing: ^5.9.3
   sunmi_printer_plus: ^2.1.1
   flutter_native_splash: ^2.2.15
+  material_segmented_control: ^4.0.0
 
 dev_dependencies:
   flutter_test:

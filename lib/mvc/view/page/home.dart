@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -19,27 +21,35 @@ import 'home_left_view.dart';
 import 'kitchen.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({Key? key, this.refresh = true}) : super(key: key);
+  final bool refresh;
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-List pageList = [0, Dashboard(), FoodManagement(), Settings(), Kitchen()];
+List pageList = [
+  0,
+  Dashboard(),
+  FoodManagement(),
+  Kitchen(),
+  Settings(),
+];
 
 class _HomeState extends State<Home> {
   HomeController homeController = Get.put(HomeController());
   TextEditingController? textController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedCategory = -1;
-  bool darkMode = false;
   bool gridImage = true;
 
   @override
   void initState() {
     super.initState();
     applyThem(darkMode);
-    homeController.loadHomeData();
+    if (widget.refresh) {
+      homeController.loadHomeData();
+    }
   }
 
   @override
@@ -152,7 +162,8 @@ class _HomeState extends State<Home> {
                                                   onPressed: () {
                                                     setState(() {
                                                       textController!.text = '';
-                                                      homeController.getMenuByKeyword();
+                                                      homeController
+                                                          .getMenuByKeyword();
                                                     });
                                                   },
                                                 ),
@@ -171,7 +182,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(width: 12),
                                     topBarIconBtn(
                                         Image.asset('assets/reload.png',
-                                            color: primaryText),
+                                            color: primaryColor),
                                         secondaryBackground,
                                         8,
                                         15,
@@ -238,6 +249,10 @@ class _HomeState extends State<Home> {
                                           : darkMode = true;
                                       applyThem(darkMode);
                                       setState(() {});
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  Home(refresh: false)));
                                     }),
                                     SizedBox(width: 12),
                                     topBarIconBtn(
@@ -265,6 +280,8 @@ class _HomeState extends State<Home> {
                                           onAccept: () async {
                                         await SharedPref()
                                             .saveValue('token', '');
+                                        await SharedPref()
+                                            .saveValue('loginType', '');
                                         Get.off(Login());
                                       });
                                     }),

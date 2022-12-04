@@ -11,6 +11,8 @@ const dialogPadding = 20.0;
 
 const baseUrl = "https://app.klio.digital/api/";
 late String token;
+late String loginType;
+bool darkMode = true;
 
 const Map orderTypes = {
   'Dine In': 'assets/dine-in.png',
@@ -21,5 +23,6 @@ const Map orderTypes = {
 };
 const List<String> discType = ['In Flat Amount', 'In percentage'];
 const List<String> paymentType = ['Cash', 'Card', 'No Payment'];
+const List<String> loginTypes = ['Login as Staff', 'Login as cooker'];
 
 

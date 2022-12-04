@@ -211,10 +211,8 @@ Widget textRow1(String text1, String text2) {
   );
 }
 
-
-
-
-Widget textFieldRow1(String text1, String text2) {
+Widget textFieldRow1(String text1, String text2,
+    {TextEditingController? controller1, TextEditingController? controller2}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
@@ -225,6 +223,7 @@ Widget textFieldRow1(String text1, String text2) {
             child: TextFormField(
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
+                controller: controller1,
                 keyboardType: TextInputType.text,
                 style: TextStyle(fontSize: fontVerySmall, color: primaryText),
                 decoration: InputDecoration(
@@ -232,8 +231,8 @@ Widget textFieldRow1(String text1, String text2) {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    hintStyle: TextStyle(
-                        fontSize: fontVerySmall, color: primaryText),
+                    hintStyle:
+                        TextStyle(fontSize: fontVerySmall, color: primaryText),
                     hintText: text1)),
           )),
       SizedBox(width: 20),
@@ -244,6 +243,7 @@ Widget textFieldRow1(String text1, String text2) {
             child: TextFormField(
                 onChanged: (text) async {},
                 onEditingComplete: () async {},
+                controller: controller2,
                 keyboardType: TextInputType.text,
                 style: TextStyle(fontSize: fontVerySmall, color: primaryText),
                 decoration: InputDecoration(
@@ -251,31 +251,36 @@ Widget textFieldRow1(String text1, String text2) {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    hintStyle: TextStyle(
-                        fontSize: fontVerySmall, color: primaryText),
+                    hintStyle:
+                        TextStyle(fontSize: fontVerySmall, color: primaryText),
                     hintText: text2)),
           )),
     ],
   );
-
 }
 
-Widget roundTextButton(Text text,{double padding=5.0,Color backgroundColor=Colors.white,Color borderSideColor=Colors.white,Color shadowColor=Colors.white,double elevation=0.0,double borderRadius=0.0,Function()? onPressed}) {
+Widget roundTextButton(Text text,
+    {double padding = 5.0,
+    Color backgroundColor = Colors.transparent,
+    Color borderSideColor = Colors.transparent,
+    Color shadowColor = Colors.white,
+    double elevation = 0.0,
+    double borderRadius = 0.0,
+    Function()? onPressed}) {
   return TextButton(
     child: Padding(
-      padding:EdgeInsets.all(padding),
+      padding: EdgeInsets.all(padding),
       child: text,
     ),
     style: TextButton.styleFrom(
-        backgroundColor:backgroundColor,
-        shadowColor: shadowColor,
-         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),),
-        side: BorderSide(color: borderSideColor),
+      backgroundColor: backgroundColor,
+      shadowColor: shadowColor,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      side: BorderSide(color: borderSideColor),
     ),
-    onPressed:onPressed,
+    onPressed: onPressed,
   );
-
 }
-

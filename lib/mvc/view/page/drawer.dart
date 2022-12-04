@@ -71,16 +71,9 @@ Widget sideDrawer() {
             onTap: () {},
             leading: sideBarIconBtn('assets/book.png', primaryText)),
         ListTile(
-            title: Text("Kitchen (test)", style: TextStyle(color: primaryText)),
-            onTap: () {
-              homeController.currentPage.value = 4;
-              Get.back();
-            },
-            leading: sideBarIconBtn('assets/book.png', primaryText)),
-        ListTile(
             title: Text("Setting", style: TextStyle(color: primaryText)),
             onTap: () {
-              homeController.currentPage.value = 3;
+              homeController.currentPage.value = 4;
               Get.back();
             },
             leading: sideBarIconBtn('assets/settings.png', primaryText)),

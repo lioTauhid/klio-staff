@@ -153,7 +153,8 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                               showCustomDialog(
                                   context,
                                   "Customer Details",
-                                  addCustomer(context, true, customer: customer),
+                                  addCustomer(context, true,
+                                      customer: customer),
                                   60,
                                   400);
                             },
@@ -495,7 +496,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             Expanded(
                               flex: 4,
                               child: Text(
-                                '${homeController.settings.value.data![14].value}£ + £${Utils.vatTotal(homeController.cardList).toStringAsFixed(2)}',
+                                '£${homeController.settings.value.data![14].value} + £${Utils.vatTotal(homeController.cardList).toStringAsFixed(2)}',
                                 style: TextStyle(
                                     color: primaryText,
                                     fontSize: fontVerySmall,
@@ -558,10 +559,10 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                       iconTextBtnWide(
                           "assets/print.png", 'Print', alternate, primaryText,
                           onPressed: () async {
-                            Utils.showLoading();
-                            homeController.giveAmount.value = 0;
-                            homeController.payMethod.value = 'No Payment';
-                            await homeController.getOrder(homeController.orders
+                        Utils.showLoading();
+                        homeController.giveAmount.value = 0;
+                        homeController.payMethod.value = 'No Payment';
+                        await homeController.getOrder(homeController.orders
                             .value.data![homeController.selectedOrder.value].id!
                             .toInt());
                         Utils.hidePopup();
