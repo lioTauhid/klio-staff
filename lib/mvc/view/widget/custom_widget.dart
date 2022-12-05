@@ -221,8 +221,6 @@ Widget textFieldRow1(String text1, String text2,
           child: SizedBox(
             height: 40,
             child: TextFormField(
-                onChanged: (text) async {},
-                onEditingComplete: () async {},
                 controller: controller1,
                 keyboardType: TextInputType.text,
                 style: TextStyle(fontSize: fontVerySmall, color: primaryText),
@@ -241,8 +239,6 @@ Widget textFieldRow1(String text1, String text2,
           child: SizedBox(
             height: 40,
             child: TextFormField(
-                onChanged: (text) async {},
-                onEditingComplete: () async {},
                 controller: controller2,
                 keyboardType: TextInputType.text,
                 style: TextStyle(fontSize: fontVerySmall, color: primaryText),

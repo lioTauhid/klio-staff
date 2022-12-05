@@ -218,7 +218,7 @@ class HomeController extends GetxController with ErrorController {
             {"id": i.id, "person": int.parse(i.person.toString())}
       ]
     });
-    // print(body);
+    print(body);
     var response;
     if (isUpdate.value) {
       response = ApiClient()
