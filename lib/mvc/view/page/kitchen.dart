@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:klio_staff/constant/color.dart';
 import 'package:klio_staff/constant/value.dart';
+import 'package:klio_staff/utils/utils.dart';
 import '../../../service/local/shared_pref.dart';
 import '../../controller/kitchen_controller.dart';
+import '../../model/kitchen_order.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
 import 'login.dart';
@@ -19,7 +21,6 @@ class Kitchen extends StatefulWidget {
 KitchenController kitchenController = Get.put(KitchenController());
 
 class _KitchenState extends State<Kitchen> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -105,41 +106,6 @@ class _KitchenState extends State<Kitchen> {
                             15,
                             40,
                             onPressed: () {}),
-                        // SizedBox(width: 12),
-                        // Stack(
-                        //   children: [
-                        //     topBarIconBtn(
-                        //         Image.asset('assets/notification.png',
-                        //             color: primaryText),
-                        //         secondaryBackground,
-                        //         8,
-                        //         15,
-                        //         40,
-                        //         onPressed: () async {}),
-                        //     Positioned(
-                        //         top: 3,
-                        //         right: 5,
-                        //         child: Container(
-                        //           height: 18,
-                        //           width: 15,
-                        //           alignment: Alignment.center,
-                        //           decoration: BoxDecoration(
-                        //             color: primaryColor,
-                        //             borderRadius: BorderRadius.circular(10),
-                        //           ),
-                        //           padding: EdgeInsets.all(1),
-                        //           child: Obx(() {
-                        //             return Text(
-                        //               '',
-                        //               textAlign: TextAlign.center,
-                        //               style: TextStyle(
-                        //                   fontSize: fontVerySmall,
-                        //                   color: Colors.white),
-                        //             );
-                        //           }),
-                        //         ))
-                        //   ],
-                        // ),
                         SizedBox(width: 12),
                         topBarIconBtn(
                             Image.asset('assets/moon.png', color: primaryColor),
@@ -196,16 +162,46 @@ class _KitchenState extends State<Kitchen> {
                           Expanded(
                             flex: 12,
                             child: ListView.builder(
-                              shrinkWrap: true,
-                                itemCount: kitchenController.kitchenOrder.value.data![index].orderDetails!.data!.length,
+                                itemCount: kitchenController.kitchenOrder.value
+                                    .data![index].orderDetails!.data!.length,
                                 itemBuilder:
                                     (BuildContext context, int index2) {
-                                  return innerItemCard(context, index, index2);
+                                  return GestureDetector(
+                                      onTap: () {
+                                        if (kitchenController
+                                                .kitchenOrder
+                                                .value
+                                                .data![index]
+                                                .orderDetails!
+                                                .data![index2]
+                                                .selected ==
+                                            true) {
+                                          kitchenController
+                                              .kitchenOrder
+                                              .value
+                                              .data![index]
+                                              .orderDetails!
+                                              .data![index2]
+                                              .selected = false;
+                                        } else {
+                                          kitchenController
+                                              .kitchenOrder
+                                              .value
+                                              .data![index]
+                                              .orderDetails!
+                                              .data![index2]
+                                              .selected = true;
+                                        }
+                                        kitchenController.kitchenOrder
+                                            .refresh();
+                                      },
+                                      child: innerItemCard(
+                                          context, index, index2));
                                 }),
                           ),
                           Expanded(
                             flex: 2,
-                            child: footerCard(),
+                            child: footerCard(index),
                           ),
                         ],
                       ),
@@ -244,7 +240,10 @@ class _KitchenState extends State<Kitchen> {
                   Text(
                       "Invoice: ${kitchenController.kitchenOrder.value.data![index].invoice}",
                       style: TextStyle(fontSize: fontSmall, color: white)),
-                  Text("26:33",
+                  Text(
+                      kitchenController
+                          .kitchenOrder.value.data![index].availableTime
+                          .toString(),
                       style: TextStyle(fontSize: fontSmall, color: white)),
                 ],
               ),
@@ -260,8 +259,15 @@ class _KitchenState extends State<Kitchen> {
 
   Widget innerItemCard(BuildContext context, int index1, int index2) {
     return Obx(() {
-      return Padding(
+      return Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          color: kitchenController.kitchenOrder.value.data![index1]
+                      .orderDetails!.data![index2].selected ==
+                  true
+              ? greenLight
+              : secondaryBackground,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -296,29 +302,42 @@ class _KitchenState extends State<Kitchen> {
                             fontWeight: FontWeight.w100)),
                   ],
                 )),
-                roundTextButton(
-                  Text(
-                    kitchenController.kitchenOrder.value.data![index1].status
-                        .toString(),
-                    style: TextStyle(
-                      fontSize: fontSmall,
-                      color: white,
-                    ),
-                  ),
-                  borderRadius: 20,
-                  backgroundColor: red,
-                  onPressed: () {},
-                ),
+                SizedBox(
+                    width: 110,
+                    height: 35,
+                    child: normalButton(
+                        kitchenController.kitchenOrder.value.data![index1]
+                            .orderDetails!.data![index2].status
+                            .toString(),
+                        kitchenController.kitchenOrder.value.data![index1]
+                                    .orderDetails!.data![index2].status ==
+                                'pending'
+                            ? red
+                            : kitchenController.kitchenOrder.value.data![index1]
+                                        .orderDetails!.data![index2].status ==
+                                    'ready'
+                                ? green
+                                : blue,
+                        white,
+                        onPressed: () {})),
               ],
             ),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                margin: EdgeInsets.only(right: 5),
-                decoration: BoxDecoration(
-                    color: alternate, borderRadius: BorderRadius.circular(10)),
-                child: Text('Ice Cream  2x5',
-                    style: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary))),
+            Row(
+              children: [
+                for (AddonsDatum addons in kitchenController.kitchenOrder.value
+                    .data![index1].orderDetails!.data![index2].addons!.data!
+                    .toList())
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                          color: alternate,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Text('${addons.name} - ${addons.quantity}',
+                          style: TextStyle(
+                              fontSize: fontVerySmall, color: primaryText)))
+              ],
+            ),
             Divider(color: textSecondary, thickness: 1),
           ],
         ),
@@ -326,65 +345,80 @@ class _KitchenState extends State<Kitchen> {
     });
   }
 
-  Widget footerCard() {
+  Widget footerCard(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        roundTextButton(
-          Text(
-            "Select All",
-            style: TextStyle(
-              fontSize: fontSmall,
-              color: primaryText,
-            ),
-          ),
-          borderRadius: 20,
-          // padding: 5.0,
-          //  backgroundColor: secondaryAccentColor,
-          borderSideColor: primaryText,
-          onPressed: () {},
+        SizedBox(
+          width: 110,
+          height: 35,
+          child: normalButton('Select All', primaryBackground, primaryText,
+              onPressed: () {}),
         ),
-        roundTextButton(
-          Text(
-            "Unselect All",
-            style: TextStyle(
-              fontSize: fontSmall,
-              color: primaryText,
-            ),
-          ),
-          borderRadius: 20,
-          //   padding: 3.0,
-          // backgroundColor: secondaryAccentColor,
-          borderSideColor: primaryText,
-          onPressed: () {},
+        SizedBox(
+          width: 110,
+          height: 35,
+          child: normalButton('Unselect All', primaryBackground, primaryText,
+              onPressed: () {}),
         ),
-        roundTextButton(
-          Text(
-            "Cook",
-            style: TextStyle(
-              fontSize: fontSmall,
-              color: accentColor,
-            ),
-          ),
-          borderRadius: 20,
-          //  padding: 3.0,
-          //  backgroundColor: secondaryAccentColor,
-          borderSideColor: accentColor,
-          onPressed: () {},
-        ),
-        roundTextButton(
-          Text(
-            "Done",
-            style: TextStyle(
-              fontSize: fontSmall,
-              color: white,
-            ),
-          ),
-          borderRadius: 20,
-          //  padding: 3.0,
-          backgroundColor: primaryColor,
-          onPressed: () {},
-        ),
+        SizedBox(
+            width: 70,
+            height: 35,
+            child:
+                normalButton('Cook', primaryColor, white, onPressed: () async {
+              Utils.showLoading();
+              List<int> itemList = [];
+              kitchenController
+                  .kitchenOrder.value.data![index].orderDetails!.data!
+                  .forEach((element) {
+                if (element.selected == true) {
+                  itemList.add(element.id!.toInt());
+                }
+              });
+              if (itemList.isNotEmpty) {
+                bool done = await kitchenController.acceptOrder(
+                    kitchenController.kitchenOrder.value.data![index].id!
+                        .toInt(),
+                    itemList,
+                    'cooking');
+                if (done) {
+                  // Utils.showSnackBar('Order updated successfully');
+                  await kitchenController.getKitchenOrder();
+                  kitchenController.kitchenOrder.refresh();
+                  Utils.hidePopup();
+                }
+                Utils.hidePopup();
+              }
+            })),
+        SizedBox(
+            width: 70,
+            height: 35,
+            child:
+                normalButton('Ready', primaryColor, white, onPressed: () async {
+              Utils.showLoading();
+              List<int> itemList = [];
+              kitchenController
+                  .kitchenOrder.value.data![index].orderDetails!.data!
+                  .forEach((element) {
+                if (element.selected == true) {
+                  itemList.add(element.id!.toInt());
+                }
+              });
+              if (itemList.isNotEmpty) {
+                bool done = await kitchenController.acceptOrder(
+                    kitchenController.kitchenOrder.value.data![index].id!
+                        .toInt(),
+                    itemList,
+                    'ready');
+                if (done) {
+                  // Utils.showSnackBar('Order updated successfully');
+                  await kitchenController.getKitchenOrder();
+                  kitchenController.kitchenOrder.refresh();
+                  Utils.hidePopup();
+                }
+                Utils.hidePopup();
+              }
+            })),
       ],
     );
   }

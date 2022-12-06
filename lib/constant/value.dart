@@ -1,20 +1,20 @@
-const fontVeryBig = 26.0;
-const fontBig = 22.0;
+const double fontVeryBig = 26.0;
+const double fontBig = 22.0;
 
-const fontMediumExtra = 20.0;
+const double fontMediumExtra = 20.0;
 const fontMedium = 18.0;
 
-const fontSmall = 16.0;
-const fontVerySmall = 14.0;
+const double fontSmall = 16.0;
+const double fontVerySmall = 14.0;
 
-const dialogPadding = 20.0;
+const double dialogPadding = 20.0;
 
-const baseUrl = "https://app.klio.digital/api/";
+const String baseUrl = "https://app.klio.digital/api/";
 late String token;
 late String loginType;
 bool darkMode = true;
 
-const Map orderTypes = {
+const Map<String, dynamic> orderTypes = {
   'Dine In': 'assets/dine-in.png',
   'Takeway': 'assets/takeway.png',
   'Delivery': 'assets/delivery.png',
@@ -24,5 +24,3 @@ const Map orderTypes = {
 const List<String> discType = ['In Flat Amount', 'In percentage'];
 const List<String> paymentType = ['Cash', 'Card', 'No Payment'];
 const List<String> loginTypes = ['Login as Staff', 'Login as cooker'];
-
-

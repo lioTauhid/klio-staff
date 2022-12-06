@@ -1,5 +1,4 @@
-
-List<String> dateFormats = [
+const List<String> dateFormats = [
   'd/M/Y',
   'M/d/Y',
   'Y/M/d',
@@ -9,9 +8,9 @@ List<String> dateFormats = [
   'd-m-Y'
 ];
 
-List<String> currencySymbols = ['£', '\$', '৳', '₹'];
+const List<String> currencySymbols = ['£', '\$', '৳', '₹'];
 
-List<String> timeZones = [
+const List<String> timeZones = [
   "Africa/Abidjan",
   "Africa/Accra",
   "Africa/Addis_Ababa",

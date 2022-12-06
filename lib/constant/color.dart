@@ -11,8 +11,10 @@ Color textSecondary = Color(0xff7B7B7B);
 Color primaryBackground = Color(0xffF1F4F8);
 Color secondaryBackground = Color(0xffFFFFFF);
 Color alternate = Color(0xff434343);
+
 Color blue = Color(0xff096ADB);
 Color green = Color(0xff00A600);
+Color greenLight = Color(0xff6cacc7);
 Color red = Color(0xffFB180D);
 Color secondaryRed = Color(0xffFF2B18);
 

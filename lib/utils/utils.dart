@@ -52,7 +52,7 @@ class Utils {
       borderRadius: 20,
       margin: EdgeInsets.only(right: 700),
       colorText: white,
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: 3),
       isDismissible: true,
     );
   }

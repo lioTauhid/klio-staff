@@ -82,6 +82,7 @@ class OrderDetailsDatum {
     this.status,
     this.foodName,
     this.quantity,
+    this.selected = false,
     this.variantName,
     this.addons,
   });
@@ -90,6 +91,7 @@ class OrderDetailsDatum {
   String ?status;
   String ?foodName;
   int ?quantity;
+  bool ?selected;
   String ?variantName;
   Addons? addons;
 
@@ -107,6 +109,7 @@ class OrderDetailsDatum {
     "status": status,
     "food_name": foodName,
     "quantity": quantity,
+    "selected": selected,
     "variant_name": variantName,
     "addons": addons!.toJson(),
   };
