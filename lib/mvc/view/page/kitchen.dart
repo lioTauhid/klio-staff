@@ -105,7 +105,9 @@ class _KitchenState extends State<Kitchen> {
                             8,
                             15,
                             40,
-                            onPressed: () {}),
+                            onPressed: () {
+                              kitchenController.getKitchenOrder();
+                            }),
                         SizedBox(width: 12),
                         topBarIconBtn(
                             Image.asset('assets/moon.png', color: primaryColor),
@@ -144,7 +146,7 @@ class _KitchenState extends State<Kitchen> {
                   padding: const EdgeInsets.all(15),
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
-                  childAspectRatio: (1.1 / 1.4),
+                  childAspectRatio: (1.1 / 1.2),
                   children: List.generate(
                       kitchenController.kitchenOrder.value.data!.length,
                       (index) {
@@ -351,75 +353,75 @@ class _KitchenState extends State<Kitchen> {
       children: [
         SizedBox(
           width: 110,
-          height: 35,
+          height: 40,
           child: normalButton('Select All', primaryBackground, primaryText,
-              onPressed: () {}),
+              onPressed: () {
+            for (int i = 0;
+                i <
+                    kitchenController.kitchenOrder.value.data![index]
+                        .orderDetails!.data!.length;
+                i++) {
+              kitchenController.kitchenOrder.value.data![index].orderDetails!
+                  .data![i].selected = true;
+            }
+            kitchenController.kitchenOrder.refresh();
+          }),
         ),
         SizedBox(
           width: 110,
-          height: 35,
+          height: 40,
           child: normalButton('Unselect All', primaryBackground, primaryText,
-              onPressed: () {}),
+              onPressed: () {
+                for (int i = 0;
+                i <
+                    kitchenController.kitchenOrder.value.data![index]
+                        .orderDetails!.data!.length;
+                i++) {
+                  kitchenController.kitchenOrder.value.data![index].orderDetails!
+                      .data![i].selected = false;
+                }
+                kitchenController.kitchenOrder.refresh();
+              }),
         ),
         SizedBox(
             width: 70,
-            height: 35,
+            height: 40,
             child:
                 normalButton('Cook', primaryColor, white, onPressed: () async {
-              Utils.showLoading();
-              List<int> itemList = [];
-              kitchenController
-                  .kitchenOrder.value.data![index].orderDetails!.data!
-                  .forEach((element) {
-                if (element.selected == true) {
-                  itemList.add(element.id!.toInt());
-                }
-              });
-              if (itemList.isNotEmpty) {
-                bool done = await kitchenController.acceptOrder(
-                    kitchenController.kitchenOrder.value.data![index].id!
-                        .toInt(),
-                    itemList,
-                    'cooking');
-                if (done) {
-                  // Utils.showSnackBar('Order updated successfully');
-                  await kitchenController.getKitchenOrder();
-                  kitchenController.kitchenOrder.refresh();
-                  Utils.hidePopup();
-                }
-                Utils.hidePopup();
-              }
+              changeStatus('cooking', index);
             })),
         SizedBox(
             width: 70,
-            height: 35,
+            height: 40,
             child:
                 normalButton('Ready', primaryColor, white, onPressed: () async {
-              Utils.showLoading();
-              List<int> itemList = [];
-              kitchenController
-                  .kitchenOrder.value.data![index].orderDetails!.data!
-                  .forEach((element) {
-                if (element.selected == true) {
-                  itemList.add(element.id!.toInt());
-                }
-              });
-              if (itemList.isNotEmpty) {
-                bool done = await kitchenController.acceptOrder(
-                    kitchenController.kitchenOrder.value.data![index].id!
-                        .toInt(),
-                    itemList,
-                    'ready');
-                if (done) {
-                  // Utils.showSnackBar('Order updated successfully');
-                  await kitchenController.getKitchenOrder();
-                  kitchenController.kitchenOrder.refresh();
-                  Utils.hidePopup();
-                }
-                Utils.hidePopup();
-              }
+              changeStatus('ready', index);
             })),
       ],
     );
+  }
+
+  Future<void> changeStatus(String status, int index) async {
+    Utils.showLoading();
+    List<int> itemList = [];
+    kitchenController.kitchenOrder.value.data![index].orderDetails!.data!
+        .forEach((element) {
+      if (element.selected == true) {
+        itemList.add(element.id!.toInt());
+      }
+    });
+    if (itemList.isNotEmpty) {
+      bool done = await kitchenController.acceptOrder(
+          kitchenController.kitchenOrder.value.data![index].id!.toInt(),
+          itemList,
+          status);
+      if (done) {
+        // Utils.showSnackBar('Order updated successfully');
+        await kitchenController.getKitchenOrder();
+        kitchenController.kitchenOrder.refresh();
+        Utils.hidePopup();
+      }
+      Utils.hidePopup();
+    }
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import '../../constant/value.dart';
 import '../../service/api/api_client.dart';

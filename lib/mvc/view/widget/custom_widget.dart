@@ -122,14 +122,14 @@ Widget normalButton(String text, Color background, Color textColor,
       color: background,
       height: 40,
       minWidth: 120,
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(10),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(400.0),
       ),
       child: Text(
         text,
-        style: TextStyle(color: textColor, fontSize: fontSmall),
+        style: TextStyle(color: textColor, fontSize: fontVerySmall),
       ));
 }
 

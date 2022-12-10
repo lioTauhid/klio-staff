@@ -710,7 +710,7 @@ Widget tableBody(BuildContext context, bool showOnly) {
                   crossAxisCount: size.width > size.height ? 3 : 2,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
-                  childAspectRatio: showOnly ? .9 : 1.6,
+                  childAspectRatio: showOnly ? .85 : 1.6,
                 ),
                 scrollDirection: Axis.vertical,
                 itemCount: homeController.tables.value.data!.length,
