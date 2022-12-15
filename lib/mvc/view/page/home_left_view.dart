@@ -7,6 +7,7 @@ import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../service/printer/customer_display.dart';
 import '../../../service/printer/print_service.dart';
 import '../../../utils/utils.dart';
 import '../../controller/home_controller.dart';
@@ -221,6 +222,10 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                             padding: EdgeInsets.zero,
                             color: secondaryBackground,
                             onPressed: () {
+                              homeController.controllerName.value.text = '';
+                              homeController.controllerEmail.value.text = '';
+                              homeController.controllerPhone.value.text = '';
+                              homeController.controllerAddress.value.text = '';
                               showCustomDialog(
                                   context,
                                   "Add Customer",
@@ -545,6 +550,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                           white, onPressed: () {
                         homeController.addUpdateOrder();
                         homeController.getOrders();
+                        CustomerDisplay.sleep();
                       }),
                       iconTextBtnWide("assets/credit-card.png", 'Pay',
                           alternate, primaryText, onPressed: () async {
@@ -617,14 +623,15 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                     iconTextBtnWide(
                         "assets/add.png", 'Add Misc', alternate, primaryText,
                         onPressed: () {
-                      showCustomDialog(context, "Update Customer",
-                          addMisc(context), 30, 400);
+                      showCustomDialog(
+                          context, "Add Food Menu", addMisc(context), 30, 400);
                     }),
                     iconTextBtnWide(
                         "assets/delete.png", 'Delete', alternate, primaryText,
                         onPressed: () {
                       homeController.isUpdate.value = false;
                       homeController.cardList.clear();
+                      CustomerDisplay.sleep();
                     }),
                   ],
                 ),

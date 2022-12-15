@@ -5,6 +5,7 @@ import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
+import '../../../service/printer/customer_display.dart';
 import '../../../service/printer/print_service.dart';
 import '../../controller/home_controller.dart';
 import '../widget/custom_widget.dart';
@@ -651,6 +652,7 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
                   homeController.cardList.add(homeController.menuData.value);
                   Utils.hidePopup();
                   Utils.hidePopup();
+                  CustomerDisplay.cartPrint(homeController);
                   // print(homeController.menuData.value.toJson());
                   // print(homeController.menuData.value.qty);
                   // print(homeController.menuData.value.addons!.data);
@@ -1180,7 +1182,25 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          color: primaryColor),
+                                          color: homeController
+                                                      .order
+                                                      .value
+                                                      .data!
+                                                      .orderDetails!
+                                                      .data![index]
+                                                      .status ==
+                                                  'pending'
+                                              ? red
+                                              : homeController
+                                                          .order
+                                                          .value
+                                                          .data!
+                                                          .orderDetails!
+                                                          .data![index]
+                                                          .status ==
+                                                      'ready'
+                                                  ? green
+                                                  : blue),
                                       alignment: Alignment.center,
                                       margin: EdgeInsets.only(right: 6),
                                       child: Text(
@@ -1399,6 +1419,8 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
 
 Widget finalizeOrder(BuildContext context) {
   homeController.giveAmount.value = 0;
+  CustomerDisplay.totalPayPrint(
+      'Payable Amount: £${homeController.order.value.data!.grandTotal}');
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -1900,6 +1922,7 @@ Widget orderInvoice(BuildContext context, String method) {
                 // DefaultPrinter.startPrinting();
                 Utils.showSnackBar("Printing... wait!");
                 await SumniPrinter.printText();
+                CustomerDisplay.sleep();
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
@@ -1925,6 +1948,12 @@ Widget orderInvoice(BuildContext context, String method) {
 }
 
 Widget addMisc(BuildContext context) {
+  // TextEditingController contName = TextEditingController();
+  // TextEditingController contName = TextEditingController();
+  // TextEditingController contName = TextEditingController();
+  // TextEditingController contName = TextEditingController();
+  // TextEditingController contName = TextEditingController();
+
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -1940,14 +1969,13 @@ Widget addMisc(BuildContext context) {
       textFieldRow1('food vat', '000.00'),
       SizedBox(height: 10),
       textRow1('Image (130x130)', 'Select Menu Meal Period'),
-      // textFieldRow1('No file chosen', ''),
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
               flex: 1,
               child: SizedBox(
-                  height: 35,
+                  height: 40,
                   child: MaterialButton(
                       elevation: 0,
                       color: primaryBackground,
@@ -1959,14 +1987,12 @@ Widget addMisc(BuildContext context) {
                       ))
                   // child: normalButton('No file chosen', primaryColor, primaryColor),
                   )),
-          SizedBox(width: 8),
+          SizedBox(width: 20),
           Expanded(
               flex: 1,
               child: SizedBox(
-                height: 35,
+                height: 40,
                 child: TextFormField(
-                    onChanged: (text) async {},
-                    onEditingComplete: () async {},
                     keyboardType: TextInputType.text,
                     style: TextStyle(
                         fontSize: fontVerySmall, color: textSecondary),
@@ -1988,8 +2014,6 @@ Widget addMisc(BuildContext context) {
       SizedBox(
         height: 35,
         child: TextFormField(
-            onChanged: (text) async {},
-            onEditingComplete: () async {},
             keyboardType: TextInputType.text,
             style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
             decoration: InputDecoration(
@@ -2000,10 +2024,9 @@ Widget addMisc(BuildContext context) {
                 hintStyle:
                     TextStyle(fontSize: fontVerySmall, color: textSecondary))),
       ),
+      SizedBox(height: 10),
       textRow1('Menu Description', ''),
       TextFormField(
-          onChanged: (text) async {},
-          onEditingComplete: () async {},
           keyboardType: TextInputType.text,
           maxLines: 2,
           style: TextStyle(fontSize: fontSmall, color: textSecondary),

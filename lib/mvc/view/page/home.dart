@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:klio_staff/mvc/view/page/food_management.dart';
 import 'package:klio_staff/mvc/view/page/login.dart';
+import 'package:klio_staff/mvc/view/page/purchase_management.dart';
 import 'package:klio_staff/mvc/view/page/settings.dart';
+import 'package:klio_staff/mvc/view/page/transection_management.dart';
 import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
@@ -15,10 +15,10 @@ import '../../model/menu.dart';
 import '../../model/order.dart';
 import '../dialog/custom_dialog.dart';
 import '../widget/custom_widget.dart';
+import 'Ingredient_management.dart';
 import 'dashboard.dart';
 import 'drawer.dart';
 import 'home_left_view.dart';
-import 'kitchen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key, this.refresh = true}) : super(key: key);
@@ -32,8 +32,10 @@ List pageList = [
   0,
   Dashboard(),
   FoodManagement(),
-  Kitchen(),
-  Settings(),
+  PurchaseManagement(),
+  IngredientManagement(),
+  TransactionManagement(),
+  Settings()
 ];
 
 class _HomeState extends State<Home> {
@@ -146,8 +148,9 @@ class _HomeState extends State<Home> {
                                             controller: textController,
                                             textInputAction:
                                                 TextInputAction.search,
-                                            style:
-                                                TextStyle(fontSize: fontSmall),
+                                            style: TextStyle(
+                                                fontSize: fontSmall,
+                                                color: primaryText),
                                             decoration: InputDecoration(
                                                 filled: true,
                                                 fillColor: secondaryBackground,

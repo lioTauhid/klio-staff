@@ -130,6 +130,7 @@ class _LoginState extends State<Login> {
                                 staffUser = false;
                               }
                               setState(() => selected = value!);
+                              SharedPref().saveValue('loginType', selected);
                             },
                           )),
                     ),

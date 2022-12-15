@@ -5,36 +5,18 @@ import 'package:klio_staff/constant/value.dart';
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
 
-  final String new_order = "New Orders";
-  final String order_item = "Ordered Items";
-  final String dispatched_order = "Dispatched Orders";
-  final String parcel_send = "Parcel Send";
-  final String cancel_order = "Canceled Orders";
-  final String delete_order = "Deleted Orders";
-  final String number_of_item = "0";
-
-  //  user for top  item
-  final String top_item = "Top Items";
-  final String top_item_name = "Name";
-  final String top_item_ordered = "Ordered";
-  final String top_item_price = "Price";
-  final String top_item_total_sold = "Total Sold Price";
-
-  //use for online item
-
-  final String online_order = "Online Orders";
-  final String online_order_id_time = "ID & Time";
-  final String online_order_userName = "User Name";
-  final String online_orderStatus = "Status";
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-          child: Column(
-            children: [
-              topBarMenu(context),
-              cardForTopAndOnlineItem(context),
-            ],
+    return Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                topBarMenu(context),
+                cardForTopAndOnlineItem(context),
+                menuItem(context),
+                orderHistoryDataTable(context),
+              ],
+            ),
           ),
     );
   }
@@ -55,9 +37,9 @@ class Dashboard extends StatelessWidget {
                 ),
                 child: cardSingleItem(
                     image: "assets/new_order.png",
-                    itemTitle: new_order,
-                    itemSubTitle: order_item,
-                    itemNumber: number_of_item),
+                    itemTitle: "New Orders",
+                    itemSubTitle: "Ordered Items",
+                    itemNumber: "0"),
               ),
             ),
           ),
@@ -74,9 +56,9 @@ class Dashboard extends StatelessWidget {
                 ),
                 child: cardSingleItem(
                     image: "assets/dispatched_order.png",
-                    itemTitle: dispatched_order,
-                    itemSubTitle: parcel_send,
-                    itemNumber: number_of_item),
+                    itemTitle: "Dispatched Orders",
+                    itemSubTitle:"Parcel Send",
+                    itemNumber:"0"),
               ),
             ),
           ),
@@ -93,13 +75,149 @@ class Dashboard extends StatelessWidget {
                 ),
                 child: cardSingleItem(
                     image: "assets/cancel_order.png",
-                    itemTitle: cancel_order,
-                    itemSubTitle: delete_order,
-                    itemNumber: number_of_item),
+                    itemTitle:"Canceled Orders",
+                    itemSubTitle: "Deleted Orders",
+                    itemNumber: "0"),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+  Widget menuItem(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Card(
+        elevation: 0.5,
+        child: Container(
+          height: MediaQuery.of(context).size.height*0.15,
+          width:MediaQuery.of(context).size.width ,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Menu Items",style: TextStyle(fontSize: fontVeryBig,fontWeight: FontWeight.w900),),
+                    Container(
+                      child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                            fixedSize: const Size(130, 20),
+                            foregroundColor: primaryColor,
+                            backgroundColor: secondaryAccentColor,
+                            shape: const StadiumBorder()),
+                        onPressed: (){},
+                        label: Text("Add Items",style: TextStyle(fontWeight:FontWeight.bold),),
+                        icon: Icon(Icons.add,size: 15,color: primaryColor,),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                    Flexible(
+                      flex: 2,
+                      child: ListTile(
+                        leading: Image.asset('assets/deliver.png'),
+                        title: Text("Chicken Masala"),
+                        subtitle: Container(
+                          child: Row(
+                            children: [
+                              Image.asset("assets/edit-alt.png",height: 20,width: 20,),
+                              SizedBox(width: 5,),
+                              Image.asset("assets/delete.png",height: 20,width: 20,color: red,),
+                            ],
+                          ),
+                        ),
+                        trailing: Text("£15.00",style: TextStyle(fontSize: fontMedium,color: accentColor),),
+                      ),
+                    ),
+                  Flexible(
+                    flex: 1,
+                      child: Container()
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: ListTile(
+                      leading: Image.asset('assets/deliver.png'),
+                      title: Text("Chicken Masala"),
+                      subtitle: Container(
+                        child: Row(
+                          children: [
+                            Image.asset("assets/edit-alt.png",height: 20,width: 20,),
+                            SizedBox(width: 5,),
+                            Image.asset("assets/delete.png",height: 20,width: 20,color: red,),
+                          ],
+                        ),
+                      ),
+                      trailing: Text("£15.00",style: TextStyle(fontSize: fontMedium,color: accentColor),),
+                    ),
+                  ),
+                  Flexible(
+                      flex: 1,
+                      child: Container()
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: ListTile(
+                      leading: Image.asset('assets/deliver.png'),
+                      title: Text("Chicken Masala"),
+                      subtitle: Container(
+                        child: Row(
+                          children: [
+                            Image.asset("assets/edit-alt.png",height: 20,width: 20,),
+                            SizedBox(width: 5,),
+                            Image.asset("assets/delete.png",height: 20,width: 20,color: red,),
+                          ],
+                        ),
+                      ),
+                      trailing: Text("£15.00",style: TextStyle(fontSize: fontMedium,color: accentColor),),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      leading: Container(
+                            decoration: BoxDecoration(
+                              color: accentColor,
+                                borderRadius: BorderRadius.all(Radius.circular(20))
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                                        Text("View All",textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                                        Icon(Icons.arrow_right_alt,color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ),
+                  // Container(
+                  //     decoration: BoxDecoration(
+                  //       color: accentColor,
+                  //         borderRadius: BorderRadius.all(Radius.circular(20))
+                  //     ),
+                  //     child: Row(
+                  //          mainAxisAlignment: MainAxisAlignment.center,
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: <Widget>[
+                  //           Text("View All"),
+                  //           Icon(Icons.arrow_right_alt),
+                  //         ]
+                  //     )
+                   ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -180,7 +298,7 @@ class Dashboard extends StatelessWidget {
           Expanded(
               flex: 1,
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: Card(
                   elevation: 0.0,
                   shape: RoundedRectangleBorder(
@@ -195,7 +313,7 @@ class Dashboard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 25, left: 15),
                           child: Text(
-                            top_item,
+                            "Top Items",
                             style: TextStyle(
                                 fontWeight: FontWeight.w900,
                                 fontSize: fontMedium),
@@ -212,20 +330,20 @@ class Dashboard extends StatelessWidget {
                                   columns: [
                                     DataColumn(
                                       label: Text(
-                                        top_item_name,
+                                        "Name",
                                         style: TextStyle(color: textSecondary),
                                       ),
                                     ),
                                     DataColumn(
-                                        label: Text(top_item_ordered,
+                                        label: Text("Ordered",
                                             style:
                                             TextStyle(color: textSecondary))),
                                     DataColumn(
-                                        label: Text(top_item_price,
+                                        label: Text("Price",
                                             style:
                                             TextStyle(color: textSecondary))),
                                     DataColumn(
-                                      label: Text(top_item_total_sold,
+                                      label: Text("Total Sold Price",
                                           style: TextStyle(color: textSecondary)),
                                     ),
                                   ],
@@ -287,7 +405,7 @@ class Dashboard extends StatelessWidget {
           Expanded(
               flex: 1,
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: Card(
                   elevation: 0.0,
                   shape: RoundedRectangleBorder(
@@ -302,7 +420,7 @@ class Dashboard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 25, left: 15),
                           child: Text(
-                            online_order,
+                            "Online Orders",
                             style: TextStyle(
                                 fontWeight: FontWeight.w900,
                                 fontSize: fontMedium),
@@ -322,20 +440,20 @@ class Dashboard extends StatelessWidget {
                                     columns: [
                                       DataColumn(
                                         label: Text(
-                                          online_order_id_time,
+                                         "ID & Time",
                                           style: TextStyle(color: textSecondary),
                                         ),
                                       ),
                                       DataColumn(
-                                          label: Text(online_order_userName,
+                                          label: Text("User Name",
                                               style:
                                               TextStyle(color: textSecondary))),
                                       DataColumn(
-                                          label: Text(online_order,
+                                          label: Text("Online Orders",
                                               style:
                                               TextStyle(color: textSecondary))),
                                       DataColumn(
-                                        label: Text(online_orderStatus,
+                                        label: Text("Status",
                                             style: TextStyle(color: textSecondary)),
                                       ),
                                     ],
@@ -399,6 +517,141 @@ class Dashboard extends StatelessWidget {
                 ),
               )),
         ],
+      ),
+    );
+  }
+  orderHistoryDataTable(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.only(left: 15,right: 15),
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.all(13),
+          child:Column(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Order History",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: fontMedium),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 250,
+                            height: 30,
+                            child: TextField(
+                                style: TextStyle(
+                                  fontSize:fontSmall,
+                                  color: Colors.blueAccent,
+                                ),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white10,
+                                    contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                                    prefixIcon: Icon(Icons.search,size: 18,),
+                                     hintText: "",
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.blueAccent,),
+                                        borderRadius: BorderRadius.circular(10.0)),)),
+                          ),
+                        ),
+                         IconButton(
+                             onPressed: (){},
+                             icon: Icon(Icons.sort)
+                         )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: Container(
+                  width: double.infinity,
+                  child: DataTable(
+                    dividerThickness:0,
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          "ID",
+                          style: TextStyle(color: textSecondary),
+                        ),
+                      ),
+                      DataColumn(
+                          label: Text("Time & Date",
+                              style:
+                              TextStyle(color: textSecondary))),
+                      DataColumn(
+                          label: Text("Customer Name",
+                              style:
+                              TextStyle(color: textSecondary))),
+                      DataColumn(
+                        label: Text("Location",
+                            style: TextStyle(color: textSecondary)),
+                      ),
+                      DataColumn(
+                        label: Text("Amount",
+                            style: TextStyle(color: textSecondary)),
+                      ),
+                      DataColumn(
+                        label: Text("Status Order",
+                            style: TextStyle(color: textSecondary)),
+                      ),
+                      DataColumn(
+                        label: Text("Action",
+                            style: TextStyle(color: textSecondary)),
+                      ),
+                    ],
+                    rows: [
+                      DataRow(cells: [
+                        DataCell(Text('Aminur Islam')),
+                        DataCell(Text('300')),
+                        DataCell(Text('Aminur Islam')),
+                        DataCell(Text('300')),
+                        DataCell(Text('Aminur Islam')),
+                      //  DataCell(Text('New Order',style: TextStyle(color: green),)),
+                        DataCell(Container(
+                            height: 30, width: 150,
+                            decoration: BoxDecoration(
+                                color: blue,
+                                borderRadius: BorderRadius.all(Radius.circular(20))
+                            ),
+                            child:Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_to_photos_outlined,size: 15,color: blue,),
+                                SizedBox(width: 10,),
+                                Text('New Order',style: TextStyle(color: blue),)
+                              ],
+                            )
+                        )),
+                        DataCell(
+                            Container(
+                                height: 30, width: 70,
+                                decoration: BoxDecoration(
+                                    color: textSecondary,
+                                    borderRadius: BorderRadius.all(Radius.circular(20))
+                                ),
+                                child: Icon(Icons.more_horiz)
+                            )
+                        ),
+                      ]),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

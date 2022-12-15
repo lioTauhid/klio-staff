@@ -1,3 +1,5 @@
+
+
 import '../../service/api/api_exception.dart';
 import '../../utils/utils.dart';
 
@@ -12,14 +14,17 @@ class ErrorController {
         Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
+      // show error dialog
       case ProcessDataException:
         Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
+      // show error dialog
       default:
         Utils.hidePopup();
         Utils.showSnackBar("Failed to load data $error");
         break;
+      // show error dialog
     }
   }
 }

@@ -21,6 +21,8 @@ class Kitchen extends StatefulWidget {
 KitchenController kitchenController = Get.put(KitchenController());
 
 class _KitchenState extends State<Kitchen> {
+  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -140,77 +142,86 @@ class _KitchenState extends State<Kitchen> {
               ),
             ),
             Expanded(
-              child: Obx(() {
-                return GridView.count(
-                  crossAxisCount: 3,
-                  padding: const EdgeInsets.all(15),
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: (1.1 / 1.2),
-                  children: List.generate(
-                      kitchenController.kitchenOrder.value.data!.length,
-                      (index) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      elevation: 5,
-                      color: secondaryBackground,
-                      child: Column(
-                        children: [
-                          Expanded(
-                              flex: 2, child: topContainer(context, index)),
-                          SizedBox(height: 5),
-                          Expanded(
-                            flex: 12,
-                            child: ListView.builder(
-                                itemCount: kitchenController.kitchenOrder.value
-                                    .data![index].orderDetails!.data!.length,
-                                itemBuilder:
-                                    (BuildContext context, int index2) {
-                                  return GestureDetector(
-                                      onTap: () {
-                                        if (kitchenController
+              child: RawScrollbar(
+                thumbVisibility: true,
+                trackVisibility: true,
+                thickness: 12,
+                thumbColor: primaryColor,
+                radius: Radius.circular(20),
+                controller: _scrollController,
+                child: Obx(() {
+                  return GridView.count(
+                    crossAxisCount: 3,
+                    padding: const EdgeInsets.all(15),
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    controller: _scrollController,
+                    childAspectRatio: (1.1 / 1.2),
+                    children: List.generate(
+                        kitchenController.kitchenOrder.value.data!.length,
+                        (index) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        elevation: 5,
+                        color: secondaryBackground,
+                        child: Column(
+                          children: [
+                            Expanded(
+                                flex: 2, child: topContainer(context, index)),
+                            SizedBox(height: 5),
+                            Expanded(
+                              flex: 12,
+                              child: ListView.builder(
+                                  itemCount: kitchenController.kitchenOrder.value
+                                      .data![index].orderDetails!.data!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index2) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          if (kitchenController
+                                                  .kitchenOrder
+                                                  .value
+                                                  .data![index]
+                                                  .orderDetails!
+                                                  .data![index2]
+                                                  .selected ==
+                                              true) {
+                                            kitchenController
                                                 .kitchenOrder
                                                 .value
                                                 .data![index]
                                                 .orderDetails!
                                                 .data![index2]
-                                                .selected ==
-                                            true) {
-                                          kitchenController
-                                              .kitchenOrder
-                                              .value
-                                              .data![index]
-                                              .orderDetails!
-                                              .data![index2]
-                                              .selected = false;
-                                        } else {
-                                          kitchenController
-                                              .kitchenOrder
-                                              .value
-                                              .data![index]
-                                              .orderDetails!
-                                              .data![index2]
-                                              .selected = true;
-                                        }
-                                        kitchenController.kitchenOrder
-                                            .refresh();
-                                      },
-                                      child: innerItemCard(
-                                          context, index, index2));
-                                }),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: footerCard(index),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                );
-              }),
+                                                .selected = false;
+                                          } else {
+                                            kitchenController
+                                                .kitchenOrder
+                                                .value
+                                                .data![index]
+                                                .orderDetails!
+                                                .data![index2]
+                                                .selected = true;
+                                          }
+                                          kitchenController.kitchenOrder
+                                              .refresh();
+                                        },
+                                        child: innerItemCard(
+                                            context, index, index2));
+                                  }),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: footerCard(index),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  );
+                }),
+              ),
             ),
           ],
         ),

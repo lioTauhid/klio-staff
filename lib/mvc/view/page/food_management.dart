@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:klio_staff/constant/color.dart';
@@ -28,374 +29,680 @@ class _FoodManagementState extends State<FoodManagement>
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          itemTitleHeader(),
-          customTapbarHeader(controller),
-          Expanded(
-            child: TabBarView(controller: controller, children: [
-              menuDataTable(),
-              menuDataTable(),
-              menuDataTable(),
-              menuDataTable(),
-              menuDataTable(),
-              menuDataTable(),
-            ]),
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            children: [
+              itemTitleHeader(),
+              customTapbarHeader(controller),
+              Expanded(
+                child: TabBarView(controller: controller, children: [
+                  menuDataTable(),
+                  MealPeriodDataTable(),
+                  FoodCategoryDataTable(),
+                  FoodAllergyDataTable(),
+                  FoodAddonsDataTable(),
+                  FoodVariantsDataTable(),
+                ]),
+              )
+            ],
           ),
-        ],
-      ),
+        )
     );
+
   }
 
   Widget menuDataTable() {
     return Card(
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Table(
-          children: [
-            TableRow(children: [
-              TableCell(
-                  child: Center(
-                      child: Text(
-                'SL NO',
-                style: TextStyle(color: textSecondary),
-              ))),
-              TableCell(
-                  child: Center(
-                      child: Text(
-                'Name',
-                style: TextStyle(color: textSecondary),
-              ))),
-              TableCell(
-                child: Center(
-                    child: Text(
-                  'Price',
-                  style: TextStyle(color: textSecondary),
-                )),
-              ),
-              TableCell(
-                  child: Center(
-                      child: Text(
-                'Vat (%)',
-                style: TextStyle(color: textSecondary),
-              ))),
-              TableCell(
-                  child: Center(
-                      child: Text(
-                'Image',
-                style: TextStyle(color: textSecondary),
-              ))),
-              TableCell(
-                  child: Center(
-                      child: Text(
-                'Action',
-                style: TextStyle(color: textSecondary),
-              ))),
-            ]),
-            TableRow(children: [
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('01')),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('name')),
-              )),
-              TableCell(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Center(child: Text('Aminur Islam')),
-                ),
-              ),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('100')),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(
-                    child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://googleflutter.com/sample_image.jpg'),
-                      fit: BoxFit.contain,
+      color: secondaryBackground,
+      child: SingleChildScrollView(
+        child: GetBuilder<FoodManagementController>(
+            builder: (controller) {
+              return DataTable(
+                  dataRowHeight: 70,
+                  columns: [
+                    // column to set the name
+                    DataColumn(label: Text('SL NO',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Price',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Vat (%)',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Image',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Image',style: TextStyle(color:textSecondary),),),
+                  ],
+
+                  rows: controller.menusData.value.data.reversed
+                      .map(
+                        (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${item.id ?? ""}'),
+                        ),
+                        DataCell(
+                          Text('${item.name ?? ""}'),
+                        ),
+                        DataCell(
+                          Text('${item.price ?? ""}'),
+                        ),
+                        DataCell(
+                          Text('${item.taxVat ?? ""}'),
+                        ),
+                        DataCell(
+                            Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.topLeft,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    item.image,
+                                  ),
+                                  //    image: NetworkImage('https://picsum.photos/250?image=9',),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )),
+                        DataCell(
+                          Row(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE1FDE8),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/hide.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xff00A600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFEF4E1),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/edit-alt.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED7402),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFE7E6),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/delete.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED0206),
+                                ),
+                              ),
+                            ],
+                          ),)
+                      ],
                     ),
-                  ),
-                )),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffE1FDE8),
-                          borderRadius: BorderRadius.circular(25.0),
+                  )
+                      .toList());
+            }
+        ),
+      ),
+    );
+  }
+  Widget MealPeriodDataTable() {
+    return Card(
+      color: secondaryBackground,
+      child: SingleChildScrollView(
+        child: GetBuilder<FoodManagementController>(
+            builder: (controller) {
+              return DataTable(
+                  dataRowHeight: 70,
+                  columnSpacing: 50,
+                  columns: [
+                    // column to set the name
+                    DataColumn(label: Text('SL NO',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Image',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Action',style: TextStyle(color:textSecondary),),),
+                  ],
+
+                  rows: controller.mealPeriod.value.data.reversed
+                      .map(
+                        (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${item.id ?? ""}'),
                         ),
-                        child: Image.asset(
-                          "assets/hide.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xff00A600),
+                        DataCell(
+                          Text('${item.name ?? ""}'),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFEF4E1),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        child: Image.asset(
-                          "assets/edit-alt.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xffED7402),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFFE7E6),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        child: Image.asset(
-                          "assets/delete.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xffED0206),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )),
-            ]),
-            TableRow(children: [
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('01')),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('name')),
-              )),
-              TableCell(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Center(child: Text('Aminur Islam')),
-                ),
-              ),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('100')),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(
-                    child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://googleflutter.com/sample_image.jpg'),
-                      fit: BoxFit.contain,
+                        DataCell(
+                            Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.topLeft,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    item.image,
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )),
+                        DataCell(
+                          Row(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE1FDE8),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/hide.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xff00A600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFEF4E1),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/edit-alt.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED7402),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFE7E6),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/delete.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED0206),
+                                ),
+                              ),
+                            ],
+                          ),)
+                      ],
                     ),
-                  ),
-                )),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffE1FDE8),
-                          borderRadius: BorderRadius.circular(25.0),
+                  )
+                      .toList());
+            }
+        ),
+      ),
+    );
+  }
+  Widget FoodCategoryDataTable() {
+    return Card(
+      color: secondaryBackground,
+      child: SingleChildScrollView(
+        child: GetBuilder<FoodManagementController>(
+            builder: (controller) {
+              return DataTable(
+                  dataRowHeight: 70,
+                  columnSpacing: 50,
+                  columns: [
+                    // column to set the name
+                    DataColumn(label: Text('SL NO',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Image',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('is Drinks',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Action',style: TextStyle(color:textSecondary),),),
+                  ],
+
+                  rows: controller.foodMenuCategory.value.data.reversed
+                      .map(
+                        (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${item.id ?? ""}'),
                         ),
-                        child: Image.asset(
-                          "assets/hide.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xff00A600),
+                        DataCell(
+                          Text('${item.name ?? ""}'),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFEF4E1),
-                          borderRadius: BorderRadius.circular(25.0),
+                        DataCell(
+                            Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.topLeft,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    item.image,
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )),
+                        DataCell(
+                          Text('${item.isDrinks ?? ""}'),
                         ),
-                        child: Image.asset(
-                          "assets/edit-alt.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xffED7402),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFFE7E6),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        child: Image.asset(
-                          "assets/delete.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xffED0206),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )),
-            ]),
-            TableRow(children: [
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('01')),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('name')),
-              )),
-              TableCell(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Center(child: Text('Aminur Islam')),
-                ),
-              ),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(child: Text('100')),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(
-                    child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://googleflutter.com/sample_image.jpg'),
-                      fit: BoxFit.contain,
+                        DataCell(
+                          Row(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE1FDE8),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/hide.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xff00A600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFEF4E1),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/edit-alt.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED7402),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFE7E6),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/delete.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED0206),
+                                ),
+                              ),
+                            ],
+                          ),)
+                      ],
                     ),
-                  ),
-                )),
-              )),
-              TableCell(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Center(
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffE1FDE8),
-                          borderRadius: BorderRadius.circular(25.0),
+                  )
+                      .toList());
+            }
+        ),
+      ),
+    );
+  }
+  Widget FoodAllergyDataTable() {
+    return Card(
+      color: secondaryBackground,
+      child: SingleChildScrollView(
+        child: GetBuilder<FoodManagementController>(
+            builder: (controller) {
+              return DataTable(
+                  dataRowHeight: 70,
+                  columnSpacing: 50,
+                  columns: [
+                    // column to set the name
+                    DataColumn(label: Text('SL NO',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Icon',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Action',style: TextStyle(color:textSecondary),),),
+                  ],
+
+                  rows: controller.foodMenuAllergy.value.data.reversed
+                      .map(
+                        (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${item.id ?? ""}'),
                         ),
-                        child: Image.asset(
-                          "assets/hide.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xff00A600),
+                        DataCell(
+                          Text('${item.name ?? ""}'),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFEF4E1),
-                          borderRadius: BorderRadius.circular(25.0),
+                        DataCell(
+                            Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.topLeft,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    item.image,
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )),
+                        DataCell(
+                          Row(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE1FDE8),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/hide.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xff00A600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFEF4E1),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/edit-alt.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED7402),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFE7E6),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/delete.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED0206),
+                                ),
+                              ),
+                            ],
+                          ),)
+                      ],
+                    ),
+                  )
+                      .toList());
+            }
+        ),
+      ),
+    );
+  }
+  Widget FoodAddonsDataTable() {
+    return Card(
+      color: secondaryBackground,
+      child: SingleChildScrollView(
+        child: GetBuilder<FoodManagementController>(
+            builder: (controller) {
+              return DataTable(
+                  dataRowHeight: 80,
+                  // columnSpacing: 120,
+                  horizontalMargin: 15,
+                  columns: [
+                    DataColumn(label: Text('SL.No',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Price',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Image',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Details',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Action',style: TextStyle(color:textSecondary),),),
+                  ],
+
+                  rows: controller.foodAddons.value.data.reversed
+                      .map(
+                        (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${item.id ?? ""}'),
                         ),
-                        child: Image.asset(
-                          "assets/edit-alt.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xffED7402),
+                        DataCell(
+                          Text('${item.name ?? ""}'),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffFFE7E6),
-                          borderRadius: BorderRadius.circular(25.0),
+                        DataCell(
+                          Text('${item.price ?? ""}'),
                         ),
-                        child: Image.asset(
-                          "assets/delete.png",
-                          height: 15,
-                          width: 15,
-                          color: Color(0xffED0206),
+                        DataCell(
+                            Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.topLeft,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    item.image,
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )),
+                        DataCell(
+                          Text('${item.details ?? ""}'),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              )),
-            ]),
-          ],
+                        DataCell(
+                          Row(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE1FDE8),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/hide.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xff00A600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFEF4E1),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/edit-alt.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED7402),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFE7E6),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/delete.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED0206),
+                                ),
+                              ),
+                            ],
+                          ),)
+                      ],
+                    ),
+                  )
+                      .toList());
+            }
+        ),
+      ),
+    );
+  }
+  Widget FoodVariantsDataTable() {
+    return Card(
+      color: secondaryBackground,
+      child: SingleChildScrollView(
+        child: GetBuilder<FoodManagementController>(
+            builder: (controller) {
+              return DataTable(
+                  dataRowHeight: 70,
+                  columnSpacing: 50,
+                  columns: [
+                    // column to set the name
+                    DataColumn(label: Text('SL NO',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Menu Name',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Price',style: TextStyle(color:textSecondary),),),
+                    DataColumn(label: Text('Action',style: TextStyle(color:textSecondary),),),
+                  ],
+
+                  rows: controller.foodVariants.value.data.reversed
+                      .map(
+                        (item) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${item.id ?? ""}'),
+                        ),
+                        DataCell(
+                          Text('${item.food.name ?? ""}'),
+                        ),
+                        DataCell(
+                          Text('${item.name ?? ""}'),
+                        ),
+                        DataCell(
+                          Text('${item.price ?? ""}'),
+                        ),
+                        DataCell(
+                          Row(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE1FDE8),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/hide.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xff00A600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFEF4E1),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/edit-alt.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED7402),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFE7E6),
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                                child: Image.asset(
+                                  "assets/delete.png",
+                                  height: 15,
+                                  width: 15,
+                                  color: Color(0xffED0206),
+                                ),
+                              ),
+                            ],
+                          ),)
+                      ],
+                    ),
+                  )
+                      .toList());
+            }
         ),
       ),
     );
@@ -407,22 +714,11 @@ class _FoodManagementState extends State<FoodManagement>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            child: Row(
-              children: [
-                Image.asset(
-                  "assets/drawer.png",
-                  height: 30,
-                  width: 30,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Menu',
-                  style: TextStyle(fontSize: fontMedium),
-                ),
-              ],
+          Padding(
+            padding: const EdgeInsets.only(left: 25),
+            child: Text(
+              'Menu',
+              style: TextStyle(fontSize: fontBig, color: primaryText),
             ),
           ),
           Container(
@@ -431,11 +727,13 @@ class _FoodManagementState extends State<FoodManagement>
                 OutlinedButton.icon(
                   icon: Icon(
                     Icons.add,
-                    color: black,
+                    color: primaryText,
                   ),
                   label: Text(
                     "Add New Menu",
-                    style: TextStyle(color: black),
+                    style: TextStyle(
+                      color: primaryText,
+                    ),
                   ),
                   onPressed: () => print("it's pressed"),
                   style: ElevatedButton.styleFrom(
@@ -534,7 +832,7 @@ class _FoodManagementState extends State<FoodManagement>
           Expanded(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(left: 200),
+                margin: EdgeInsets.only(left: 100),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -552,13 +850,15 @@ class _FoodManagementState extends State<FoodManagement>
                                 filled: true,
                                 fillColor: Colors.white10,
                                 contentPadding:
-                                    EdgeInsets.fromLTRB(10.0, 3.0, 10.0, 0.0),
+                                EdgeInsets.fromLTRB(10.0, 3.0, 10.0, 0.0),
                                 prefixIcon: Icon(
                                   Icons.search,
                                   size: 18,
                                 ),
                                 hintText: "Search Item",
-                                hintStyle: TextStyle(fontSize: fontVerySmall),
+                                hintStyle: TextStyle(
+                                    fontSize: fontVerySmall,
+                                    color: textSecondary),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1, color: Colors.transparent)),
@@ -582,7 +882,10 @@ class _FoodManagementState extends State<FoodManagement>
                     Container(
                       child: Row(
                         children: [
-                          Text("Show :"),
+                          Text(
+                            "Show :",
+                            style: TextStyle(color: textSecondary),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
@@ -594,7 +897,10 @@ class _FoodManagementState extends State<FoodManagement>
                                 borderRadius: BorderRadius.circular(25.0),
                                 border: Border.all(color: Colors.black12)),
                             child: DropdownButton<int>(
-                              hint: Text('1'),
+                              hint: Text(
+                                '1',
+                                style: TextStyle(color: textSecondary),
+                              ),
                               dropdownColor: white,
                               icon: Icon(Icons.keyboard_arrow_down),
                               iconSize: 15,
@@ -611,7 +917,10 @@ class _FoodManagementState extends State<FoodManagement>
                           SizedBox(
                             width: 10,
                           ),
-                          Text("Entries"),
+                          Text(
+                            "Entries",
+                            style: TextStyle(color: textSecondary),
+                          ),
                         ],
                       ),
                     )

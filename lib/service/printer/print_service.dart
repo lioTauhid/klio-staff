@@ -5,7 +5,6 @@ import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/mvc/model/order.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:sunmi_printer_plus/column_maker.dart';
 import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import '../../../constant/value.dart';

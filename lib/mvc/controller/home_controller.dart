@@ -58,6 +58,7 @@ class HomeController extends GetxController with ErrorController {
     token = (await SharedPref().getValue('token'))!;
     try {
       await SunmiPrinter.bindingPrinter(); // must bind the printer first
+      await SunmiPrinter.lcdInitialize(); //Initialize the LCD screen
     } catch (e) {
       Utils.showSnackBar(e.toString());
     }
@@ -100,7 +101,7 @@ class HomeController extends GetxController with ErrorController {
     print(endPoint);
     var response = await ApiClient()
         .get(endPoint, header: Utils.apiHeader, query: qParams);
-        // .catchError(handleApiError);
+    // .catchError(handleApiError);
     print(response);
     menus.value = await menuFromJson(response);
     filteredMenu.value = Utils.filterCategory(menus.value, -1)!;
@@ -163,7 +164,7 @@ class HomeController extends GetxController with ErrorController {
   void addUpdateCustomer(bool add, {String id = ''}) async {
     Utils.showLoading();
     var body = jsonEncode({
-      "name": controllerName.value.text,
+      "first_name": controllerName.value.text,
       "email": controllerEmail.value.text,
       "phone": controllerPhone.value.text,
       "delivery_address": controllerAddress.value.text
@@ -223,7 +224,7 @@ class HomeController extends GetxController with ErrorController {
     if (isUpdate.value) {
       response = ApiClient()
           .put('pos/order/${order.value.data!.id!.toInt()}', body,
-              header: Utils.apiHeader)
+          header: Utils.apiHeader)
           .catchError(handleApiError);
     } else {
       response = ApiClient()

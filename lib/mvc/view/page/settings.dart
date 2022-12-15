@@ -82,8 +82,6 @@ class _SettingsState extends State<Settings> {
           SizedBox(
             height: 60,
             child: TextFormField(
-                onChanged: (text) async {},
-                onEditingComplete: () async {},
                 controller: contDescription,
                 keyboardType: TextInputType.text,
                 maxLines: 3,
