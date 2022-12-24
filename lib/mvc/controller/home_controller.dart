@@ -10,6 +10,7 @@ import '../../constant/value.dart';
 import '../../service/api/api_client.dart';
 import '../../service/local/shared_pref.dart';
 import '../model/Tables.dart';
+import '../model/dash_model.dart';
 import '../model/menu.dart';
 import '../model/category.dart';
 import '../model/customers.dart';
@@ -35,6 +36,7 @@ class HomeController extends GetxController with ErrorController {
   Rx<TextEditingController> controllerPhone = TextEditingController().obs;
   Rx<TextEditingController> controllerAddress = TextEditingController().obs;
   RxBool withoutTable = false.obs;
+  Rx<DashData> dashData= DashData().obs;
 
   // temp variables
   RxList filteredMenu = [].obs;
@@ -93,6 +95,16 @@ class HomeController extends GetxController with ErrorController {
         .get('pos/category', header: Utils.apiHeader)
         .catchError(handleApiError);
     category.value = categoryFromJson(response);
+  }
+
+  Future<void> getDashboardData() async {
+    token = (await SharedPref().getValue('token'))!;
+    Utils.showLoading();
+    var response = await ApiClient()
+        .get('dashboard', header: Utils.apiHeader)
+        .catchError(handleApiError);
+    dashData.value = dashDataFromJson(response);
+    Utils.hidePopup();
   }
 
   Future<void> getMenuByKeyword({String keyword = ''}) async {

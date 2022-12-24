@@ -1,106 +1,145 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:klio_staff/constant/color.dart';
 import 'package:klio_staff/constant/value.dart';
 
-class Dashboard extends StatelessWidget {
+import '../../controller/home_controller.dart';
+
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  HomeController homeController = Get.find();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    homeController.getDashboardData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                topBarMenu(context),
-                cardForTopAndOnlineItem(context),
-                menuItem(context),
-                orderHistoryDataTable(context),
-              ],
-            ),
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            topBarMenu(context),
+            cardForTopAndOnlineItem(context),
+            menuItem(context),
+            orderHistoryDataTable(context),
+          ],
+        ),
+      ),
     );
   }
 
   Widget topBarMenu(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.13,
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+      child: Obx(() {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.13,
+                child: Card(
+                  elevation: 10,
+                  color: secondaryBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: cardSingleItem(
+                      image: "assets/new_order.png",
+                      itemTitle: "New Orders",
+                      itemSubTitle: "Ordered Items",
+                      itemNumber: homeController
+                          .dashData.value.data!.pendingOrders
+                          .toString()),
                 ),
-                child: cardSingleItem(
-                    image: "assets/new_order.png",
-                    itemTitle: "New Orders",
-                    itemSubTitle: "Ordered Items",
-                    itemNumber: "0"),
               ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.015,
-          ),
-          Expanded(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.13,
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.015,
+            ),
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.13,
+                child: Card(
+                  elevation: 10,
+                  color: secondaryBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: cardSingleItem(
+                      image: "assets/dispatched_order.png",
+                      itemTitle: "Successful Orders",
+                      itemSubTitle: "Parcel Send",
+                      itemNumber: homeController
+                          .dashData.value.data!.successOrders
+                          .toString()),
                 ),
-                child: cardSingleItem(
-                    image: "assets/dispatched_order.png",
-                    itemTitle: "Dispatched Orders",
-                    itemSubTitle:"Parcel Send",
-                    itemNumber:"0"),
               ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.015,
-          ),
-          Expanded(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.13,
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.015,
+            ),
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.13,
+                child: Card(
+                  elevation: 10,
+                  color: secondaryBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: cardSingleItem(
+                      image: "assets/cancel_order.png",
+                      itemTitle: "Canceled Orders",
+                      itemSubTitle: "Deleted Orders",
+                      itemNumber: homeController
+                          .dashData.value.data!.cancelOrders
+                          .toString()),
                 ),
-                child: cardSingleItem(
-                    image: "assets/cancel_order.png",
-                    itemTitle:"Canceled Orders",
-                    itemSubTitle: "Deleted Orders",
-                    itemNumber: "0"),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
-  Widget menuItem(BuildContext context){
+
+  Widget menuItem(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Card(
         elevation: 0.5,
+        color: secondaryBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         child: Container(
-          height: MediaQuery.of(context).size.height*0.15,
-          width:MediaQuery.of(context).size.width ,
+          height: MediaQuery.of(context).size.height * 0.2,
+          width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Menu Items",style: TextStyle(fontSize: fontVeryBig,fontWeight: FontWeight.w900),),
+                    Text(
+                      "Menu Items",
+                      style: TextStyle(
+                          fontSize: fontVeryBig,
+                          fontWeight: FontWeight.w900,
+                          color: primaryText),
+                    ),
                     Container(
                       child: TextButton.icon(
                         style: TextButton.styleFrom(
@@ -108,9 +147,16 @@ class Dashboard extends StatelessWidget {
                             foregroundColor: primaryColor,
                             backgroundColor: secondaryAccentColor,
                             shape: const StadiumBorder()),
-                        onPressed: (){},
-                        label: Text("Add Items",style: TextStyle(fontWeight:FontWeight.bold),),
-                        icon: Icon(Icons.add,size: 15,color: primaryColor,),
+                        onPressed: () {},
+                        label: Text(
+                          "Add Items",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        icon: Icon(
+                          Icons.add,
+                          size: 15,
+                          color: primaryColor,
+                        ),
                       ),
                     ),
                   ],
@@ -120,99 +166,154 @@ class Dashboard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                    Flexible(
-                      flex: 2,
-                      child: ListTile(
-                        leading: Image.asset('assets/deliver.png'),
-                        title: Text("Chicken Masala"),
-                        subtitle: Container(
-                          child: Row(
-                            children: [
-                              Image.asset("assets/edit-alt.png",height: 20,width: 20,),
-                              SizedBox(width: 5,),
-                              Image.asset("assets/delete.png",height: 20,width: 20,color: red,),
-                            ],
-                          ),
-                        ),
-                        trailing: Text("£15.00",style: TextStyle(fontSize: fontMedium,color: accentColor),),
-                      ),
-                    ),
-                  Flexible(
-                    flex: 1,
-                      child: Container()
-                  ),
                   Flexible(
                     flex: 2,
                     child: ListTile(
                       leading: Image.asset('assets/deliver.png'),
-                      title: Text("Chicken Masala"),
+                      title: Text(
+                        "Chicken Masala",
+                        style: TextStyle(color: primaryText),
+                      ),
                       subtitle: Container(
                         child: Row(
                           children: [
-                            Image.asset("assets/edit-alt.png",height: 20,width: 20,),
-                            SizedBox(width: 5,),
-                            Image.asset("assets/delete.png",height: 20,width: 20,color: red,),
+                            Image.asset(
+                              "assets/edit-alt.png",
+                              height: 20,
+                              width: 20,
+                              color: primaryText,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Image.asset(
+                              "assets/delete.png",
+                              height: 20,
+                              width: 20,
+                              color: red,
+                            ),
                           ],
                         ),
                       ),
-                      trailing: Text("£15.00",style: TextStyle(fontSize: fontMedium,color: accentColor),),
+                      trailing: Text(
+                        "£15.00",
+                        style:
+                            TextStyle(fontSize: fontMedium, color: accentColor),
+                      ),
                     ),
                   ),
-                  Flexible(
-                      flex: 1,
-                      child: Container()
-                  ),
+                  Flexible(flex: 1, child: Container()),
                   Flexible(
                     flex: 2,
                     child: ListTile(
                       leading: Image.asset('assets/deliver.png'),
-                      title: Text("Chicken Masala"),
+                      title: Text(
+                        "Chicken Masala",
+                        style: TextStyle(color: primaryText),
+                      ),
                       subtitle: Container(
                         child: Row(
                           children: [
-                            Image.asset("assets/edit-alt.png",height: 20,width: 20,),
-                            SizedBox(width: 5,),
-                            Image.asset("assets/delete.png",height: 20,width: 20,color: red,),
+                            Image.asset(
+                              "assets/edit-alt.png",
+                              height: 20,
+                              width: 20,
+                              color: primaryText,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Image.asset(
+                              "assets/delete.png",
+                              height: 20,
+                              width: 20,
+                              color: red,
+                            ),
                           ],
                         ),
                       ),
-                      trailing: Text("£15.00",style: TextStyle(fontSize: fontMedium,color: accentColor),),
+                      trailing: Text(
+                        "£15.00",
+                        style:
+                            TextStyle(fontSize: fontMedium, color: accentColor),
+                      ),
+                    ),
+                  ),
+                  Flexible(flex: 1, child: Container()),
+                  Flexible(
+                    flex: 2,
+                    child: ListTile(
+                      leading: Image.asset('assets/deliver.png'),
+                      title: Text(
+                        "Chicken Masala",
+                        style: TextStyle(color: primaryText),
+                      ),
+                      subtitle: Container(
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/edit-alt.png",
+                              height: 20,
+                              width: 20,
+                              color: primaryText,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Image.asset(
+                              "assets/delete.png",
+                              height: 20,
+                              width: 20,
+                              color: red,
+                            ),
+                          ],
+                        ),
+                      ),
+                      trailing: Text(
+                        "£15.00",
+                        style:
+                            TextStyle(fontSize: fontMedium, color: accentColor),
+                      ),
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: ListTile(
                       leading: Container(
-                            decoration: BoxDecoration(
-                              color: accentColor,
-                                borderRadius: BorderRadius.all(Radius.circular(20))
-                            ),
+                        decoration: BoxDecoration(
+                            color: accentColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                                        Text("View All",textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-                                        Icon(Icons.arrow_right_alt,color: Colors.white),
+                              Text(
+                                "View All",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Icon(Icons.arrow_right_alt, color: Colors.white),
                             ],
                           ),
                         ),
                       ),
+                    ),
+                    // Container(
+                    //     decoration: BoxDecoration(
+                    //       color: accentColor,
+                    //         borderRadius: BorderRadius.all(Radius.circular(20))
+                    //     ),
+                    //     child: Row(
+                    //          mainAxisAlignment: MainAxisAlignment.center,
+                    //         crossAxisAlignment: CrossAxisAlignment.center,
+                    //         children: <Widget>[
+                    //           Text("View All"),
+                    //           Icon(Icons.arrow_right_alt),
+                    //         ]
+                    //     )
                   ),
-                  // Container(
-                  //     decoration: BoxDecoration(
-                  //       color: accentColor,
-                  //         borderRadius: BorderRadius.all(Radius.circular(20))
-                  //     ),
-                  //     child: Row(
-                  //          mainAxisAlignment: MainAxisAlignment.center,
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         children: <Widget>[
-                  //           Text("View All"),
-                  //           Icon(Icons.arrow_right_alt),
-                  //         ]
-                  //     )
-                   ),
                 ],
               )
             ],
@@ -224,9 +325,9 @@ class Dashboard extends StatelessWidget {
 
   Widget cardSingleItem(
       {String? image,
-        String? itemTitle,
-        String? itemSubTitle,
-        String? itemNumber}) {
+      String? itemTitle,
+      String? itemSubTitle,
+      String? itemNumber}) {
     return Row(
       children: [
         Expanded(
@@ -246,7 +347,8 @@ class Dashboard extends StatelessWidget {
                   Text(
                     itemTitle!,
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: primaryText),
                   ),
                   Text(
                     itemSubTitle!,
@@ -266,7 +368,7 @@ class Dashboard extends StatelessWidget {
                           color: blue,
                           fontSize: fontBig,
                           fontWeight: FontWeight.bold)));
-            } else if (itemTitle == "Dispatched Orders") {
+            } else if (itemTitle == "Successful Orders") {
               return Center(
                   child: Text(itemNumber!,
                       style: TextStyle(
@@ -291,111 +393,108 @@ class Dashboard extends StatelessWidget {
 
   Widget cardForTopAndOnlineItem(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
               flex: 1,
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: Card(
                   elevation: 0.0,
+                  color: secondaryBackground,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25, left: 15),
-                          child: Text(
-                            "Top Items",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: fontMedium),
-                          ),
+                  child: Column(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 15),
+                        child: Text(
+                          "Top Items",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              color: primaryText,
+                              fontSize: fontMedium),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                                height: MediaQuery.of(context).size.height * 0.3,
-                                child: DataTable(
-                                  columns: [
-                                    DataColumn(
-                                      label: Text(
-                                        "Name",
-                                        style: TextStyle(color: textSecondary),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: Obx(() {
+                                return SingleChildScrollView(
+                                  child: DataTable(
+                                    dividerThickness: 2,
+                                    columns: [
+                                      DataColumn(
+                                        label: Text(
+                                          "Name",
+                                          style:
+                                              TextStyle(color: textSecondary),
+                                        ),
                                       ),
-                                    ),
-                                    DataColumn(
-                                        label: Text("Ordered",
+                                      DataColumn(
+                                          label: Text("Ordered",
+                                              style: TextStyle(
+                                                  color: textSecondary))),
+                                      DataColumn(
+                                          label: Text("Price",
+                                              style: TextStyle(
+                                                  color: textSecondary))),
+                                      DataColumn(
+                                        label: Text("Total Sold Price",
+                                            style: TextStyle(
+                                                color: textSecondary)),
+                                      ),
+                                    ],
+                                    rows: [
+                                      for (var item in homeController
+                                          .dashData.value.data!.topItems!.data!)
+                                        DataRow(cells: [
+                                          DataCell(Text(
+                                            item.name.toString(),
                                             style:
-                                            TextStyle(color: textSecondary))),
-                                    DataColumn(
-                                        label: Text("Price",
-                                            style:
-                                            TextStyle(color: textSecondary))),
-                                    DataColumn(
-                                      label: Text("Total Sold Price",
-                                          style: TextStyle(color: textSecondary)),
-                                    ),
-                                  ],
-                                  rows: [
-                                    DataRow(cells: [
-                                      DataCell(Text('Pasta')),
-                                      DataCell(Text('300')),
-                                      DataCell(Text('£12.5')),
-                                      DataCell(Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text("£3,750"),
-                                            IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.arrow_upward,
-                                                size: 15,
-                                                color: green,
-                                              ),
+                                                TextStyle(color: primaryText),
+                                          )),
+                                          DataCell(Text(item.totalOrdered.toString(),
+                                              style: TextStyle(
+                                                  color: primaryText))),
+                                          DataCell(Text(item.price.toString(),
+                                              style: TextStyle(
+                                                  color: primaryText))),
+                                          DataCell(Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(item.totalSoldPrice.toString(),
+                                                    style: TextStyle(
+                                                        color: primaryText)),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    Icons.arrow_upward,
+                                                    size: 15,
+                                                    color: green,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      )),
-                                    ]),
-                                    DataRow(cells: [
-                                      DataCell(Text('Chicken Masala')),
-                                      DataCell(Text('269')),
-                                      DataCell(Text('£11')),
-                                      DataCell(Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text("£2,959"),
-                                            IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.arrow_downward,
-                                                size: 15,
-                                                color: red,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                    ])
-                                  ],
-                                )))
-                      ],
-                    ),
+                                          )),
+                                        ]),
+                                    ],
+                                  ),
+                                );
+                              })))
+                    ],
                   ),
                 ),
               )),
@@ -405,114 +504,100 @@ class Dashboard extends StatelessWidget {
           Expanded(
               flex: 1,
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: Card(
                   elevation: 0.0,
+                  color: secondaryBackground,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25, left: 15),
-                          child: Text(
-                            "Online Orders",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: fontMedium),
-                          ),
+                  child: Column(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 15),
+                        child: Text(
+                          "Online Orders",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              color: primaryText,
+                              fontSize: fontMedium),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                                height: MediaQuery.of(context).size.height * 0.3,
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                                  child: DataTable(
-                                    dividerThickness:0,
-                                    columns: [
-                                      DataColumn(
-                                        label: Text(
-                                         "ID & Time",
-                                          style: TextStyle(color: textSecondary),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                          label: Text("User Name",
-                                              style:
-                                              TextStyle(color: textSecondary))),
-                                      DataColumn(
-                                          label: Text("Online Orders",
-                                              style:
-                                              TextStyle(color: textSecondary))),
-                                      DataColumn(
-                                        label: Text("Status",
-                                            style: TextStyle(color: textSecondary)),
-                                      ),
-                                    ],
-                                    rows: [
-                                      DataRow(cells: [
-                                        DataCell(Container(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(height: 3,),
-                                              Text("#A0223",style: TextStyle(
-                                                  color: primaryText,
-                                                  fontSize: fontSmall),),
-                                              FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text(
-                                                  "12:20am|22/07/2022",
-                                                  style: TextStyle(
-                                                      color: textSecondary,
-                                                      fontSize: 12),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                        DataCell(Text('300')),
-                                        DataCell(Text('Aminur Islam')),
-                                        DataCell(Text('New Order',style: TextStyle(color: green),)),
-                                      ]),
-                                      DataRow(cells: [
-                                        DataCell(Container(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(height: 3,),
-                                              Text("#A0223",style: TextStyle(
-                                                  color: primaryText,
-                                                  fontSize: fontSmall),),
-                                              FittedBox(
-                                                fit: BoxFit.contain,
-                                                child: Text(
-                                                  "12:20am|22/07/2022",
-                                                  style: TextStyle(
-                                                      color: textSecondary,
-                                                      fontSize: 12),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                        DataCell(Text('300')),
-                                        DataCell(Text('Aminur Islam')),
-                                        DataCell(Text('pending',style: TextStyle(color: red),)),
-                                      ])
-                                    ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: DataTable(
+                                dividerThickness: 2,
+                                columns: [
+                                  DataColumn(
+                                    label: Text(
+                                      "ID & Time",
+                                      style: TextStyle(color: textSecondary),
+                                    ),
                                   ),
-                                )))
-                      ],
-                    ),
+                                  DataColumn(
+                                      label: Text("User Name",
+                                          style: TextStyle(
+                                              color: textSecondary))),
+                                  DataColumn(
+                                      label: Text("Online Orders",
+                                          style: TextStyle(
+                                              color: textSecondary))),
+                                  DataColumn(
+                                    label: Text("Status",
+                                        style:
+                                            TextStyle(color: textSecondary)),
+                                  ),
+                                ],
+                                rows: [
+                                  DataRow(cells: [
+                                    DataCell(Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            "#A0223",
+                                            style: TextStyle(
+                                                color: primaryText,
+                                                fontSize: fontSmall),
+                                          ),
+                                          FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: Text(
+                                              "12:20am|22/07/2022",
+                                              style: TextStyle(
+                                                  color: textSecondary,
+                                                  fontSize: 12),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                                    DataCell(Text(
+                                      '300',
+                                      style: TextStyle(color: primaryText),
+                                    )),
+                                    DataCell(Text('Aminur Islam',
+                                        style:
+                                            TextStyle(color: primaryText))),
+                                    DataCell(Text(
+                                      'New Order',
+                                      style: TextStyle(color: green),
+                                    )),
+                                  ]),
+                                ],
+                              )))
+                    ],
                   ),
                 ),
               )),
@@ -520,14 +605,19 @@ class Dashboard extends StatelessWidget {
       ),
     );
   }
-  orderHistoryDataTable(BuildContext context){
+
+  Widget orderHistoryDataTable(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15,right: 15),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: Card(
-        child: Container(
-          padding: EdgeInsets.all(13),
-          child:Column(
-            //   mainAxisAlignment: MainAxisAlignment.start,
+        elevation: 0.5,
+        color: secondaryBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -537,7 +627,8 @@ class Dashboard extends StatelessWidget {
                     "Order History",
                     style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        fontSize: fontMedium),
+                        fontSize: fontMedium,
+                        color: primaryText),
                   ),
                   Container(
                     child: Row(
@@ -549,50 +640,57 @@ class Dashboard extends StatelessWidget {
                             height: 30,
                             child: TextField(
                                 style: TextStyle(
-                                  fontSize:fontSmall,
+                                  fontSize: fontSmall,
                                   color: Colors.blueAccent,
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white10,
-                                    contentPadding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                                    prefixIcon: Icon(Icons.search,size: 18,),
-                                     hintText: "",
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blueAccent,),
-                                        borderRadius: BorderRadius.circular(10.0)),)),
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    size: 18,
+                                  ),
+                                  hintText: "",
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.blueAccent,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                )),
                           ),
                         ),
-                         IconButton(
-                             onPressed: (){},
-                             icon: Icon(Icons.sort)
-                         )
+                        IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.sort,
+                              color: textSecondary,
+                            ))
                       ],
                     ),
                   )
                 ],
               ),
-              Theme(
-                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                child: Container(
-                  width: double.infinity,
-                  child: DataTable(
-                    dividerThickness:0,
+              Container(
+                width: double.infinity,
+                child: Obx(() {
+                  return DataTable(
+                    dividerThickness: 2,
                     columns: [
                       DataColumn(
                         label: Text(
-                          "ID",
+                          "Invoice",
                           style: TextStyle(color: textSecondary),
                         ),
                       ),
                       DataColumn(
                           label: Text("Time & Date",
-                              style:
-                              TextStyle(color: textSecondary))),
+                              style: TextStyle(color: textSecondary))),
                       DataColumn(
                           label: Text("Customer Name",
-                              style:
-                              TextStyle(color: textSecondary))),
+                              style: TextStyle(color: textSecondary))),
                       DataColumn(
                         label: Text("Location",
                             style: TextStyle(color: textSecondary)),
@@ -611,43 +709,61 @@ class Dashboard extends StatelessWidget {
                       ),
                     ],
                     rows: [
-                      DataRow(cells: [
-                        DataCell(Text('Aminur Islam')),
-                        DataCell(Text('300')),
-                        DataCell(Text('Aminur Islam')),
-                        DataCell(Text('300')),
-                        DataCell(Text('Aminur Islam')),
-                      //  DataCell(Text('New Order',style: TextStyle(color: green),)),
-                        DataCell(Container(
-                            height: 30, width: 150,
-                            decoration: BoxDecoration(
-                                color: blue,
-                                borderRadius: BorderRadius.all(Radius.circular(20))
-                            ),
-                            child:Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add_to_photos_outlined,size: 15,color: blue,),
-                                SizedBox(width: 10,),
-                                Text('New Order',style: TextStyle(color: blue),)
-                              ],
-                            )
-                        )),
-                        DataCell(
-                            Container(
-                                height: 30, width: 70,
-                                decoration: BoxDecoration(
-                                    color: textSecondary,
-                                    borderRadius: BorderRadius.all(Radius.circular(20))
-                                ),
-                                child: Icon(Icons.more_horiz)
-                            )
-                        ),
-                      ]),
+                      for (var item in homeController
+                          .dashData.value.data!.orderHistory!.data!)
+                        DataRow(cells: [
+                          DataCell(Text(
+                            item.invoice.toString(),
+                            style: TextStyle(color: primaryText),
+                          )),
+                          DataCell(Text(item.date.toString(),
+                              style: TextStyle(color: primaryText))),
+                          DataCell(Text(item.customerName.toString(),
+                              style: TextStyle(color: primaryText))),
+                          DataCell(Text('None',
+                              style: TextStyle(color: primaryText))),
+                          DataCell(Text(item.grandTotal.toString(),
+                              style: TextStyle(color: primaryText))),
+                          DataCell(Container(
+                              height: 30,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color: blue,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Icon(
+                                  //   Icons.add_to_photos_outlined,
+                                  //   size: 15,
+                                  //   color: primaryText,
+                                  // ),
+                                  // SizedBox(
+                                  //   width: 10,
+                                  // ),
+                                  Text(
+                                    item.status.toString(),
+                                    style: TextStyle(color: primaryText),
+                                  )
+                                ],
+                              ))),
+                          DataCell(Container(
+                              height: 30,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                  color: textSecondary,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: Icon(
+                                Icons.more_horiz,
+                                color: primaryColor,
+                              ))),
+                        ]),
                     ],
-                  ),
-                ),
+                  );
+                }),
               )
             ],
           ),
