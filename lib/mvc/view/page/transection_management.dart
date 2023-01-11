@@ -70,22 +70,22 @@ class _TransactionManagementState extends State<TransactionManagement>with Singl
                       (item) => DataRow(
                     cells: [
                       DataCell(
-                        Text('${item.id ?? ""}'),
+                        Text('${item.id ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.name ?? ""}'),
+                        Text('${item.name ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.accountName ?? ""}'),
+                        Text('${item.accountName ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.accountNumber ?? ""}'),
+                        Text('${item.accountNumber ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.branchName ?? ""}'),
+                        Text('${item.branchName ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.balance ?? ""}'),
+                        Text('${item.balance ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
                         Row(
@@ -175,19 +175,19 @@ class _TransactionManagementState extends State<TransactionManagement>with Singl
                       (item) => DataRow(
                     cells: [
                       DataCell(
-                        Text('${item.id ?? ""}'),
+                        Text('${item.id ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.bank.name?? ""}'),
+                        Text('${item.bank.name?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.date ?? ""}'),
+                        Text('${item.date ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.withdrawDepositeId ?? ""}'),
+                        Text('${item.withdrawDepositeId ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.amount ?? ""}'),
+                        Text('${item.amount ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
                         Row(

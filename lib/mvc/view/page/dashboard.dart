@@ -30,7 +30,7 @@ class _DashboardState extends State<Dashboard> {
           children: [
             topBarMenu(context),
             cardForTopAndOnlineItem(context),
-            topBarMenu(context),
+            midBarMenu(context),
             // menuItem(context),
             orderHistoryDataTable(context),
           ],
@@ -56,12 +56,14 @@ class _DashboardState extends State<Dashboard> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: cardSingleItem(
-                      image: "assets/new_order.png",
-                      itemTitle: "New Orders",
-                      itemSubTitle: "Ordered Items",
-                      itemNumber: homeController
-                          .dashData.value.data!.pendingOrders
-                          .toString()),
+                    image: "assets/new_order.png",
+                    itemTitle: "New Orders",
+                    itemSubTitle: "Ordered Items",
+                    color: blue,
+                    itemNumber: homeController
+                        .dashData.value.data!.pendingOrders
+                        .toString(),
+                  ),
                 ),
               ),
             ),
@@ -81,6 +83,7 @@ class _DashboardState extends State<Dashboard> {
                       image: "assets/dispatched_order.png",
                       itemTitle: "Successful Orders",
                       itemSubTitle: "Parcel Send",
+                      color: green,
                       itemNumber: homeController
                           .dashData.value.data!.successOrders
                           .toString()),
@@ -103,8 +106,88 @@ class _DashboardState extends State<Dashboard> {
                       image: "assets/cancel_order.png",
                       itemTitle: "Canceled Orders",
                       itemSubTitle: "Deleted Orders",
+                      color: red,
                       itemNumber: homeController
                           .dashData.value.data!.cancelOrders
+                          .toString()),
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget midBarMenu(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Obx(() {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.13,
+                child: Card(
+                    elevation: 10,
+                    color: secondaryBackground,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: cardSingleItem(
+                      image: "assets/dispatched_order.png",
+                      itemTitle: "Weekly Orders",
+                      itemSubTitle: "Weekly total orders",
+                      color: green,
+                      itemNumber: homeController
+                          .dashData.value.data!.weeklyOrders
+                          .toString(),
+                    )),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.015,
+            ),
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.13,
+                child: Card(
+                  elevation: 10,
+                  color: secondaryBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: cardSingleItem(
+                      image: "assets/dispatched_order.png",
+                      itemTitle: "Monthly Orders",
+                      itemSubTitle: "Monthly total orders",
+                      color: green,
+                      itemNumber: homeController
+                          .dashData.value.data!.monthlyOrders
+                          .toString()),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.015,
+            ),
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.13,
+                child: Card(
+                  elevation: 10,
+                  color: secondaryBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: cardSingleItem(
+                      image: "assets/dispatched_order.png",
+                      itemTitle: "Yearly Orders",
+                      itemSubTitle: "Yearly total orders",
+                      color: green,
+                      itemNumber: homeController
+                          .dashData.value.data!.yearlyOrders
                           .toString()),
                 ),
               ),
@@ -328,7 +411,8 @@ class _DashboardState extends State<Dashboard> {
       {String? image,
       String? itemTitle,
       String? itemSubTitle,
-      String? itemNumber}) {
+      String? itemNumber,
+      Color? color}) {
     return Row(
       children: [
         Expanded(
@@ -360,34 +444,13 @@ class _DashboardState extends State<Dashboard> {
               ),
             )),
         Expanded(
-          flex: 1,
-          child: Builder(builder: (BuildContext context) {
-            if (itemTitle == "New Orders") {
-              return Center(
-                  child: Text(itemNumber!,
-                      style: TextStyle(
-                          color: blue,
-                          fontSize: fontBig,
-                          fontWeight: FontWeight.bold)));
-            } else if (itemTitle == "Successful Orders") {
-              return Center(
-                  child: Text(itemNumber!,
-                      style: TextStyle(
-                          color: green,
-                          fontSize: fontBig,
-                          fontWeight: FontWeight.bold)));
-            } else if (itemTitle == "Canceled Orders") {
-              return Center(
-                  child: Text(itemNumber!,
-                      style: TextStyle(
-                          color: red,
-                          fontSize: fontBig,
-                          fontWeight: FontWeight.bold)));
-            } else
-              return Text("");
-          }),
-          // child: Center(child: Text(itemNumber!,style: TextStyle(color:blue,fontSize: fontBig)))
-        ),
+            flex: 1,
+            child: Center(
+                child: Text(itemNumber!,
+                    style: TextStyle(
+                        color: color,
+                        fontSize: fontBig,
+                        fontWeight: FontWeight.bold)))),
       ],
     );
   }
@@ -705,10 +768,6 @@ class _DashboardState extends State<Dashboard> {
                         label: Text("Status Order",
                             style: TextStyle(color: textSecondary)),
                       ),
-                      DataColumn(
-                        label: Text("Action",
-                            style: TextStyle(color: textSecondary)),
-                      ),
                     ],
                     rows: [
                       for (var item in homeController
@@ -751,20 +810,9 @@ class _DashboardState extends State<Dashboard> {
                                   // ),
                                   Text(
                                     item.status.toString(),
-                                    style: TextStyle(color: primaryText),
+                                    style: TextStyle(color: white),
                                   )
                                 ],
-                              ))),
-                          DataCell(Container(
-                              height: 30,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                  color: textSecondary,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Icon(
-                                Icons.more_horiz,
-                                color: primaryColor,
                               ))),
                         ]),
                     ],

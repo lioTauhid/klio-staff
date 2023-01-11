@@ -10,46 +10,46 @@ String foodMenuManagementToJson(FoodMenuManagement data) => json.encode(data.toJ
 
 class FoodMenuManagement {
   FoodMenuManagement({
-    required this.data,
+     this.data,
   });
 
-  List<FoodMenuManagementDatum> data;
+  List<FoodMenuManagementDatum>? data;
 
   factory FoodMenuManagement.fromJson(Map<String, dynamic> json) => FoodMenuManagement(
     data: List<FoodMenuManagementDatum>.from(json["data"].map((x) => FoodMenuManagementDatum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
 class FoodMenuManagementDatum {
   FoodMenuManagementDatum({
-    required this.id,
-    required this.name,
-    required this.slug,
-    required this.image,
-    required this.price,
-    required this.taxVat,
-    required this.calorie,
-    required this.description,
-    required this.allergies,
-    required this.addons,
-    required this.variants,
+     this.id,
+     this.name,
+    this.slug,
+     this.image,
+     this.price,
+     this.taxVat,
+     this.calorie,
+     this.description,
+     this.allergies,
+     this.addons,
+     this.variants,
   });
 
-  int id;
-  String name;
-  String slug;
-  String image;
-  String price;
-  String taxVat;
-  String calorie;
-  String description;
-  Allergies allergies;
-  Addons addons;
-  Addons variants;
+  int? id;
+  String ?name;
+  String ?slug;
+  String? image;
+  String? price;
+  String? taxVat;
+  String ?calorie;
+  String? description;
+  Allergies ?allergies;
+  Addons ?addons;
+  Addons? variants;
 
   factory FoodMenuManagementDatum.fromJson(Map<String, dynamic> json) => FoodMenuManagementDatum(
     id: json["id"],
@@ -74,9 +74,9 @@ class FoodMenuManagementDatum {
     "tax_vat": taxVat,
     "calorie": calorie,
     "description": description,
-    "allergies": allergies.toJson(),
-    "addons": addons.toJson(),
-    "variants": variants.toJson(),
+    "allergies": allergies!.toJson(),
+    "addons": addons!.toJson(),
+    "variants": variants!.toJson(),
   };
 }
 

@@ -10,36 +10,36 @@ String foodMenuCategoryToJson(FoodMenuCategory data) => json.encode(data.toJson(
 
 class FoodMenuCategory {
   FoodMenuCategory({
-    required this.data,
+     this.data,
   });
 
-  List<Datum> data;
+  List<MenuCategory>? data;
 
   factory FoodMenuCategory.fromJson(Map<String, dynamic> json) => FoodMenuCategory(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<MenuCategory>.from(json["data"].map((x) => MenuCategory.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
-  Datum({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.status,
-    required this.isDrinks,
+class MenuCategory {
+  MenuCategory({
+     this.id,
+     this.name,
+     this.image,
+     this.status,
+     this.isDrinks,
   });
 
-  int id;
-  String name;
-  String image;
-  int status;
-  int isDrinks;
+  int ?id;
+  String ?name;
+  String ?image;
+  int ?status;
+  int ?isDrinks;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory MenuCategory.fromJson(Map<String, dynamic> json) => MenuCategory(
     id: json["id"],
     name: json["name"],
     image: json["image"],

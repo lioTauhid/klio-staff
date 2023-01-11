@@ -10,22 +10,22 @@ String ingredinetListModelToJson(IngredinetListModel data) => json.encode(data.t
 
 class IngredinetListModel {
   IngredinetListModel({
-    required this.data,
+     this.data,
   });
 
-  List<Datum> data;
+  List<Ingrediant>? data;
 
   factory IngredinetListModel.fromJson(Map<String, dynamic> json) => IngredinetListModel(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<Ingrediant>.from(json["data"].map((x) => Ingrediant.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
-  Datum({
+class Ingrediant {
+  Ingrediant({
     this.id,
     this.categoryName,
     this.unitName,
@@ -43,7 +43,7 @@ class Datum {
   dynamic alertQty;
   dynamic code;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Ingrediant.fromJson(Map<String, dynamic> json) => Ingrediant(
     id: json["id"]==null?"":json["id"],
     categoryName: json["category_name"]==null?"":json["category_name"],
     unitName: json["unit_name"]==null?"":json["unit_name"],

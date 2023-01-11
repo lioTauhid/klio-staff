@@ -10,38 +10,38 @@ String foodMenuAddonsToJson(FoodMenuAddons data) => json.encode(data.toJson());
 
 class FoodMenuAddons {
   FoodMenuAddons({
-    required this.data,
+     this.data,
   });
 
-  List<Datum> data;
+  List<MenuAddon> ?data;
 
   factory FoodMenuAddons.fromJson(Map<String, dynamic> json) => FoodMenuAddons(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<MenuAddon>.from(json["data"].map((x) => MenuAddon.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
-  Datum({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.image,
-    required this.details,
-    required this.status,
+class MenuAddon {
+  MenuAddon({
+     this.id,
+     this.name,
+     this.price,
+     this.image,
+     this.details,
+     this.status,
   });
 
-  int id;
-  String name;
-  String price;
-  String image;
-  String details;
-  int status;
+  int? id;
+  String? name;
+  String? price;
+  String ?image;
+  String ?details;
+  int? status;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory MenuAddon.fromJson(Map<String, dynamic> json) => MenuAddon(
     id: json["id"],
     name: json["name"],
     price: json["price"],

@@ -6,6 +6,7 @@ import '../mvc/model/menu.dart';
 import '../mvc/model/menus.dart';
 
 class Utils {
+
   static final apiHeader = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

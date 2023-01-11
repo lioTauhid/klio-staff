@@ -72,22 +72,22 @@ class _PurchaseManagementState extends State<PurchaseManagement>with SingleTicke
                       (item) => DataRow(
                     cells: [
                       DataCell(
-                        Text('${item.id ?? ""}'),
+                        Text('${item.id ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.referenceNo ?? ""}'),
+                        Text('${item.referenceNo ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.date ?? ""}'),
+                        Text('${item.date ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.supplier.name ?? ""}'),
+                        Text('${item.supplier.name ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.totalAmount ?? ""}'),
+                        Text('${item.totalAmount ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.paidAmount ?? ""}'),
+                        Text('${item.paidAmount ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
                         Row(
@@ -180,25 +180,25 @@ class _PurchaseManagementState extends State<PurchaseManagement>with SingleTicke
                       (item) => DataRow(
                     cells: [
                       DataCell(
-                        Text('${item.id ?? ""}'),
+                        Text('${item.id ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.category.name ?? ""}'),
+                        Text('${item.category.name ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.person.name ?? ""}'),
+                        Text('${item.person.name ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.amount ?? ""}'),
+                        Text('${item.amount ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.date ?? ""}'),
+                        Text('${item.date ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.note ?? ""}'),
+                        Text('${item.note ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.status ?? ""}'),
+                        Text('${item.status ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
                         Row(
@@ -287,13 +287,13 @@ class _PurchaseManagementState extends State<PurchaseManagement>with SingleTicke
                       (item) => DataRow(
                     cells: [
                       DataCell(
-                        Text('${item.id ?? ""}'),
+                        Text('${item.id ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.name ?? ""}'),
+                        Text('${item.name ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
-                        Text('${item.status ?? ""}'),
+                        Text('${item.status ?? ""}',style: TextStyle(color: primaryText),),
                       ),
                       DataCell(
                         Row(

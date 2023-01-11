@@ -13,10 +13,10 @@ class IngredineCategoryModel {
     required this.data,
   });
 
-  List<Datum> data;
+  List<IngrediantCategory> data;
 
   factory IngredineCategoryModel.fromJson(Map<String, dynamic> json) => IngredineCategoryModel(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<IngrediantCategory>.from(json["data"].map((x) => IngrediantCategory.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -24,8 +24,8 @@ class IngredineCategoryModel {
   };
 }
 
-class Datum {
-  Datum({
+class IngrediantCategory {
+  IngrediantCategory({
     required this.id,
     required this.name,
     this.status,
@@ -35,7 +35,7 @@ class Datum {
   String name;
   dynamic status;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory IngrediantCategory.fromJson(Map<String, dynamic> json) => IngrediantCategory(
     id: json["id"],
     name: json["name"],
     status: json["status"]==null?"":json["status"],

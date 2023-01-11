@@ -53,6 +53,7 @@ class HomeController extends GetxController with ErrorController {
   // ui variables
   RxInt topBtnPosition = 1.obs;
   RxBool isUpdate = false.obs;
+  RxBool reward = false.obs;
   RxInt selectedOrder = (-1).obs;
   RxInt currentPage = 0.obs;
 

@@ -3,12 +3,21 @@ import 'package:get/get.dart';
 import 'package:klio_staff/mvc/model/Customer.dart';
 import 'package:klio_staff/mvc/model/menu.dart';
 import 'package:klio_staff/utils/utils.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../../service/printer/customer_display.dart';
 import '../../../service/printer/print_service.dart';
+import '../../controller/food_management_controller.dart';
 import '../../controller/home_controller.dart';
+import '../../model/Ingredient_list_model.dart';
+import '../../model/Meal_period_model.dart';
+import '../../model/food_menu_addons.dart';
+import '../../model/food_menu_allergy.dart';
+import '../../model/food_menu_category_model.dart';
 import '../widget/custom_widget.dart';
+import 'package:path/path.dart';
+import 'dart:io';
 
 HomeController homeController = Get.find();
 
@@ -22,6 +31,35 @@ Future<void> showCustomDialog(BuildContext context, String title, Widget widget,
           child: Container(
             width: MediaQuery.of(context).size.width - widthReduce,
             height: MediaQuery.of(context).size.height - heightReduce,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: secondaryBackground,
+            ),
+            child: Column(
+              children: [
+                dialogHeader(title, context),
+                // Divider(color: textSecondary, thickness: 1),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: widget,
+                ),
+              ],
+            ),
+          ));
+    },
+  );
+}
+
+Future<void> showCustomDialogResponsive(BuildContext context, String title,
+    Widget widget, double height, double width) async {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: secondaryBackground,
@@ -1439,14 +1477,20 @@ Widget finalizeOrder(BuildContext context) {
         SizedBox(height: 20),
         Center(
           child: Text(
-            'Reward: £${12}',
+            'Reward: £${homeController.settings.value.data![21].value}, 1R = £${homeController.settings.value.data![23].value}, You get £2.0',
             style: TextStyle(fontSize: fontSmall, color: primaryText),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Checkbox(value: false, onChanged: (checked) {}),
+            Obx(() {
+              return Checkbox(
+                  value: homeController.reward.value,
+                  onChanged: (checked) {
+                    homeController.reward.value = checked!;
+                  });
+            }),
             Text(
               'Use Rewards: £${12}',
               style: TextStyle(fontSize: fontSmall, color: primaryText),
@@ -1954,104 +1998,464 @@ Widget orderInvoice(BuildContext context, String method) {
   );
 }
 
-Widget addMisc(BuildContext context) {
-  // TextEditingController contName = TextEditingController();
-  // TextEditingController contName = TextEditingController();
-  // TextEditingController contName = TextEditingController();
-  // TextEditingController contName = TextEditingController();
-  // TextEditingController contName = TextEditingController();
+// Widget addMisc(BuildContext context) {
+//   return Container(
+//     height: Size.infinite.height,
+//     width: Size.infinite.width,
+//     padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+//     child: ListView(children: [
+//       textRow1('Name', 'Variant Name'),
+//       textFieldRow1('Enter menu name', 'Normal'),
+//       SizedBox(height: 10),
+//       textRow1('Variant Price', 'Processing Time'),
+//       textFieldRow1('000.00', 'Enter food processing time'),
+//       SizedBox(height: 10),
+//       textRow1('Vat (%)', 'Calorie'),
+//       textFieldRow1('food vat', '000.00'),
+//       SizedBox(height: 10),
+//       textRow1('Image (130x130)', 'Select Menu Meal Period'),
+//       Row(
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         children: [
+//           Expanded(
+//               flex: 1,
+//               child: SizedBox(
+//                   height: 40,
+//                   child: MaterialButton(
+//                       elevation: 0,
+//                       color: primaryBackground,
+//                       onPressed: () {},
+//                       child: Text(
+//                         'No file chosen',
+//                         style: TextStyle(
+//                             color: textSecondary, fontSize: fontSmall),
+//                       ))
+//                   // child: normalButton('No file chosen', primaryColor, primaryColor),
+//                   )),
+//           SizedBox(width: 20),
+//           Expanded(
+//               flex: 1,
+//               child: SizedBox(
+//                 height: 40,
+//                 child: TextFormField(
+//                     keyboardType: TextInputType.text,
+//                     style: TextStyle(
+//                         fontSize: fontVerySmall, color: textSecondary),
+//                     decoration: InputDecoration(
+//                         fillColor: secondaryBackground,
+//                         border: OutlineInputBorder(
+//                           borderRadius: BorderRadius.circular(6),
+//                         ),
+//                         hintStyle: TextStyle(
+//                             fontSize: fontVerySmall, color: textSecondary))),
+//               )),
+//         ],
+//       ),
+//       SizedBox(height: 10),
+//       textRow1('Select Menu Category', 'Select Menu Addons'),
+//       textFieldRow1('', ''),
+//       SizedBox(height: 10),
+//       textRow1('Select Menu Allergies', ''),
+//       SizedBox(
+//         height: 35,
+//         child: TextFormField(
+//             keyboardType: TextInputType.text,
+//             style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+//             decoration: InputDecoration(
+//                 fillColor: secondaryBackground,
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(6),
+//                 ),
+//                 hintStyle:
+//                     TextStyle(fontSize: fontVerySmall, color: textSecondary))),
+//       ),
+//       SizedBox(height: 10),
+//       textRow1('Menu Description', ''),
+//       TextFormField(
+//           keyboardType: TextInputType.text,
+//           maxLines: 2,
+//           style: TextStyle(fontSize: fontSmall, color: textSecondary),
+//           decoration: InputDecoration(
+//             fillColor: secondaryBackground,
+//             border: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(6),
+//             ),
+//             hintStyle: TextStyle(fontSize: fontVerySmall, color: textSecondary),
+//           )),
+//       SizedBox(height: 10),
+//       Row(
+//         mainAxisAlignment: MainAxisAlignment.end,
+//         children: [
+//           normalButton('Submit', primaryColor, white, onPressed: () {}),
+//         ],
+//       ),
+//     ]),
+//   );
+// }
 
+Widget addNewMenuForm(FoodManagementController foodCtlr) {
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
     padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
-    child: ListView(children: [
-      textRow1('Name', 'Variant Name'),
-      textFieldRow1('Enter menu name', 'Normal'),
-      SizedBox(height: 10),
-      textRow1('Variant Price', 'Processing Time'),
-      textFieldRow1('000.00', 'Enter food processing time'),
-      SizedBox(height: 10),
-      textRow1('Vat (%)', 'Calorie'),
-      textFieldRow1('food vat', '000.00'),
-      SizedBox(height: 10),
-      textRow1('Image (130x130)', 'Select Menu Meal Period'),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-              flex: 1,
-              child: SizedBox(
-                  height: 40,
-                  child: MaterialButton(
+    child: Form(
+      key: foodCtlr.uploadMenuFormKey,
+      child: ListView(children: [
+        textRow('Name', 'Variant Price'),
+        textFieldRow('Enter menu name', 'Enter variant price',
+            controller1: foodCtlr.nameTextCtlr,
+            controller2: foodCtlr.varinetPriceEditingCtlr,
+            validator1: foodCtlr.textValidator,
+            validator2: foodCtlr.textValidator,
+            textInputType1: TextInputType.text,
+            textInputType2: TextInputType.number),
+        SizedBox(height: 10),
+        textRow('Vat (%)', 'Processing Time'),
+        textFieldRow('Enter VAT', 'Enter food processing time',
+            controller1: foodCtlr.vatEditingCtlr,
+            controller2: foodCtlr.processTimeEditingCtlr,
+            validator1: foodCtlr.textValidator,
+            validator2: foodCtlr.textValidator,
+            textInputType1: TextInputType.number,
+            textInputType2: TextInputType.number),
+        SizedBox(height: 10),
+        textRow('Image (130x130)', 'Calorie'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                flex: 1,
+                child: SizedBox(
+                    height: 35,
+                    child: MaterialButton(
                       elevation: 0,
                       color: primaryBackground,
-                      onPressed: () {},
-                      child: Text(
-                        'No file chosen',
-                        style: TextStyle(
-                            color: textSecondary, fontSize: fontSmall),
-                      ))
-                  // child: normalButton('No file chosen', primaryColor, primaryColor),
-                  )),
-          SizedBox(width: 20),
-          Expanded(
+                      onPressed: () async {
+                        foodCtlr.menuStoreImage = await foodCtlr.getImage();
+                      },
+                      child: GetBuilder<FoodManagementController>(
+                          builder: (context) {
+                        return Text(
+                          foodCtlr.menuStoreImage == null
+                              ? 'No file chosen'
+                              : basename(foodCtlr.menuStoreImage!.path
+                                  .split(Platform.pathSeparator.tr)
+                                  .last),
+                          style: TextStyle(
+                              color: textSecondary, fontSize: fontSmall),
+                        );
+                      }),
+                    )
+                    // child: normalButton('No file chosen', primaryColor, primaryColor),
+                    )),
+            SizedBox(width: 20),
+            Expanded(
               flex: 1,
               child: SizedBox(
-                height: 40,
+                //  height: 45,
                 child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(
-                        fontSize: fontVerySmall, color: textSecondary),
+                    onChanged: (text) async {},
+                    controller: foodCtlr.caloriesEditingCtlr,
+                    onEditingComplete: () async {},
+                    keyboardType: TextInputType.number,
+                    maxLines: 1,
+                    validator: foodCtlr.textValidator,
+                    style: TextStyle(fontSize: fontSmall, color: textSecondary),
                     decoration: InputDecoration(
-                        fillColor: secondaryBackground,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        hintStyle: TextStyle(
-                            fontSize: fontVerySmall, color: textSecondary))),
-              )),
-        ],
-      ),
-      SizedBox(height: 10),
-      textRow1('Select Menu Category', 'Select Menu Addons'),
-      textFieldRow1('', ''),
-      SizedBox(height: 10),
-      textRow1('Select Menu Allergies', ''),
-      SizedBox(
-        height: 35,
-        child: TextFormField(
-            keyboardType: TextInputType.text,
-            style: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-            decoration: InputDecoration(
-                fillColor: secondaryBackground,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                hintStyle:
-                    TextStyle(fontSize: fontVerySmall, color: textSecondary))),
-      ),
-      SizedBox(height: 10),
-      textRow1('Menu Description', ''),
-      TextFormField(
-          keyboardType: TextInputType.text,
-          maxLines: 2,
-          style: TextStyle(fontSize: fontSmall, color: textSecondary),
-          decoration: InputDecoration(
-            fillColor: secondaryBackground,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
+                      hintText: "Enter Calories",
+                      fillColor: secondaryBackground,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      hintStyle: TextStyle(
+                          fontSize: fontVerySmall, color: textSecondary),
+                    )),
+              ),
             ),
-            hintStyle: TextStyle(fontSize: fontVerySmall, color: textSecondary),
-          )),
-      SizedBox(height: 10),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          normalButton('Submit', primaryColor, white, onPressed: () {}),
-        ],
-      ),
-    ]),
+          ],
+        ),
+        SizedBox(height: 10),
+        textRow('Select Menu Meal Period', 'Select Menu Category'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                flex: 1,
+                child:
+                    GetBuilder<FoodManagementController>(builder: (controller) {
+                  return MultiSelectDropDown(
+                    backgroundColor: secondaryBackground,
+                    optionsBackgroundColor: secondaryBackground,
+                    selectedOptionTextColor: primaryText,
+                    selectedOptionBackgroundColor: primaryColor,
+                    optionTextStyle:
+                        TextStyle(color: primaryText, fontSize: 16),
+                    onOptionSelected: (List<ValueItem> selectedOptions) {
+                      foodCtlr.uploadMealPeriodIdList = selectedOptions
+                          .map((ValueItem e) => int.parse(e.value!))
+                          .toList();
+                      print(foodCtlr.uploadMealPeriodIdList);
+                    },
+                    // selectedOptions: foodCtlr.foodSingleItemDetails.value.data!.addons!.data!.map((MenuAddon e) {
+                    //   return ValueItem(
+                    //     label:e.name!,
+                    //     value: e.id.toString(),
+                    //   );
+                    // }).toList(),
+                    options: controller.mealPeriod.value.data!.map((Meal e) {
+                      return ValueItem(
+                        label: e.name!,
+                        value: e.id.toString(),
+                      );
+                    }).toList(),
+                    hint: 'Select Meal Period',
+                    selectionType: SelectionType.multi,
+                    chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                    dropdownHeight: 300,
+                    selectedOptionIcon: const Icon(Icons.check_circle),
+                    inputDecoration: BoxDecoration(
+                      color: secondaryBackground,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: primaryBackground,
+                      ),
+                    ),
+                  );
+                })),
+            SizedBox(width: 20),
+            Expanded(
+                flex: 1,
+                child:
+                    GetBuilder<FoodManagementController>(builder: (controller) {
+                  return MultiSelectDropDown(
+                    backgroundColor: secondaryBackground,
+                    optionsBackgroundColor: secondaryBackground,
+                    selectedOptionTextColor: primaryText,
+                    selectedOptionBackgroundColor: primaryColor,
+                    optionTextStyle:
+                        TextStyle(color: primaryText, fontSize: 16),
+                    onOptionSelected: (List<ValueItem> selectedOptions) {
+                      foodCtlr.uploadMenuCategoryIdList = selectedOptions
+                          .map((ValueItem e) => int.parse(e.value!))
+                          .toList();
+                    },
+                    // selectedOptions: foodCtlr.foodSingleItemDetails.value.data!.addons!.data!.map((MenuAddon e) {
+                    //   return ValueItem(
+                    //     label:e.name!,
+                    //     value: e.id.toString(),
+                    //   );
+                    // }).toList(),
+                    options: controller.foodMenuCategory.value.data!
+                        .map((MenuCategory e) {
+                      return ValueItem(
+                        label: e.name!,
+                        value: e.id.toString(),
+                      );
+                    }).toList(),
+                    hint: 'Select Menu Category',
+                    selectionType: SelectionType.multi,
+                    chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                    dropdownHeight: 300,
+                    selectedOptionIcon: const Icon(Icons.check_circle),
+                    inputDecoration: BoxDecoration(
+                      color: secondaryBackground,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: primaryBackground,
+                      ),
+                    ),
+                  );
+                })),
+          ],
+        ),
+        SizedBox(height: 10),
+        textRow('Select Menu Addons', 'Select Menu Allergies '),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                flex: 1,
+                child:
+                    GetBuilder<FoodManagementController>(builder: (controller) {
+                  return MultiSelectDropDown(
+                    backgroundColor: secondaryBackground,
+                    optionsBackgroundColor: secondaryBackground,
+                    selectedOptionTextColor: primaryText,
+                    selectedOptionBackgroundColor: primaryColor,
+                    optionTextStyle:
+                        TextStyle(color: primaryText, fontSize: 16),
+                    onOptionSelected: (List<ValueItem> selectedOptions) {
+                      foodCtlr.uploadMenuAddonsIdList = selectedOptions
+                          .map((ValueItem e) => int.parse(e.value!))
+                          .toList();
+                    },
+                    // selectedOptions: foodCtlr.foodSingleItemDetails.value.data!.addons!.data!.map((MenuAddon e) {
+                    //   return ValueItem(
+                    //     label:e.name!,
+                    //     value: e.id.toString(),
+                    //   );
+                    // }).toList(),
+                    options:
+                        controller.foodAddons.value.data!.map((MenuAddon e) {
+                      return ValueItem(
+                        label: e.name!,
+                        value: e.id.toString(),
+                      );
+                    }).toList(),
+                    hint: 'Select Menu Addons',
+                    selectionType: SelectionType.multi,
+                    chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                    dropdownHeight: 300,
+                    selectedOptionIcon: const Icon(Icons.check_circle),
+                    inputDecoration: BoxDecoration(
+                      color: secondaryBackground,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: primaryBackground,
+                      ),
+                    ),
+                  );
+                })),
+            SizedBox(width: 20),
+            Expanded(
+                flex: 1,
+                child:
+                    GetBuilder<FoodManagementController>(builder: (controller) {
+                  return MultiSelectDropDown(
+                    backgroundColor: secondaryBackground,
+                    optionsBackgroundColor: secondaryBackground,
+                    selectedOptionTextColor: primaryText,
+                    selectedOptionBackgroundColor: primaryColor,
+                    optionTextStyle:
+                        TextStyle(color: primaryText, fontSize: 16),
+                    onOptionSelected: (List<ValueItem> selectedOptions) {
+                      foodCtlr.uploadMenuAllergyIdList = selectedOptions
+                          .map((ValueItem e) => int.parse(e.value!))
+                          .toList();
+                    },
+                    // selectedOptions: foodCtlr.foodSingleItemDetails.value.data!.addons!.data!.map((MenuAddon e) {
+                    //   return ValueItem(
+                    //     label:e.name!,
+                    //     value: e.id.toString(),
+                    //   );
+                    // }).toList(),
+                    options:
+                        controller.foodMenuAllergy.value.data!.map((Allergy e) {
+                      return ValueItem(
+                        label: e.name!,
+                        value: e.id.toString(),
+                      );
+                    }).toList(),
+                    hint: 'Select Menu Allergies',
+                    selectionType: SelectionType.multi,
+                    chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                    dropdownHeight: 300,
+                    selectedOptionIcon: const Icon(Icons.check_circle),
+                    inputDecoration: BoxDecoration(
+                      color: secondaryBackground,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: primaryBackground,
+                      ),
+                    ),
+                  );
+                })),
+          ],
+        ),
+        textRow('Select Menu Ingredient', ' '),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+                flex: 1,
+                child:
+                    GetBuilder<FoodManagementController>(builder: (controller) {
+                  return MultiSelectDropDown(
+                    backgroundColor: secondaryBackground,
+                    optionsBackgroundColor: secondaryBackground,
+                    selectedOptionTextColor: primaryText,
+                    selectedOptionBackgroundColor: primaryColor,
+                    optionTextStyle:
+                        TextStyle(color: primaryText, fontSize: 16),
+                    onOptionSelected: (List<ValueItem> selectedOptions) {
+                      foodCtlr.uploadMenuIngredientIdList = selectedOptions
+                          .map((ValueItem e) => int.parse(e.value!))
+                          .toList();
+                    },
+                    // selectedOptions: foodCtlr.foodSingleItemDetails.value.data!.addons!.data!.map((MenuAddon e) {
+                    //   return ValueItem(
+                    //     label:e.name!,
+                    //     value: e.id.toString(),
+                    //   );
+                    // }).toList(),
+                    options: controller.ingredientData.value.data!
+                        .map((Ingrediant e) {
+                      return ValueItem(
+                        label: e.name!,
+                        value: e.id.toString(),
+                      );
+                    }).toList(),
+                    selectionType: SelectionType.single,
+                    chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                    dropdownHeight: 300,
+                    selectedOptionIcon: const Icon(Icons.check_circle),
+                    inputDecoration: BoxDecoration(
+                      color: secondaryBackground,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      border: Border.all(
+                        color: primaryBackground,
+                      ),
+                    ),
+                  );
+                })),
+            SizedBox(width: 20),
+          ],
+        ),
+        SizedBox(height: 10),
+        SizedBox(height: 10),
+        textRow('Menu Description', ''),
+        TextFormField(
+            onChanged: (text) async {},
+            onEditingComplete: () async {},
+            keyboardType: TextInputType.text,
+            validator: foodCtlr.textValidator,
+            controller: foodCtlr.descriptionEditingCtlr,
+            maxLines: 2,
+            style: TextStyle(fontSize: fontSmall, color: textSecondary),
+            decoration: InputDecoration(
+              fillColor: secondaryBackground,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+              hintStyle:
+                  TextStyle(fontSize: fontVerySmall, color: textSecondary),
+            )),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            normalButton('Submit', primaryColor, white, onPressed: () {
+              if (foodCtlr.uploadMenuFormKey.currentState!.validate()) {
+                foodCtlr.addMenu(
+                  foodCtlr.nameTextCtlr.text,
+                  foodCtlr.varinetPriceEditingCtlr.text,
+                  foodCtlr.processTimeEditingCtlr.text,
+                  foodCtlr.vatEditingCtlr.text,
+                  foodCtlr.caloriesEditingCtlr.text,
+                  foodCtlr.descriptionEditingCtlr.text,
+                  foodCtlr.uploadMenuIngredientIdList[0].toString(),
+                  foodCtlr.uploadMealPeriodIdList,
+                  foodCtlr.uploadMenuAddonsIdList,
+                  foodCtlr.uploadMenuAllergyIdList,
+                  foodCtlr.uploadMenuCategoryIdList,
+                );
+              }
+            }),
+          ],
+        ),
+      ]),
+    ),
   );
 }
 

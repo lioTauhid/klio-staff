@@ -17,6 +17,7 @@ Color green = Color(0xff00A600);
 Color greenLight = Color(0xff6cacc7);
 Color red = Color(0xffFB180D);
 Color secondaryRed = Color(0xffFF2B18);
+Color secondaryBlue = Color(0xffE3F3FF);
 
 const Color black = Colors.black;
 const Color white = Colors.white;

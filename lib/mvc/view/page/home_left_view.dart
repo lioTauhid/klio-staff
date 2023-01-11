@@ -4,12 +4,12 @@ import 'package:klio_staff/mvc/model/Customer.dart';
 import 'package:sunmi_printer_plus/column_maker.dart';
 import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
-
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../../service/printer/customer_display.dart';
 import '../../../service/printer/print_service.dart';
 import '../../../utils/utils.dart';
+import '../../controller/food_management_controller.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
 import '../dialog/custom_dialog.dart';
@@ -17,6 +17,8 @@ import '../widget/custom_widget.dart';
 
 Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
   HomeController homeController = Get.find();
+  FoodManagementController foodCtlr = Get.find();
+
   return Drawer(
     width: 400,
     elevation: 0,
@@ -623,8 +625,10 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                     iconTextBtnWide(
                         "assets/add.png", 'Add Misc', alternate, primaryText,
                         onPressed: () {
-                      showCustomDialog(
-                          context, "Add Food Menu", addMisc(context), 30, 400);
+                          showCustomDialog(
+                              context, "Add New menu", addNewMenuForm(foodCtlr), 30, 400);
+                      // showCustomDialog(
+                      //     context, "Add Food Menu", addMisc(context), 30, 400);
                     }),
                     iconTextBtnWide(
                         "assets/delete.png", 'Delete', alternate, primaryText,

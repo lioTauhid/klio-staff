@@ -10,34 +10,34 @@ String foodMenuAllergyToJson(FoodMenuAllergy data) => json.encode(data.toJson())
 
 class FoodMenuAllergy {
   FoodMenuAllergy({
-    required this.data,
+     this.data,
   });
 
-  List<Datum> data;
+  List<Allergy>? data;
 
   factory FoodMenuAllergy.fromJson(Map<String, dynamic> json) => FoodMenuAllergy(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<Allergy>.from(json["data"].map((x) => Allergy.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
-  Datum({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.status,
+class Allergy {
+  Allergy({
+     this.id,
+     this.name,
+     this.image,
+     this.status,
   });
 
-  int id;
-  String name;
-  String image;
-  int status;
+  int ?id;
+  String? name;
+  String? image;
+  int? status;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Allergy.fromJson(Map<String, dynamic> json) => Allergy(
     id: json["id"],
     name: json["name"],
     image: json["image"],

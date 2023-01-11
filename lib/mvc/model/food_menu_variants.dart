@@ -10,36 +10,36 @@ String foodMenuVariantsToJson(FoodMenuVariants data) => json.encode(data.toJson(
 
 class FoodMenuVariants {
   FoodMenuVariants({
-    required this.data,
+     this.data,
   });
 
-  List<Datum> data;
+  List<Variant>? data;
 
   factory FoodMenuVariants.fromJson(Map<String, dynamic> json) => FoodMenuVariants(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<Variant>.from(json["data"].map((x) => Variant.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
-  Datum({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.status,
-    required this.food,
+class Variant {
+  Variant({
+     this.id,
+     this.name,
+     this.price,
+     this.status,
+     this.food,
   });
 
-  int id;
-  String name;
-  String price;
-  int status;
-  Food food;
+  int? id;
+  String ?name;
+  String? price;
+  int ?status;
+  Food? food;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Variant.fromJson(Map<String, dynamic> json) => Variant(
     id: json["id"],
     name: json["name"],
     price: json["price"],
@@ -52,7 +52,7 @@ class Datum {
     "name": name,
     "price": price,
     "status": status,
-    "food": food.toJson(),
+    "food": food!.toJson(),
   };
 }
 

@@ -10,6 +10,7 @@ import 'package:klio_staff/utils/utils.dart';
 import '../../../constant/color.dart';
 import '../../../constant/value.dart';
 import '../../../service/local/shared_pref.dart';
+import '../../controller/food_management_controller.dart';
 import '../../controller/home_controller.dart';
 import '../../model/menu.dart';
 import '../../model/order.dart';
@@ -44,6 +45,7 @@ class _HomeState extends State<Home> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedCategory = -1;
   bool gridImage = true;
+  FoodManagementController foodCtlr = Get.put(FoodManagementController());
 
   @override
   void initState() {
@@ -106,16 +108,16 @@ class _HomeState extends State<Home> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Obx(() {
-                                      return Text(
-                                        homeController.user.value.data!.name ??
-                                            '',
-                                        style: TextStyle(
-                                            fontSize: fontMediumExtra,
-                                            fontWeight: FontWeight.bold,
-                                            color: primaryText),
-                                      );
-                                    }),
+                                    // Obx(() {
+                                    //   return Text(
+                                    //     homeController.user.value.data!.name ??
+                                    //         '',
+                                    //     style: TextStyle(
+                                    //         fontSize: fontMediumExtra,
+                                    //         fontWeight: FontWeight.bold,
+                                    //         color: primaryText),
+                                    //   );
+                                    // }),
                                     Text(
                                         DateFormat('kk:mm:a | dd MMM')
                                             .format(DateTime.now()),
@@ -225,17 +227,17 @@ class _HomeState extends State<Home> {
                                                     BorderRadius.circular(10),
                                               ),
                                               padding: EdgeInsets.all(1),
-                                              child: Obx(() {
-                                                return Text(
-                                                  homeController.onlineOrder
-                                                      .value.data!.length
-                                                      .toString(),
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: fontVerySmall,
-                                                      color: Colors.white),
-                                                );
-                                              }),
+                                              // child: Obx(() {
+                                              //   return Text(
+                                              //     homeController.onlineOrder
+                                              //         .value.data!.length
+                                              //         .toString(),
+                                              //     textAlign: TextAlign.center,
+                                              //     style: TextStyle(
+                                              //         fontSize: fontVerySmall,
+                                              //         color: Colors.white),
+                                              //   );
+                                              // }),
                                             ))
                                       ],
                                     ),

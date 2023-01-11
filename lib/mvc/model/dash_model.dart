@@ -44,20 +44,20 @@ class Data {
     this.topItems,
   });
 
-  int? pendingOrders;
-  int ?successOrders;
+  int ?pendingOrders;
+  int? successOrders;
   int ?cancelOrders;
   int ?dailyOrders;
-  int ?weeklyOrders;
+  int? weeklyOrders;
   int? monthlyOrders;
-  int ?yearlyOrders;
+  int? yearlyOrders;
   int ?totalOrders;
-  int ?dailySales;
-  int ?weeklySales;
-  int ?monthlySales;
+  int? dailySales;
+  String ?weeklySales;
+  String ?monthlySales;
   String ?yearlySales;
-  String ?totalSales;
-  OnlineOrders ?orderHistory;
+  String? totalSales;
+  OnlineOrders? orderHistory;
   OnlineOrders ?onlineOrders;
   OnlineOrders ?topItems;
 
@@ -96,7 +96,7 @@ class Data {
     "total_sales": totalSales,
     "order_history": orderHistory!.toJson(),
     "online_orders": onlineOrders!.toJson(),
-    "top_items": topItems?.toJson(),
+    "top_items": topItems!.toJson(),
   };
 }
 
@@ -130,14 +130,14 @@ class Datum {
   });
 
   String? date;
-  String ?customerName;
-  String ?invoice;
-  String ?grandTotal;
-  String ?status;
-  String ?name;
-  String ?price;
-  String ?totalSoldPrice;
-  String ?totalOrdered;
+  String? customerName;
+  String? invoice;
+  String? grandTotal;
+  String? status;
+  String? name;
+  String? price;
+  String? totalSoldPrice;
+  String? totalOrdered;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     date: json["date"] == null ? null : json["date"],
