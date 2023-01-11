@@ -31,10 +31,10 @@ class HomeController extends GetxController with ErrorController {
   Rx<OnlineOrder> onlineOrder = OnlineOrder().obs;
   Rx<Settings> settings = Settings().obs;
   Rx<TableList> tables = TableList(data: []).obs;
-  Rx<TextEditingController> controllerName = TextEditingController().obs;
-  Rx<TextEditingController> controllerEmail = TextEditingController().obs;
-  Rx<TextEditingController> controllerPhone = TextEditingController().obs;
-  Rx<TextEditingController> controllerAddress = TextEditingController().obs;
+  Rx<TextEditingController> controllerName = TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerEmail = TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerPhone = TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerAddress = TextEditingController(text: '').obs;
   RxBool withoutTable = false.obs;
   Rx<DashData> dashData= DashData().obs;
 
@@ -43,7 +43,7 @@ class HomeController extends GetxController with ErrorController {
   RxString customerName = ''.obs;
   Rx<MenuData> menuData = MenuData().obs;
   RxList cardList = [].obs;
-  RxDouble variantPrice = 0.0.obs;
+  // RxDouble variantPrice = 0.0.obs;
   RxDouble discount = 0.0.obs;
   RxString discType = 'In Flat Amount'.obs;
   RxInt giveAmount = 0.obs;

@@ -30,7 +30,8 @@ class _DashboardState extends State<Dashboard> {
           children: [
             topBarMenu(context),
             cardForTopAndOnlineItem(context),
-            menuItem(context),
+            topBarMenu(context),
+            // menuItem(context),
             orderHistoryDataTable(context),
           ],
         ),
@@ -114,214 +115,214 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget menuItem(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Card(
-        elevation: 0.5,
-        color: secondaryBackground,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.2,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Menu Items",
-                      style: TextStyle(
-                          fontSize: fontVeryBig,
-                          fontWeight: FontWeight.w900,
-                          color: primaryText),
-                    ),
-                    Container(
-                      child: TextButton.icon(
-                        style: TextButton.styleFrom(
-                            fixedSize: const Size(130, 20),
-                            foregroundColor: primaryColor,
-                            backgroundColor: secondaryAccentColor,
-                            shape: const StadiumBorder()),
-                        onPressed: () {},
-                        label: Text(
-                          "Add Items",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        icon: Icon(
-                          Icons.add,
-                          size: 15,
-                          color: primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: ListTile(
-                      leading: Image.asset('assets/deliver.png'),
-                      title: Text(
-                        "Chicken Masala",
-                        style: TextStyle(color: primaryText),
-                      ),
-                      subtitle: Container(
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/edit-alt.png",
-                              height: 20,
-                              width: 20,
-                              color: primaryText,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Image.asset(
-                              "assets/delete.png",
-                              height: 20,
-                              width: 20,
-                              color: red,
-                            ),
-                          ],
-                        ),
-                      ),
-                      trailing: Text(
-                        "£15.00",
-                        style:
-                            TextStyle(fontSize: fontMedium, color: accentColor),
-                      ),
-                    ),
-                  ),
-                  Flexible(flex: 1, child: Container()),
-                  Flexible(
-                    flex: 2,
-                    child: ListTile(
-                      leading: Image.asset('assets/deliver.png'),
-                      title: Text(
-                        "Chicken Masala",
-                        style: TextStyle(color: primaryText),
-                      ),
-                      subtitle: Container(
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/edit-alt.png",
-                              height: 20,
-                              width: 20,
-                              color: primaryText,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Image.asset(
-                              "assets/delete.png",
-                              height: 20,
-                              width: 20,
-                              color: red,
-                            ),
-                          ],
-                        ),
-                      ),
-                      trailing: Text(
-                        "£15.00",
-                        style:
-                            TextStyle(fontSize: fontMedium, color: accentColor),
-                      ),
-                    ),
-                  ),
-                  Flexible(flex: 1, child: Container()),
-                  Flexible(
-                    flex: 2,
-                    child: ListTile(
-                      leading: Image.asset('assets/deliver.png'),
-                      title: Text(
-                        "Chicken Masala",
-                        style: TextStyle(color: primaryText),
-                      ),
-                      subtitle: Container(
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/edit-alt.png",
-                              height: 20,
-                              width: 20,
-                              color: primaryText,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Image.asset(
-                              "assets/delete.png",
-                              height: 20,
-                              width: 20,
-                              color: red,
-                            ),
-                          ],
-                        ),
-                      ),
-                      trailing: Text(
-                        "£15.00",
-                        style:
-                            TextStyle(fontSize: fontMedium, color: accentColor),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: ListTile(
-                      leading: Container(
-                        decoration: BoxDecoration(
-                            color: accentColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "View All",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Icon(Icons.arrow_right_alt, color: Colors.white),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Container(
-                    //     decoration: BoxDecoration(
-                    //       color: accentColor,
-                    //         borderRadius: BorderRadius.all(Radius.circular(20))
-                    //     ),
-                    //     child: Row(
-                    //          mainAxisAlignment: MainAxisAlignment.center,
-                    //         crossAxisAlignment: CrossAxisAlignment.center,
-                    //         children: <Widget>[
-                    //           Text("View All"),
-                    //           Icon(Icons.arrow_right_alt),
-                    //         ]
-                    //     )
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget menuItem(BuildContext context) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(15.0),
+  //     child: Card(
+  //       elevation: 0.5,
+  //       color: secondaryBackground,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(10.0),
+  //       ),
+  //       child: Container(
+  //         height: MediaQuery.of(context).size.height * 0.2,
+  //         width: MediaQuery.of(context).size.width,
+  //         child: Column(
+  //           children: [
+  //             Padding(
+  //               padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Text(
+  //                     "Menu Items",
+  //                     style: TextStyle(
+  //                         fontSize: fontVeryBig,
+  //                         fontWeight: FontWeight.w900,
+  //                         color: primaryText),
+  //                   ),
+  //                   Container(
+  //                     child: TextButton.icon(
+  //                       style: TextButton.styleFrom(
+  //                           fixedSize: const Size(130, 20),
+  //                           foregroundColor: primaryColor,
+  //                           backgroundColor: secondaryAccentColor,
+  //                           shape: const StadiumBorder()),
+  //                       onPressed: () {},
+  //                       label: Text(
+  //                         "Add Items",
+  //                         style: TextStyle(fontWeight: FontWeight.bold),
+  //                       ),
+  //                       icon: Icon(
+  //                         Icons.add,
+  //                         size: 15,
+  //                         color: primaryColor,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             Row(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: [
+  //                 Flexible(
+  //                   flex: 2,
+  //                   child: ListTile(
+  //                     leading: Image.asset('assets/deliver.png'),
+  //                     title: Text(
+  //                       "Chicken Masala",
+  //                       style: TextStyle(color: primaryText),
+  //                     ),
+  //                     subtitle: Container(
+  //                       child: Row(
+  //                         children: [
+  //                           Image.asset(
+  //                             "assets/edit-alt.png",
+  //                             height: 20,
+  //                             width: 20,
+  //                             color: primaryText,
+  //                           ),
+  //                           SizedBox(
+  //                             width: 5,
+  //                           ),
+  //                           Image.asset(
+  //                             "assets/delete.png",
+  //                             height: 20,
+  //                             width: 20,
+  //                             color: red,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     trailing: Text(
+  //                       "£15.00",
+  //                       style:
+  //                           TextStyle(fontSize: fontMedium, color: accentColor),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Flexible(flex: 1, child: Container()),
+  //                 Flexible(
+  //                   flex: 2,
+  //                   child: ListTile(
+  //                     leading: Image.asset('assets/deliver.png'),
+  //                     title: Text(
+  //                       "Chicken Masala",
+  //                       style: TextStyle(color: primaryText),
+  //                     ),
+  //                     subtitle: Container(
+  //                       child: Row(
+  //                         children: [
+  //                           Image.asset(
+  //                             "assets/edit-alt.png",
+  //                             height: 20,
+  //                             width: 20,
+  //                             color: primaryText,
+  //                           ),
+  //                           SizedBox(
+  //                             width: 5,
+  //                           ),
+  //                           Image.asset(
+  //                             "assets/delete.png",
+  //                             height: 20,
+  //                             width: 20,
+  //                             color: red,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     trailing: Text(
+  //                       "£15.00",
+  //                       style:
+  //                           TextStyle(fontSize: fontMedium, color: accentColor),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Flexible(flex: 1, child: Container()),
+  //                 Flexible(
+  //                   flex: 2,
+  //                   child: ListTile(
+  //                     leading: Image.asset('assets/deliver.png'),
+  //                     title: Text(
+  //                       "Chicken Masala",
+  //                       style: TextStyle(color: primaryText),
+  //                     ),
+  //                     subtitle: Container(
+  //                       child: Row(
+  //                         children: [
+  //                           Image.asset(
+  //                             "assets/edit-alt.png",
+  //                             height: 20,
+  //                             width: 20,
+  //                             color: primaryText,
+  //                           ),
+  //                           SizedBox(
+  //                             width: 5,
+  //                           ),
+  //                           Image.asset(
+  //                             "assets/delete.png",
+  //                             height: 20,
+  //                             width: 20,
+  //                             color: red,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     trailing: Text(
+  //                       "£15.00",
+  //                       style:
+  //                           TextStyle(fontSize: fontMedium, color: accentColor),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Flexible(
+  //                   flex: 1,
+  //                   child: ListTile(
+  //                     leading: Container(
+  //                       decoration: BoxDecoration(
+  //                           color: accentColor,
+  //                           borderRadius:
+  //                               BorderRadius.all(Radius.circular(20))),
+  //                       child: Padding(
+  //                         padding: const EdgeInsets.symmetric(horizontal: 10),
+  //                         child: Row(
+  //                           mainAxisSize: MainAxisSize.min,
+  //                           children: [
+  //                             Text(
+  //                               "View All",
+  //                               textAlign: TextAlign.center,
+  //                               style: TextStyle(color: Colors.white),
+  //                             ),
+  //                             Icon(Icons.arrow_right_alt, color: Colors.white),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   // Container(
+  //                   //     decoration: BoxDecoration(
+  //                   //       color: accentColor,
+  //                   //         borderRadius: BorderRadius.all(Radius.circular(20))
+  //                   //     ),
+  //                   //     child: Row(
+  //                   //          mainAxisAlignment: MainAxisAlignment.center,
+  //                   //         crossAxisAlignment: CrossAxisAlignment.center,
+  //                   //         children: <Widget>[
+  //                   //           Text("View All"),
+  //                   //           Icon(Icons.arrow_right_alt),
+  //                   //         ]
+  //                   //     )
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget cardSingleItem(
       {String? image,
@@ -463,7 +464,8 @@ class _DashboardState extends State<Dashboard> {
                                             style:
                                                 TextStyle(color: primaryText),
                                           )),
-                                          DataCell(Text(item.totalOrdered.toString(),
+                                          DataCell(Text(
+                                              item.totalOrdered.toString(),
                                               style: TextStyle(
                                                   color: primaryText))),
                                           DataCell(Text(item.price.toString(),
@@ -475,7 +477,9 @@ class _DashboardState extends State<Dashboard> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(item.totalSoldPrice.toString(),
+                                                Text(
+                                                    item.totalSoldPrice
+                                                        .toString(),
                                                     style: TextStyle(
                                                         color: primaryText)),
                                                 IconButton(
@@ -543,16 +547,15 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                   DataColumn(
                                       label: Text("User Name",
-                                          style: TextStyle(
-                                              color: textSecondary))),
+                                          style:
+                                              TextStyle(color: textSecondary))),
                                   DataColumn(
                                       label: Text("Online Orders",
-                                          style: TextStyle(
-                                              color: textSecondary))),
+                                          style:
+                                              TextStyle(color: textSecondary))),
                                   DataColumn(
                                     label: Text("Status",
-                                        style:
-                                            TextStyle(color: textSecondary)),
+                                        style: TextStyle(color: textSecondary)),
                                   ),
                                 ],
                                 rows: [
@@ -588,8 +591,7 @@ class _DashboardState extends State<Dashboard> {
                                       style: TextStyle(color: primaryText),
                                     )),
                                     DataCell(Text('Aminur Islam',
-                                        style:
-                                            TextStyle(color: primaryText))),
+                                        style: TextStyle(color: primaryText))),
                                     DataCell(Text(
                                       'New Order',
                                       style: TextStyle(color: green),
@@ -728,7 +730,11 @@ class _DashboardState extends State<Dashboard> {
                               height: 30,
                               width: 150,
                               decoration: BoxDecoration(
-                                  color: blue,
+                                  color: item.status == 'cancel'
+                                      ? red
+                                      : item.status == 'served'
+                                          ? green
+                                          : blue,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20))),
                               child: Row(

@@ -48,15 +48,15 @@ class Data {
   dynamic usedPoints;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    phone: json["phone"],
-    deliveryAddress: json["delivery_address"],
-    noOfVisit: json["no_of_visit"],
-    lastVisit: json["last_visit"],
-    pointsAcquired: json["points_acquired"],
-    usedPoints: json["used_points"],
+    id: json["id"] ?? '',
+    name: json["name"] ?? '',
+    email: json["email"] ?? '',
+    phone: json["phone"] ?? '',
+    deliveryAddress: json["delivery_address"] ?? '',
+    noOfVisit: json["no_of_visit"] ?? '',
+    lastVisit: json["last_visit"] ?? '',
+    pointsAcquired: json["points_acquired"] ?? '',
+    usedPoints: json["used_points"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {

@@ -461,6 +461,7 @@ class _HomeState extends State<Home> {
                                                         homeController
                                                                 .filteredMenu[
                                                             index];
+                                                    print(data.toJson());
                                                     showCustomDialog(
                                                         context,
                                                         "Addons",

@@ -144,13 +144,13 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                                           .toList(),
                                       homeController.customerName.value));
                               homeController.controllerName.value.text =
-                                  customer.data!.name!;
+                                  customer.data!.name! ?? '';
                               homeController.controllerEmail.value.text =
-                                  customer.data!.email!;
+                                  customer.data!.email! ?? '';
                               homeController.controllerPhone.value.text =
-                                  customer.data!.phone!;
+                                  customer.data!.phone! ?? '';
                               homeController.controllerAddress.value.text =
-                                  customer.data!.deliveryAddress!;
+                                  customer.data!.deliveryAddress! ?? '';
                               showCustomDialog(
                                   context,
                                   "Customer Details",

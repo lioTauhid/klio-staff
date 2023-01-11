@@ -307,9 +307,16 @@ Widget foodMenuBody(BuildContext context, MenuData data) {
     homeController.menuData.value.addons!.data![i].quantity = 0;
     homeController.menuData.value.addons!.data![i].isChecked = false;
   }
-  homeController.variantPrice.value = 0;
-  double unitPrice = double.parse(data.variants!.data![0].price.toString()) ??
-      double.parse(homeController.menuData.value.price.toString());
+  // homeController.variantPrice.value = 0;
+  double unitPrice = 0;
+  // if (data.variants!.data!.isEmpty){
+  //   unitPrice = double.parse(homeController.menuData.value.price.toString());
+  //   homeController.menuData.value.variant = '0';
+  // }else{
+  //   unitPrice = double.parse(data.variants!.data!.first.price.toString());
+  //   homeController.menuData.value.variant = data.variants!.data![0].id.toString();
+  // }
+  unitPrice = double.parse(data.variants!.data!.first.price.toString());
   homeController.menuData.value.variant = data.variants!.data![0].id.toString();
   return Padding(
     padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
