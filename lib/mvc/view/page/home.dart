@@ -108,16 +108,16 @@ class _HomeState extends State<Home> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Obx(() {
-                                    //   return Text(
-                                    //     homeController.user.value.data!.name ??
-                                    //         '',
-                                    //     style: TextStyle(
-                                    //         fontSize: fontMediumExtra,
-                                    //         fontWeight: FontWeight.bold,
-                                    //         color: primaryText),
-                                    //   );
-                                    // }),
+                                    Obx(() {
+                                      return Text(
+                                        homeController.user.value.data!.name ??
+                                            '',
+                                        style: TextStyle(
+                                            fontSize: fontMediumExtra,
+                                            fontWeight: FontWeight.bold,
+                                            color: primaryText),
+                                      );
+                                    }),
                                     Text(
                                         DateFormat('kk:mm:a | dd MMM')
                                             .format(DateTime.now()),
@@ -141,11 +141,6 @@ class _HomeState extends State<Home> {
                                               homeController.getMenuByKeyword(
                                                   keyword: text);
                                             },
-                                            // onEditingComplete: (){print("text");},
-                                            // onFieldSubmitted: (text) {
-                                            //   homeController.getMenuByKeyword(
-                                            //       keyword: text);
-                                            // },
                                             keyboardType: TextInputType.text,
                                             controller: textController,
                                             textInputAction:

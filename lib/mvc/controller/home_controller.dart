@@ -31,12 +31,16 @@ class HomeController extends GetxController with ErrorController {
   Rx<OnlineOrder> onlineOrder = OnlineOrder().obs;
   Rx<Settings> settings = Settings().obs;
   Rx<TableList> tables = TableList(data: []).obs;
-  Rx<TextEditingController> controllerName = TextEditingController(text: '').obs;
-  Rx<TextEditingController> controllerEmail = TextEditingController(text: '').obs;
-  Rx<TextEditingController> controllerPhone = TextEditingController(text: '').obs;
-  Rx<TextEditingController> controllerAddress = TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerName =
+      TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerEmail =
+      TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerPhone =
+      TextEditingController(text: '').obs;
+  Rx<TextEditingController> controllerAddress =
+      TextEditingController(text: '').obs;
   RxBool withoutTable = false.obs;
-  Rx<DashData> dashData= DashData().obs;
+  Rx<DashData> dashData = DashData().obs;
 
   // temp variables
   RxList filteredMenu = [].obs;
@@ -237,7 +241,7 @@ class HomeController extends GetxController with ErrorController {
     if (isUpdate.value) {
       response = ApiClient()
           .put('pos/order/${order.value.data!.id!.toInt()}', body,
-          header: Utils.apiHeader)
+              header: Utils.apiHeader)
           .catchError(handleApiError);
     } else {
       response = ApiClient()
@@ -260,7 +264,8 @@ class HomeController extends GetxController with ErrorController {
     var body = jsonEncode({
       "order_id": order.value.data!.id,
       "payment_method": payMethod.value,
-      "give_amount": giveAmount.value
+      "give_amount": giveAmount.value,
+      "use_rewards": reward.value ? 'use_rewards' : '',
     });
     var response = await ApiClient()
         .post('pos/payment', body, header: Utils.apiHeader)

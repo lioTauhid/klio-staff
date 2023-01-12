@@ -1477,7 +1477,7 @@ Widget finalizeOrder(BuildContext context) {
         SizedBox(height: 20),
         Center(
           child: Text(
-            'Reward: £${homeController.settings.value.data![21].value}, 1R = £${homeController.settings.value.data![23].value}, You get £2.0',
+            'Reward: £${homeController.settings.value.data![21].value}, 1R = £${homeController.settings.value.data![23].value}, You get £4.0',
             style: TextStyle(fontSize: fontSmall, color: primaryText),
           ),
         ),
@@ -1492,7 +1492,8 @@ Widget finalizeOrder(BuildContext context) {
                   });
             }),
             Text(
-              'Use Rewards: £${12}',
+              // 'Use Rewards: £${12}',
+              'Use Rewards',
               style: TextStyle(fontSize: fontSmall, color: primaryText),
             ),
             Expanded(child: SizedBox(width: Size.infinite.width)),
