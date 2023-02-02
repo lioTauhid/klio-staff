@@ -10,9 +10,10 @@ const double fontVerySmall = 14.0;
 const double dialogPadding = 20.0;
 
 const String baseUrl = "https://app.klio.digital/api/";
+// const String baseUrl = "https://blog.amirulhaque.xyz/api/";
 late String token;
 late String loginType;
-bool darkMode = true;
+bool darkMode = false;
 
 const Map<String, dynamic> orderTypes = {
   'Dine In': 'assets/dine-in.png',
@@ -23,4 +24,4 @@ const Map<String, dynamic> orderTypes = {
 };
 const List<String> discType = ['In Flat Amount', 'In percentage'];
 const List<String> paymentType = ['Cash', 'Card', 'No Payment'];
-const List<String> loginTypes = ['Login as Staff', 'Login as cooker'];
+const List<String> loginTypes = ['Login as Staff', 'Login as chef'];

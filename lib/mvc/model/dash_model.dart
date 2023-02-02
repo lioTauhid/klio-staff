@@ -52,8 +52,8 @@ class Data {
   int? monthlyOrders;
   int? yearlyOrders;
   int ?totalOrders;
-  int? dailySales;
-  String ?weeklySales;
+  dynamic dailySales;
+  dynamic weeklySales;
   String ?monthlySales;
   String ?yearlySales;
   String? totalSales;

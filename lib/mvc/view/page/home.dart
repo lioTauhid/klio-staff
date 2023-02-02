@@ -222,17 +222,17 @@ class _HomeState extends State<Home> {
                                                     BorderRadius.circular(10),
                                               ),
                                               padding: EdgeInsets.all(1),
-                                              // child: Obx(() {
-                                              //   return Text(
-                                              //     homeController.onlineOrder
-                                              //         .value.data!.length
-                                              //         .toString(),
-                                              //     textAlign: TextAlign.center,
-                                              //     style: TextStyle(
-                                              //         fontSize: fontVerySmall,
-                                              //         color: Colors.white),
-                                              //   );
-                                              // }),
+                                              child: Obx(() {
+                                                return Text(
+                                                  homeController.onlineOrder
+                                                      .value.data!.length
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: fontVerySmall,
+                                                      color: Colors.white),
+                                                );
+                                              }),
                                             ))
                                       ],
                                     ),

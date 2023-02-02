@@ -416,7 +416,7 @@ class SumniPrinter {
     await SunmiPrinter.printText(
         'Order Type: ${homeController.order.value.data!.type.toString()}');
     await SunmiPrinter.printText(
-        'Subtotal: £${Utils.orderSubTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toString()}');
+        'Subtotal: £${Utils.orderSubTotal(homeController.order.value.data!.orderDetails!.data!.toList()).toStringAsFixed(2)}');
     await SunmiPrinter.printText(
         'Discount: ${homeController.order.value.data!.discount.toString()}');
     await SunmiPrinter.printText(
@@ -432,7 +432,7 @@ class SumniPrinter {
     await SunmiPrinter.printText(
         'Give Amount: ${homeController.giveAmount.value}');
     await SunmiPrinter.printText(
-        'Due: ${(homeController.giveAmount.value - double.parse(homeController.order.value.data!.grandTotal!))}');
+        'Due: ${(homeController.giveAmount.value - double.parse(homeController.order.value.data!.grandTotal!)).toStringAsFixed(2)}');
 
     await SunmiPrinter.lineWrap(2);
     await SunmiPrinter.setFontSize(SunmiFontSize.MD);

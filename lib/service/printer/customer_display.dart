@@ -15,12 +15,12 @@ class CustomerDisplay {
     String total =
         await "Total: £${((Utils.calcSubTotal(homeController.cardList) + double.parse(homeController.settings.value.data![14].value.toString()) + Utils.vatTotal(homeController.cardList)) - homeController.discount.value).toStringAsFixed(2)}";
     await SunmiPrinter.lcdMultiString([subTotal, vatService, discount, total],
-        [1, 1, 1, 1]); // Write multiple lines with alignent
+        [1, 1, 1, 1]); // Write multiple lines with alignment
   }
 
   static Future<void> totalPayPrint(String total) async {
     await SunmiPrinter.lcdWakeup(); //Turn the LCD ON
-    await SunmiPrinter.lcdString(total); //Write a simple line
+    await SunmiPrinter.lcdMultiString(['Payable Amount: ', total], [1, 2]);
   }
 
   static Future<void> sleep() async {

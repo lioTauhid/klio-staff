@@ -552,6 +552,7 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                           white, onPressed: () {
                         homeController.addUpdateOrder();
                         homeController.getOrders();
+                        homeController.orders.refresh();
                         CustomerDisplay.sleep();
                       }),
                       iconTextBtnWide("assets/credit-card.png", 'Pay',
@@ -624,10 +625,12 @@ Widget leftSideView(BuildContext context, ScaffoldState? currentState) {
                     }),
                     iconTextBtnWide(
                         "assets/add.png", 'Add Misc', alternate, primaryText,
-                        onPressed: () {
-                          showCustomDialog(
+                        onPressed: () async {
+                          await showCustomDialog(
                               context, "Add New menu", addNewMenuForm(foodCtlr), 30, 400);
-                      // showCustomDialog(
+                          await homeController.getMenuByKeyword();
+                          homeController.menus.refresh();
+                          // showCustomDialog(
                       //     context, "Add Food Menu", addMisc(context), 30, 400);
                     }),
                     iconTextBtnWide(

@@ -1464,8 +1464,7 @@ Widget orderDetail(BuildContext context, [bool kitchen = false]) {
 
 Widget finalizeOrder(BuildContext context) {
   homeController.giveAmount.value = 0;
-  CustomerDisplay.totalPayPrint(
-      'Payable Amount: £${homeController.order.value.data!.grandTotal}');
+  CustomerDisplay.totalPayPrint('£${homeController.order.value.data!.grandTotal}');
   return Container(
     height: Size.infinite.height,
     width: Size.infinite.width,
@@ -1921,7 +1920,7 @@ Widget orderInvoice(BuildContext context, String method) {
                     (homeController.giveAmount.value -
                             double.parse(
                                 homeController.order.value.data!.grandTotal!))
-                        .toString(),
+                        .toStringAsFixed(2),
                     MainAxisAlignment.spaceBetween),
                 textMixer2(
                     "Payment Method", method, MainAxisAlignment.spaceBetween),
