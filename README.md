@@ -5,7 +5,7 @@
 
 <h1 align="center">
   <br>
-  <a><img src="https://raw.githubusercontent.com/lioTauhid/klio-staff/main/klio-snaps/Screenshot from 2023-02-14 15-35-54.png"></a>
+  <a><img src="https://github.com/lioTauhid/klio-staff/blob/main/klio-snaps/Screenshot%20from%202023-02-14%2015-35-54.png"></a>
   <br>
   <br>
 </h1>
