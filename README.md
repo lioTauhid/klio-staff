@@ -1,16 +1,32 @@
 # klio_staff
 
-A new Flutter project.
 
-## Getting Started
+## Sample Screenshot
 
-This project is a starting point for a Flutter application.
+<h1 align="center">
+  <br>
+  <a><img src="https://raw.githubusercontent.com/lioTauhid/klio-staff/main/klio-snaps/Screenshot from 2023-02-14 15-35-54.png"></a>
+  <br>
+  <br>
+</h1>
 
-A few resources to get you started if this is your first Flutter project:
+<h1 align="center">
+  <br>
+  <a><img src="https://raw.githubusercontent.com/lioTauhid/my-shop/main/Screenshot.jpg"></a>
+  <br>
+  <br>
+</h1>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<h1 align="center">
+  <br>
+  <a><img src="https://raw.githubusercontent.com/lioTauhid/my-shop/main/Screenshot.jpg"></a>
+  <br>
+  <br>
+</h1>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<h1 align="center">
+  <br>
+  <a><img src="https://raw.githubusercontent.com/lioTauhid/my-shop/main/Screenshot.jpg"></a>
+  <br>
+  <br>
+</h1>
